@@ -2,28 +2,7 @@
 
 EngineeringTeam is a harness plugin and skill bundle for turning a general coding agent into a repo-first engineering workflow. It does not replace the model, the editor, the terminal, or the project's existing build system. It adds a disciplined operating model around them: map before editing, trace contracts before changing behavior, require evidence for claims, route specialist review only where useful, and verify the result before handoff.
 
-## 🎯 Design Goals
-
-EngineeringTeam is designed for teams that want agent work to be inspectable, reviewable, and safe enough for real repositories.
-
-Primary goals:
-
-- **Repo-first behavior:** the agent learns the repository's entry points, ownership boundaries, tests, generated-code rules, and local instructions before making non-trivial edits.
-- **Evidence-backed decisions:** every important claim should point to source files, tests, logs, schemas, runtime output, or documented contracts.
-- **Contract awareness:** behavior changes are treated as producer/consumer changes, not isolated line edits.
-- **Smallest useful team:** specialists are selected by risk instead of spawned by default.
-- **Harness portability:** the same canonical skill content works across multiple coding-agent harnesses.
-- **Low operational overhead:** there is no daemon, external service, database, or mandatory network dependency in the workflow.
-- **Human-reviewable artifacts:** the agent produces compact artifacts that explain what it understood, what it changed, and how it verified the result.
-
-Non-goals:
-
-- Replace project CI, tests, code review, or release processes.
-- Store private task history or secrets.
-- Force a fixed multi-agent workflow for every small edit.
-- Hide decisions in long transcripts that reviewers cannot audit.
-
-## 🧩 The Core Problem
+## ⚙️ The Core Problem
 
 Coding agents are often competent at local edits once the target file and desired behavior are clear. Real engineering work is harder because the highest-risk decisions happen before typing:
 
