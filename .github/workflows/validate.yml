@@ -9,6 +9,9 @@ on:
 jobs:
   package:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.12"]
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -16,7 +19,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.x"
+          python-version: "${{ matrix.python-version }}"
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -24,25 +27,4 @@ jobs:
           node-version: "22"
 
       - name: Validate package
-        run: |
-          python3 - <<'PY'
-          import json
-          from pathlib import Path
-
-          for path in [
-              ".claude-plugin/marketplace.json",
-              ".claude-plugin/plugin.json",
-              ".codex-plugin/plugin.json",
-              ".cursor-plugin/plugin.json",
-              "gemini-extension.json",
-              "package.json",
-              ".version-bump.json",
-          ]:
-              json.loads(Path(path).read_text())
-              print(f"OK json: {path}")
-          PY
-          node --check .opencode/plugins/engineering-team.js
-          bash scripts/bump-version.sh --check
-          python3 scripts/generate-agents.py --check
-          python3 skills/engineering-team/scripts/validate-package.py
-          python3 scripts/validate-codex-package.py
+        run: npm run validate

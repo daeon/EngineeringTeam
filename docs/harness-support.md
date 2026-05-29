@@ -82,6 +82,46 @@ OpenCode reads:
 
 The OpenCode plugin appends the repository's `skills/` directory to `config.skills.paths`. It does not inject session-start context. Users invoke `engineering-team` manually.
 
+## GitHub Copilot custom agents (experimental)
+
+GitHub-style custom agents are generated under:
+
+```text
+.github/agents/*.md
+```
+
+Each file is a concise, harness-neutral specialist definition with a role name, when-to-use guidance, expected output, evidence requirements, and safety/edit boundaries. They are generated from `agents-src/*.yaml`, so they stay in sync with the other harness outputs.
+
+Install them into a target repository:
+
+```bash
+python3 scripts/install.py --target github --scope project --repo /path/to/repo
+```
+
+## Generated agents
+
+Native agent definitions for every harness are generated from one source of truth: `agents-src/*.yaml`. Regenerate after editing a source file:
+
+```bash
+python3 scripts/generate-agents.py
+```
+
+Check for drift (also run in CI):
+
+```bash
+python3 scripts/generate-agents.py --check
+```
+
+Generation produces:
+
+```text
+agents/*.md                                                   Claude / Cursor
+.codex/agents/*.toml                                          Codex
+skills/engineering-team/assets/agents/*.toml                  Codex (bundled)
+skills/engineering-team/references/codex-custom-agents/*.toml Codex (reference)
+.github/agents/*.md                                           GitHub Copilot
+```
+
 ## Version Sync
 
 Version-bearing files are declared in `.version-bump.json`.
@@ -100,13 +140,20 @@ bash scripts/bump-version.sh 0.6.0
 
 ## CI
 
-GitHub Actions runs:
+GitHub Actions runs the same command used locally:
 
 ```bash
-node --check .opencode/plugins/engineering-team.js
-bash scripts/bump-version.sh --check
-python3 skills/engineering-team/scripts/validate-package.py
-python3 scripts/validate-codex-package.py
+npm run validate
 ```
 
-This catches broken manifests, stale paths, syntax errors, and package drift before release.
+which expands to:
+
+```bash
+python3 skills/engineering-team/scripts/validate-package.py
+python3 scripts/validate-codex-package.py
+python3 scripts/generate-agents.py --check
+bash scripts/bump-version.sh --check
+node --check .opencode/plugins/engineering-team.js
+```
+
+This catches broken manifests, stale generated agents, version drift, OpenCode JS syntax errors, and package-structure problems before release. The workflow runs on a Python 3.11 / 3.12 matrix with Node 22.

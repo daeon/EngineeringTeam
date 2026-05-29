@@ -1,197 +1,160 @@
 # EngineeringTeam
 
-EngineeringTeam is a multi-harness AI engineering team for serious software work in existing repositories. It gives coding agents a disciplined workflow for understanding a codebase before changing it: repo mapping, contract tracing, evidence review, implementation gates, specialist review, and verification.
+[![Validate](https://github.com/daeon/EngineeringTeam/actions/workflows/validate.yml/badge.svg)](https://github.com/daeon/EngineeringTeam/actions/workflows/validate.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+![Multi-harness](https://img.shields.io/badge/harness-Claude%20%7C%20Codex%20%7C%20Cursor%20%7C%20Gemini%20%7C%20OpenCode%20%7C%20GitHub-blue)
+![Repo-first](https://img.shields.io/badge/workflow-repo--first-orange)
+![Evidence-gated](https://img.shields.io/badge/edits-evidence--gated-purple)
 
-The result is less random patching and more senior-engineering behavior from the agent you already use.
+**Make your AI coding agent behave like a senior engineering team.**
 
-## Why It Exists
+EngineeringTeam is a repo-first workflow layer for AI coding agents. It makes the agent map the repo, trace contracts, gather evidence, route specialists selectively, gate implementation, verify changes, and hand off reviewable artifacts before claiming success.
 
-Most coding agents are fast, but speed is not the same as judgment. On real codebases, the hard part is usually not writing lines of code. It is finding the owning component, understanding the call path, preserving contracts, choosing the smallest safe change, and proving that the change actually works.
+> Stop vibe-coding legacy repos. Make the agent prove it understands the code before it edits.
 
-EngineeringTeam turns that discipline into a reusable skill.
+## ⚡ In thirty seconds
 
-Use it when you want your agent to:
+Most coding agents are fast, but speed is not judgment. On a real codebase the hard part is not typing code — it is finding the owning component, understanding the call path, preserving contracts, choosing the smallest safe change, and proving the change works.
 
-- Map an unfamiliar repository before editing.
-- Route work to architecture, security, testing, performance, migration, release, documentation, and evidence-review specialists only when useful.
-- Capture why a change is safe, not just what changed.
-- Avoid broad rewrites, decorative reviews, and test theater.
-- Produce concrete artifacts a human reviewer can inspect.
-- Work consistently across Claude Code, Codex, Cursor, Gemini CLI, and OpenCode.
+EngineeringTeam turns that discipline into a reusable skill that works across the agent you already use. It does not add a runtime service, network calls, or session-start magic. You invoke `engineering-team` when a task deserves a rigorous workflow, and the agent produces compact, human-reviewable artifacts as it goes.
 
-## What You Get
+Specialist agents (security, architecture, performance, migration, release, verification, evidence skepticism) are **selective, not mandatory**. The workflow routes only the ones a task actually needs.
 
-- A shared `engineering-team` skill for non-trivial software engineering tasks.
-- Specialist agent definitions for harnesses that support custom agents.
-- Codex custom-agent TOML templates.
-- Repo-intelligence scripts for shallow maps, symbol indexes, test discovery, changed-surface checks, and stale-context checks.
-- Templates for repo atlases, component briefs, contract graphs, evidence ledgers, verification reports, and handoffs.
-- GitHub Actions validation for package integrity.
+## 📏 The rule
 
-## How It Works
+No non-trivial edit until the agent can answer:
 
-```mermaid
-flowchart LR
-    userRequest[User_Request] --> invokeSkill[Invoke_engineering_team]
-    invokeSkill --> classify[Classify_Risk]
-    classify --> align[Alignment_Gate]
-    align --> mapRepo[Repo_Atlas]
-    mapRepo --> componentBrief[Component_Brief]
-    componentBrief --> contractGraph[Contract_Graph]
-    contractGraph --> evidenceGate[Evidence_Gate]
-    evidenceGate --> implement[Smallest_Safe_Change]
-    implement --> verify[Verification_Report]
-    verify --> handoff[Human_Reviewable_Handoff]
+1. Where does this behavior enter the system?
+2. Where is it transformed?
+3. Where does it leave?
+4. Which contracts and consumers are affected?
+5. What evidence supports the diagnosis or design?
+6. What proves the change works?
+
+If those are unanswered, the agent keeps mapping instead of editing.
+
+## 🛑 When your agent should not edit yet
+
+Hold off on editing — and let EngineeringTeam map first — when:
+
+- The root cause is not yet backed by evidence.
+- The owning component or call path is unknown.
+- The change crosses a contract, public API, or module boundary.
+- Source, tests, docs, or logs disagree.
+- The change touches auth, secrets, shell, filesystem, network, migrations, or release behavior.
+- There is no verification path yet.
+
+## 🚀 Quick start
+
+```bash
+git clone https://github.com/daeon/EngineeringTeam
+cd EngineeringTeam
+python3 scripts/doctor.py
+npm run validate
 ```
 
-EngineeringTeam is intentionally manual. No session-start bootstrap is installed. Invoke `engineering-team` when the task deserves a more rigorous workflow.
+Then, in your coding agent:
 
-## When To Use It
+```text
+Use engineering-team to investigate this bug. Map the repo first, find the owning component, trace the affected contract graph, and propose the smallest safe fix with verification.
+```
 
-EngineeringTeam is most useful for:
+## 🎬 Demo
 
-- Bug investigations where the root cause is not obvious.
-- Feature work in a repository you do not fully understand yet.
-- Legacy code modernization.
-- Refactors that may affect contracts, tests, or ownership boundaries.
-- Security-sensitive changes involving auth, trust boundaries, input handling, shell, filesystem, network, or secrets.
-- Performance work where measurement and attribution matter.
-- Migration or compatibility work.
-- Release-sensitive changes that need rollback thinking.
-- PR or branch reviews that need multiple technical lenses.
+See the worked, runnable example and the talking points:
 
-Skip the full workflow for typo fixes, obvious one-line edits, and tasks where the user explicitly wants a short answer only.
+- `examples/buggy-python-service/` — a small service with a real bug, the raw-agent prompt, the EngineeringTeam prompt, and filled-in expected artifacts.
+- `docs/demo-script.md` — 60-second and 5-minute demo scripts, plus a raw-agent vs EngineeringTeam comparison.
+- `docs/prompt-cards.md` — copy-paste prompts for bug investigation, PR review, performance, security, migration, release, architecture, and test strategy.
 
-## Core Artifacts
+## 🔌 Supported harnesses
+
+| Harness | Reads | Status |
+|---|---|---|
+| Claude Code | `.claude-plugin/plugin.json`, `agents/*.md`, `skills/` | Supported |
+| Codex | `.codex-plugin/plugin.json`, `.codex/agents/*.toml`, `skills/` | Supported |
+| Cursor | `.cursor-plugin/plugin.json`, `agents/*.md`, `skills/` | Supported |
+| Gemini CLI | `gemini-extension.json`, `GEMINI.md`, `AGENTS.md` | Supported |
+| OpenCode | `.opencode/plugins/engineering-team.js` | Supported |
+| GitHub Copilot | `.github/agents/*.md` | Experimental |
+
+All harnesses point at the same canonical skill bundle: `skills/engineering-team/SKILL.md`. Native agent definitions are generated from one source of truth (`agents-src/*.yaml`) — see `docs/harness-support.md`.
+
+## 🗂️ What the artifacts look like
 
 EngineeringTeam makes the agent produce compact, reviewable artifacts before and after implementation:
 
-- `Repo Atlas`: system type, entry points, build/test commands, generated-code rules, and high-risk areas.
-- `Alignment`: resolved decisions, acceptance criteria, non-goals, and repo-answerable questions checked.
-- `Component Brief`: owning component, key files/symbols, related tests, inputs, outputs, and side effects.
-- `Contract Graph`: producer, contract/data shape, consumer, failure mode, coverage, and risk.
-- `Evidence Ledger`: claim, evidence, confidence, and impact.
-- `Verification Report`: command, result, important output, failure attribution, and residual risk.
+- **Repo Atlas** — system type, entry points, build/test commands, generated-code rules, high-risk areas.
+- **Component Brief** — owning component, key files/symbols, related tests, inputs, outputs, side effects.
+- **Contract Graph** — producer, contract/data shape, consumer, failure mode, coverage, risk.
+- **Evidence Ledger** — claim, evidence, confidence, impact.
+- **Verification Report** — command, result, important output, failure attribution, residual risk.
 
-These artifacts are useful because they make the agent's reasoning inspectable. A reviewer can see whether the agent understood the code path, not just whether the diff looks plausible.
+These make the agent's reasoning inspectable: a reviewer can see whether it understood the code path, not just whether the diff looks plausible. Filled-in samples live in `examples/buggy-python-service/expected-artifacts/`.
 
-## Supported Harnesses
+## 📦 Install
 
-- Claude Code via `.claude-plugin/plugin.json` and `.claude-plugin/marketplace.json`
-- Codex via `.codex-plugin/plugin.json`
-- Cursor via `.cursor-plugin/plugin.json`
-- Gemini CLI via `gemini-extension.json` and `GEMINI.md`
-- OpenCode via `.opencode/plugins/engineering-team.js`
+One command validates the package; one command installs for a target harness.
 
-All harnesses point at the same canonical skill bundle: `skills/engineering-team/SKILL.md`.
+### Codex custom agents
 
-## Quick Start
-
-Use this prompt in your coding agent:
-
-```text
-Use engineering-team to investigate this bug. Map the repo first, trace the affected contract graph, identify the smallest safe fix, and verify it.
+```bash
+python3 scripts/install.py --target codex --scope project --repo .
+# or globally:
+python3 scripts/install.py --target codex --scope user
 ```
 
-For reviews:
+### GitHub Copilot custom agents
 
-```text
-Use engineering-team to review this branch. Route to security, architecture, performance, verification, and evidence skepticism only where relevant.
+```bash
+python3 scripts/install.py --target github --scope project --repo /path/to/repo
 ```
-
-For implementation:
-
-```text
-Use engineering-team to implement this feature. Build a repo atlas, component brief, evidence ledger, and verification report before final handoff.
-```
-
-## Install
 
 ### Claude Code
-
-From this repository root, add the local marketplace and install the plugin:
 
 ```bash
 /plugin marketplace add .
 /plugin install engineering-team@engineering-team-dev
 ```
 
-### Codex
-
-Install this repository as a local plugin source from Codex's plugin UI or marketplace flow. The Codex manifest is `.codex-plugin/plugin.json` and points to `./skills/`.
-
-Optional Codex custom agents are bundled under `skills/engineering-team/assets/agents/`.
-
-Install them into the current repo:
+### Cursor / Gemini CLI / OpenCode
 
 ```bash
-python3 skills/engineering-team/scripts/install-custom-agents.py --scope project --repo .
+python3 scripts/install.py --target cursor --scope project --repo .
+python3 scripts/install.py --target opencode --scope project --repo .
 ```
 
-Install them globally:
-
-```bash
-python3 skills/engineering-team/scripts/install-custom-agents.py --scope user
-```
-
-Recommended Codex config:
-
-```toml
-[agents]
-max_threads = 6
-max_depth = 1
-```
-
-### Cursor
-
-Install from a local plugin source or marketplace entry that points at this repository. Cursor reads `.cursor-plugin/plugin.json`, `skills/`, and `agents/`.
-
-### Gemini CLI
-
-Install this repository as a Gemini extension:
+Gemini CLI installs as an extension:
 
 ```bash
 gemini extensions install /path/to/EngineeringTeam
 ```
 
-Gemini loads `GEMINI.md`, which imports the shared `AGENTS.md` guidance.
+Installs are idempotent: existing files are skipped unless you pass `--force`.
 
-### OpenCode
-
-See `.opencode/INSTALL.md`.
-
-## Documentation
-
-- `docs/why-engineeringteam.md`: product value, target users, and positioning.
-- `docs/getting-started.md`: install, first prompts, and expected outputs.
-- `docs/workflow.md`: detailed workflow, dataflow, and gates.
-- `docs/specialists.md`: specialist role catalog and routing guidance.
-- `docs/harness-support.md`: per-harness packaging notes.
-
-## Repository Layout
-
-```text
-skills/engineering-team/     shared skill, references, templates, scripts, assets
-agents/                      Claude/Cursor markdown specialist agents
-.codex/agents/               Codex TOML specialist agents
-.claude-plugin/              Claude plugin manifest and local marketplace
-.codex-plugin/               Codex plugin manifest
-.cursor-plugin/              Cursor plugin manifest
-.opencode/                   OpenCode plugin and install docs
-gemini-extension.json        Gemini extension manifest
-```
-
-## Validate
+## ✅ Validation
 
 ```bash
-python3 skills/engineering-team/scripts/validate-package.py
-python3 scripts/validate-codex-package.py
-bash scripts/bump-version.sh --check
-node --check .opencode/plugins/engineering-team.js
+npm run validate
+python3 scripts/doctor.py
 ```
 
-The same checks run in GitHub Actions via `.github/workflows/validate.yml`.
+`npm run validate` runs the same checks as CI: JSON manifests, TOML agents, generated-agent drift, version consistency, OpenCode JS syntax, and package structure. The same command runs in GitHub Actions via `.github/workflows/validate.yml`.
 
-## License
+## 📚 Documentation
+
+- `docs/why-engineeringteam.md` — product value, target users, positioning.
+- `docs/getting-started.md` — install, first prompts, expected outputs.
+- `docs/workflow.md` — detailed workflow, dataflow, and gates.
+- `docs/specialists.md` — specialist role catalog and routing guidance.
+- `docs/harness-support.md` — per-harness packaging notes.
+- `docs/demo-script.md` — demo scripts and comparison.
+- `docs/prompt-cards.md` — copy-paste prompts by task type.
+
+## 🤝 Contributing
+
+See `CONTRIBUTING.md` for how to edit agent sources, regenerate native agents, and validate changes. Security posture is documented in `SECURITY.md`. Planned work is in `ROADMAP.md`.
+
+## ⚖️ License
 
 MIT License. See `LICENSE`.

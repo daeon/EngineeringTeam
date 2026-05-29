@@ -60,6 +60,7 @@ def main() -> int:
         (plugin_root / "skills" / "engineering-team" / "assets" / "agents", "*.toml", 8),
         (plugin_root / ".codex" / "agents", "*.toml", 8),
         (plugin_root / "agents", "*.md", 8),
+        (plugin_root / ".github" / "agents", "*.md", 8),
     ]:
         require(agent_dir.exists(), f"missing agent directory: {agent_dir}")
         require(len(list(agent_dir.glob(pattern))) >= minimum, f"expected at least {minimum} files in {agent_dir}")

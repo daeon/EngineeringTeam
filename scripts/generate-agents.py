@@ -124,6 +124,57 @@ def render_markdown(agent: dict) -> str:
     )
 
 
+def title_case_role(name: str) -> str:
+    return " ".join(word.capitalize() for word in name.split("-"))
+
+
+def render_github_markdown(agent: dict) -> str:
+    name = agent["name"]
+    sandbox = agent["codex"].get("sandbox_mode", "read-only")
+    if sandbox == "workspace-write":
+        edit_boundary = (
+            "- May edit files, but only after the evidence gate is satisfied.\n"
+            "- Make the smallest safe change; preserve existing contracts, style, and conventions.\n"
+            "- Do not perform broad rewrites or unrelated refactors.\n"
+            "- Require human approval for destructive or production-sensitive actions."
+        )
+    else:
+        edit_boundary = (
+            "- Read-only. Do not edit files.\n"
+            "- Investigate and report; the lead agent merges your findings.\n"
+            "- Do not treat guesses as facts or perform side effects."
+        )
+    return "\n".join(
+        [
+            "---",
+            f"name: {name}",
+            f"description: {agent['description']}",
+            "---",
+            "",
+            f"# {title_case_role(name)}",
+            "",
+            "## When to use",
+            "",
+            agent["description"],
+            "",
+            "## How to operate",
+            "",
+            agent["instructions"].rstrip(),
+            "",
+            "## Evidence requirements",
+            "",
+            "- Tie every claim to a file path, symbol, test result, command output, or documented behavior.",
+            "- Label unproven claims as assumptions; do not present guesses as facts.",
+            "- Prefer existing repo patterns and tests over generic best practices.",
+            "",
+            "## Safety and edit boundaries",
+            "",
+            edit_boundary,
+            "",
+        ]
+    )
+
+
 def render_toml(agent: dict) -> str:
     codex = agent["codex"]
     name = codex_name(agent["name"])
@@ -157,6 +208,7 @@ def render_toml(agent: dict) -> str:
 def output_paths(agent: dict) -> list[tuple[Path, str]]:
     md = render_markdown(agent)
     toml = render_toml(agent)
+    github_md = render_github_markdown(agent)
     name = agent["name"]
     underscore = codex_name(name)
     return [
@@ -164,6 +216,7 @@ def output_paths(agent: dict) -> list[tuple[Path, str]]:
         (REPO_ROOT / ".codex" / "agents" / f"{underscore}.toml", toml),
         (REPO_ROOT / "skills" / "engineering-team" / "assets" / "agents" / f"{underscore}.toml", toml),
         (REPO_ROOT / "skills" / "engineering-team" / "references" / "codex-custom-agents" / f"{underscore}.toml", toml),
+        (REPO_ROOT / ".github" / "agents" / f"{name}.md", github_md),
     ]
 
 
@@ -173,6 +226,7 @@ def generated_dirs() -> list[Path]:
         REPO_ROOT / ".codex" / "agents",
         REPO_ROOT / "skills" / "engineering-team" / "assets" / "agents",
         REPO_ROOT / "skills" / "engineering-team" / "references" / "codex-custom-agents",
+        REPO_ROOT / ".github" / "agents",
     ]
 
 
@@ -202,6 +256,7 @@ def check() -> int:
             Path(".codex") / "agents",
             Path("skills") / "engineering-team" / "assets" / "agents",
             Path("skills") / "engineering-team" / "references" / "codex-custom-agents",
+            Path(".github") / "agents",
         ]:
             src = REPO_ROOT / rel_dir
             dst = tmp_root / rel_dir

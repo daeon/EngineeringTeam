@@ -1,5 +1,20 @@
 # Changelog
 
+## Unreleased
+
+Public-launch polish.
+
+- Fixed package correctness: added `license`, `skills`, and `agents` fields to `.claude-plugin/plugin.json` so `validate-package.py` passes.
+- Added `npm run validate`, `generate:agents`, and `check:agents` scripts so local and CI validation share one command.
+- Added GitHub Copilot custom-agent generation under `.github/agents/*.md` (experimental), wired into generation, drift checks, and package validation.
+- Added `scripts/doctor.py` (environment + package health check) and `scripts/install.py` (idempotent per-harness installer).
+- Rewrote `README.md` for a public audience: hero, thirty-second pitch, the rule, when-not-to-edit, copy-paste quick start, supported-harness table, and badges.
+- Added a runnable worked example (`examples/buggy-python-service/`) with a hidden-contract bug, raw-agent vs EngineeringTeam prompts, and filled-in expected artifacts.
+- Added `docs/demo-script.md` and `docs/prompt-cards.md`.
+- Upgraded artifact templates with compact instructions, one example each, and anti-pattern warnings.
+- Added `CONTRIBUTING.md`, `SECURITY.md`, `ROADMAP.md`, and `docs/release-checklist.md`, `docs/launch-post.md`.
+- Hardened CI to run `npm run validate` on Node 22.
+
 ## 0.1.0
 
 Initial release of the EngineeringTeam multi-harness plugin.
