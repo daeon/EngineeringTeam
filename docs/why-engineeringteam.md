@@ -4,7 +4,7 @@ EngineeringTeam is built for the gap between "agent can write code" and "agent c
 
 Modern coding agents are strongest when the task is local and well specified. They are weaker when the work requires repository orientation, contract awareness, risk classification, or evidence-based verification. EngineeringTeam gives the agent a repeatable operating model for those harder tasks.
 
-## The Problem
+## 🧩 The Problem
 
 In mature repositories, most failures come from poor context, not poor syntax.
 
@@ -18,9 +18,30 @@ Common agent failure modes:
 - Treating security, performance, migration, or release concerns as afterthoughts.
 - Reporting success without fresh verification.
 
-EngineeringTeam exists to make those failures harder.
+EngineeringTeam exists to make those failures harder. It inserts a lightweight engineering harness between the request and the edit, so the agent has to expose ownership, contracts, evidence, and verification before it changes the repo.
 
-## The Value
+## 🔌 Why A Harness Plugin Helps
+
+A prompt can ask an agent to be careful once. A harness plugin makes the discipline reusable across sessions, repositories, and tools. EngineeringTeam packages the workflow, specialist roles, templates, validation scripts, and harness manifests together so teams do not have to rebuild the same guardrails for every agent environment.
+
+This matters because agent failures are usually process failures:
+
+- The agent did not know which contract it was changing.
+- The agent optimized for an edit before finding the owner.
+- The agent used stale documentation as authority.
+- The agent produced a plausible patch without a meaningful verification path.
+
+EngineeringTeam turns those risks into explicit gates and artifacts. Human reviewers can inspect what the agent believed, what evidence supported it, and which checks exercised the changed behavior.
+
+```mermaid
+flowchart LR
+    risk[Common agent risk] --> gate[EngineeringTeam gate]
+    gate --> artifact[Reviewable artifact]
+    artifact --> evidence[Evidence-backed decision]
+    evidence --> verification[Verified handoff]
+```
+
+## 💎 The Value
 
 EngineeringTeam helps a coding agent behave more like a small software team:
 
@@ -33,7 +54,7 @@ EngineeringTeam helps a coding agent behave more like a small software team:
 
 The workflow is intentionally conservative. It optimizes for reviewable, safe, evidence-backed changes instead of maximum agent activity.
 
-## Who It Is For
+## 👥 Who It Is For
 
 EngineeringTeam is useful for:
 
@@ -43,7 +64,7 @@ EngineeringTeam is useful for:
 - Consultants doing repo triage, audits, migrations, or performance work.
 - Organizations that want one reusable AI workflow across multiple coding-agent harnesses.
 
-## What Makes It Sellable
+## 📦 What Makes It Sellable
 
 EngineeringTeam is not just a prompt pack. It is a packaged engineering harness:
 
@@ -54,7 +75,7 @@ EngineeringTeam is not just a prompt pack. It is a packaged engineering harness:
 - GitHub Actions checks so the package can be maintained like a real product.
 - Progressive-disclosure references and templates, so the core skill stays usable without becoming a giant memory dump.
 
-## Practical Outcomes
+## ✅ Practical Outcomes
 
 Teams can use EngineeringTeam to get:
 
@@ -65,3 +86,7 @@ Teams can use EngineeringTeam to get:
 - Cleaner handoffs from AI work to human review.
 
 The product promise is simple: EngineeringTeam helps your coding agent slow down at the right moments so it can move faster safely.
+
+## 📐 Design Documentation
+
+For the deeper architecture, safety model, memory model, and harness-plugin rationale, see `docs/design.md`.
