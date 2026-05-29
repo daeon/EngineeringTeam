@@ -1,3 +1,4 @@
+# GENERATED FILE - DO NOT EDIT. Source: agents-src/lead-engineer.yaml. Regenerate: python3 scripts/generate-agents.py
 name = "lead_engineer"
 description = "Coordinates multi-agent software engineering work, selects suitable agents, builds repo-intelligence artifacts, resolves evidence conflicts, gates implementation, and produces final plans and reports."
 model_reasoning_effort = "high"

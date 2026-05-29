@@ -103,6 +103,7 @@ When `.engineering-team/memory/index.md` exists, read it before EngineeringTeam 
 | Contract Graph | L3+ | `references/contract-graph.md` |
 | Evidence Ledger | L3+ | `references/evidence-ledger.md` |
 | Advisor Decision Receipt | L4+ or gate triggered | `references/advisor-gate.md` |
+| Impact Map | L4+ multi-component change | `references/impact-map.md` |
 | Implementation Gate | L2+ | `references/implementation-gate.md` |
 | Verification Report | L2+ | `references/verification-loop.md` |
 | Analysis Report | L0 only | `references/output-contracts.md` |
@@ -118,15 +119,25 @@ When work is broad, noisy, or specialist-heavy, delegate using `references/subag
 | resolve ambiguous user intent | `references/alignment-audit.md` |
 | choose analysis vs implementation route | `references/analysis-routing.md` |
 | choose and score specialists | `references/agent-routing.md` |
+| understand each specialist's role and boundary | `references/role-definitions.md` |
+| see worked routing examples | `references/routing-examples.md` |
+| self-check routing decisions | `references/routing-evals.md` |
 | map the repository | `references/repo-atlas.md` |
 | identify owner and component | `references/component-brief.md` |
 | trace behavior and contracts | `references/contract-graph.md` |
+| scope a multi-component (L4+) change | `references/impact-map.md` |
 | verify claims with evidence | `references/evidence-ledger.md` |
 | gate high-risk decisions | `references/advisor-gate.md` |
 | decide whether editing is allowed | `references/implementation-gate.md` |
 | run and interpret tests | `references/verification-loop.md` |
+| build a fast bug/regression repro loop | `references/diagnosis-loop.md` |
+| write behavior-first tests (tracer bullets) | `references/tdd-discipline.md` |
 | preserve durable knowledge | `references/context-garbage-collection.md` |
-| write final handoff | `references/final-report.md` |
+| write the session final report (L2+) | `references/final-report.md` |
+| produce a visual HTML review report | `references/visual-review-reports.md` |
+| capture domain and business context | `references/domain-context.md` |
+| work within Codex constraints | `references/codex-compatibility.md` |
+| hand off work to another agent or a fresh session | `handoff` skill (`skills/handoff/SKILL.md`) |
 | delegate context-heavy work | `references/subagent-context-policy.md` |
 
 ## Key failure modes

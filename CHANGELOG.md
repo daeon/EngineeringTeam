@@ -19,6 +19,12 @@ Public-launch polish.
 - Upgraded artifact templates with compact instructions, one example each, and anti-pattern warnings.
 - Added `CONTRIBUTING.md`, `SECURITY.md`, `ROADMAP.md`, and `docs/release-checklist.md`, `docs/launch-post.md`.
 - Hardened CI to run `npm run validate` on Node 22.
+- Hardened the agent generator: pure-Python schema validation of `agents-src/*.yaml` (allowed keys, `sandbox_mode`, `model_reasoning_effort`, name/filename match), a `GENERATED FILE - DO NOT EDIT` banner on every output, and unit tests (`tests/test_generate_agents.py`) wired into `npm run validate` and `scripts/doctor.py`.
+- Made `CLAUDE.md` generated from `AGENTS.md` via `scripts/sync-docs.py` (with `--check` in validation) to remove byte-identical duplication.
+- Reduced generated Codex TOMLs from three copies to two by dropping the redundant `references/codex-custom-agents/` reference mirror; `.codex/agents/` (runtime) and the skill-bundled `assets/agents/` remain.
+- Deduplicated the context-budget table (owned by `references/subagent-context-policy.md`) and the failure taxonomy (owned by `references/failure-attribution.md`).
+- Wired previously orphaned references into `SKILL.md` and added `references/impact-map.md` to make the L4 Impact Map requirement actionable.
+- Added a role-differentiation section (Lead vs Investigator/Architect, Skeptic vs Advisor) and a write-agent file-ownership matrix (Implementation → source, Verification → tests, DX → docs).
 
 ## 0.1.0
 

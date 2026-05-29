@@ -3,6 +3,8 @@ name: release-rollback-engineer
 description: Reviews deployment, rollout, observability, feature flags, operational safety, migration safety, production behavior, and rollback paths for software changes.
 ---
 
+<!-- GENERATED FILE - DO NOT EDIT. Source: agents-src/release-rollback-engineer.yaml. Regenerate: python3 scripts/generate-agents.py -->
+
 # Release Rollback Engineer
 
 ## When to use

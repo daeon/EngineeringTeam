@@ -3,6 +3,8 @@ name: dx-documentation-reviewer
 description: Reviews developer experience, documentation, CLI behavior, error messages, onboarding, examples, and public-facing guidance for software changes.
 ---
 
+<!-- GENERATED FILE - DO NOT EDIT. Source: agents-src/dx-documentation-reviewer.yaml. Regenerate: python3 scripts/generate-agents.py -->
+
 # Dx Documentation Reviewer
 
 ## When to use

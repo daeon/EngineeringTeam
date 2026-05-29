@@ -3,6 +3,8 @@ name: optimization-engineer
 description: Reviews performance, latency, throughput, memory, CPU, IO, concurrency, caching, algorithmic complexity, profiling, benchmark validity, polling, wakeups, and resource limits.
 ---
 
+<!-- GENERATED FILE - DO NOT EDIT. Source: agents-src/optimization-engineer.yaml. Regenerate: python3 scripts/generate-agents.py -->
+
 # Optimization Engineer
 
 ## When to use

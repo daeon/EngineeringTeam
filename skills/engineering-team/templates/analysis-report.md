@@ -1,8 +1,13 @@
 # Analysis Report
 
-Deliverable for L0 read-only exploration and analysis tasks. Replaces the Final
-Report when no code edits are planned. Produce after Phase 4 (Repo orientation),
-then proceed to Phase 14 (Context GC).
+Canonical deliverable for L0 evaluative tasks: audits, feedback requests,
+"what could be improved", risk reviews, and PR/diff reviews that produce
+findings only. Replaces the Final Report when no code edits are planned.
+Produce it after a lightweight Repo Atlas, then run Context GC.
+
+For descriptive "understand/map how this repo works" requests, use the
+Codebase Analysis Report (`templates/codebase-analysis-report.md`) via the
+`codebase-analysis` skill instead.
 
 Every finding must reference a file path, line number, command output, or
 documented behavior. Label unverified claims as assumptions.

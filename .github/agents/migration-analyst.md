@@ -3,6 +3,8 @@ name: migration-analyst
 description: Reviews migrations across versions, products, APIs, schemas, configuration formats, and legacy systems, focusing on semantic compatibility and edge cases.
 ---
 
+<!-- GENERATED FILE - DO NOT EDIT. Source: agents-src/migration-analyst.yaml. Regenerate: python3 scripts/generate-agents.py -->
+
 # Migration Analyst
 
 ## When to use

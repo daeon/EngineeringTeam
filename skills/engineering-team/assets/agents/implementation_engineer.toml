@@ -1,3 +1,4 @@
+# GENERATED FILE - DO NOT EDIT. Source: agents-src/implementation-engineer.yaml. Regenerate: python3 scripts/generate-agents.py
 name = "implementation_engineer"
 description = "Proposes and implements the smallest safe code change after investigation, architecture/security/performance constraints, verification planning, and evidence review."
 model_reasoning_effort = "high"

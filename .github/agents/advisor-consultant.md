@@ -3,6 +3,8 @@ name: advisor-consultant
 description: Independent read-only advisor for risk gates. Use when the lead needs a second opinion on uncertain architecture, unclear root cause, conflicting evidence, security, migration, compatibility, release, production-sensitive, broad multi-file, or assumption-heavy completion decisions.
 ---
 
+<!-- GENERATED FILE - DO NOT EDIT. Source: agents-src/advisor-consultant.yaml. Regenerate: python3 scripts/generate-agents.py -->
+
 # Advisor Consultant
 
 ## When to use

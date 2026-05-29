@@ -35,3 +35,14 @@ Challenges every claim, attempts falsification, requires evidence, blocks unsupp
 
 ## Advisor Consultant
 Provides an independent read-only decision review at risk gates. Challenges whether the plan is wise, proportional, reversible, and ready. Receives a curated brief by default and returns recommendation, confidence, challenged assumptions, risks, missing evidence, better option, and go/no-go.
+
+## Role differentiation
+
+Overlapping roles are kept distinct by their question and output, not by topic:
+
+- **Lead vs Codebase Investigator vs System Design Architect**: the Investigator reports what exists (files, symbols, call paths, ownership) without judging design; the Architect judges whether the structure is sound (boundaries, dependency direction, long-term shape); the Lead decides what to do and synthesizes one plan. Investigator answers "what is there?", Architect answers "is the shape right?", Lead answers "what do we do?".
+- **Evidence Skeptic vs Advisor Consultant**: the Skeptic runs on every non-trivial task and attacks individual claims, demanding proof before implementation; the Advisor runs only at risk gates and judges whether the whole plan is wise, proportional, and reversible. Skeptic = per-claim falsification (always-on for L3+); Advisor = whole-plan go/no-go (gate-only).
+- **Implementation Engineer vs Test / Verification Engineer**: the Implementer changes behavior; the Verifier independently proves behavior and attributes failures. They must not collapse into one reasoning step — verification stays independent of implementation.
+- **Domain specialists (Security, Optimization, Migration, Release, DX)**: each owns exactly one risk domain and is spawned only when that domain's trigger fires (see `references/agent-routing.md`); they do not review outside their domain.
+
+When one session simulates these roles, label each step with the active role and do not let one role's conclusion stand in for another's. See `references/agent-routing.md` for scoring and selection.

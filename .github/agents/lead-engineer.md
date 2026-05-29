@@ -3,6 +3,8 @@ name: lead-engineer
 description: Coordinates multi-agent software engineering work, selects suitable agents, builds repo-intelligence artifacts, resolves evidence conflicts, gates implementation, and produces final plans and reports.
 ---
 
+<!-- GENERATED FILE - DO NOT EDIT. Source: agents-src/lead-engineer.yaml. Regenerate: python3 scripts/generate-agents.py -->
+
 # Lead Engineer
 
 ## When to use

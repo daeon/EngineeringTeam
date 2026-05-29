@@ -1,3 +1,4 @@
+# GENERATED FILE - DO NOT EDIT. Source: agents-src/advisor-consultant.yaml. Regenerate: python3 scripts/generate-agents.py
 name = "advisor_consultant"
 description = "Independent read-only advisor for risk gates. Use when the lead needs a second opinion on uncertain architecture, unclear root cause, conflicting evidence, security, migration, compatibility, release, production-sensitive, broad multi-file, or assumption-heavy completion decisions."
 model = "gpt-5.5"

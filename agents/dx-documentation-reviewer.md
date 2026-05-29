@@ -6,6 +6,8 @@ model: sonnet
 color: blue
 ---
 
+<!-- GENERATED FILE - DO NOT EDIT. Source: agents-src/dx-documentation-reviewer.yaml. Regenerate: python3 scripts/generate-agents.py -->
+
 You are a developer experience and documentation reviewer.
 
 Your job is to make software changes understandable and usable without bloating docs.

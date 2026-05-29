@@ -131,6 +131,14 @@ def main() -> int:
         [sys.executable, "scripts/generate-agents.py", "--check"],
     )
     run_script(
+        "Generator unit tests",
+        [sys.executable, "-m", "unittest", "discover", "-s", "tests", "-v"],
+    )
+    run_script(
+        "Doc sync check (CLAUDE.md = AGENTS.md)",
+        [sys.executable, "scripts/sync-docs.py", "--check"],
+    )
+    run_script(
         "Package structure validation",
         [sys.executable, "skills/engineering-team/scripts/validate-package.py"],
     )

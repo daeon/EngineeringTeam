@@ -26,7 +26,6 @@ not a commitment.
 
 ## ✅ Validation
 
-- Optional Python version matrix (3.11, 3.12) in CI.
 - Optional, low-noise markdown link checking.
 - Schema-level checks for agent source YAML.
 

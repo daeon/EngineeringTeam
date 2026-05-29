@@ -19,7 +19,7 @@ Codex only spawns subagents when explicitly asked. The skill therefore supports 
 1. Single-session mode: simulate specialist roles in the main session.
 2. Team mode: when explicitly requested, spawn bounded Codex subagents or custom agents.
 
-Custom agent TOML files are included under `.codex/agents/` and mirrored here under `references/codex-custom-agents/`.
+Custom agent TOML files live under `.codex/agents/` (and a copy bundled in the skill at `skills/engineering-team/assets/agents/`). All are generated from `agents-src/*.yaml`; do not hand-edit them.
 
 ## Context hygiene
 

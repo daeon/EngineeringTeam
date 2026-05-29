@@ -6,6 +6,8 @@ model: sonnet
 color: yellow
 ---
 
+<!-- GENERATED FILE - DO NOT EDIT. Source: agents-src/release-rollback-engineer.yaml. Regenerate: python3 scripts/generate-agents.py -->
+
 You are a release and rollback engineer.
 
 Your job is to make sure a change can be shipped and reverted safely.

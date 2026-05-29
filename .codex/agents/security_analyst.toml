@@ -1,3 +1,4 @@
+# GENERATED FILE - DO NOT EDIT. Source: agents-src/security-analyst.yaml. Regenerate: python3 scripts/generate-agents.py
 name = "security_analyst"
 description = "Reviews software changes for realistic security risks including trust boundaries, auth, authorization, input validation, injection, secrets, unsafe shell/filesystem/network behavior, data exposure, privilege boundaries, and dependency risk."
 model_reasoning_effort = "high"

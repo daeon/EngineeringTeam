@@ -15,6 +15,8 @@ Use this reference when a request asks to analyze, understand, investigate, debu
 
 If a read-only investigation discovers a likely fix, stop at an implementation handoff unless the user has asked for changes. The handoff should include confirmed evidence, affected contracts, proposed files to change, and verification strategy.
 
+Two L0 report shapes, by intent: descriptive "understand / map this repo" requests use the `codebase-analysis` skill and produce a **Codebase Analysis Report** (`templates/codebase-analysis-report.md`); evaluative audits, feedback, and "what could be improved" requests use the engineering-team L0 fast path and produce an **Analysis Report** (`templates/analysis-report.md`).
+
 ## Routing graph
 
 ```mermaid

@@ -40,7 +40,7 @@ See `references/autonomy-ladder.md` for the single-owner L0–L5 definition.
 | L4 | Multi-component change | Impact Map + specialist review |
 | L5 | Architecture, migration, security, release, or production-sensitive change | Explicit constraints + rollout/rollback plan + skeptic gate |
 
-Escalate level when a change touches public contracts, auth, permissions, persistence, external services, generated code, production rollout, or legacy compatibility.
+Escalate level when a change touches public contracts, auth, permissions, persistence, external services, generated code, production rollout, or legacy compatibility. At L4+, build an Impact Map (`references/impact-map.md`) before editing.
 
 ## Step 4: Choose risk mode
 
@@ -57,9 +57,11 @@ Escalate level when a change touches public contracts, auth, permissions, persis
 
 ## L0 fast path
 
-When autonomy level is L0, proceed to a lightweight Repo Atlas, then produce an Analysis Report. Skip agent routing, contract graph, evidence ledger, advisor gate, implementation gate, and verification loop. Context GC still applies.
+When autonomy level is L0, proceed to a lightweight Repo Atlas, then produce an Analysis Report (`templates/analysis-report.md`). Skip agent routing, contract graph, evidence ledger, advisor gate, implementation gate, and verification loop. Context GC still applies.
 
 L0 tasks: codebase audits, feedback requests, "analyze this repo", "what are the risks here?", architecture surveys with no planned change, PR or diff reviews that produce findings only.
+
+For descriptive "understand / map how this repo works" requests, route through `references/analysis-routing.md` to the `codebase-analysis` skill, which produces a Codebase Analysis Report (`templates/codebase-analysis-report.md`) instead of an Analysis Report.
 
 ## Artifact depth by autonomy level
 

@@ -3,6 +3,8 @@ name: security-analyst
 description: Reviews software changes for realistic security risks including trust boundaries, auth, authorization, input validation, injection, secrets, unsafe shell/filesystem/network behavior, data exposure, privilege boundaries, and dependency risk.
 ---
 
+<!-- GENERATED FILE - DO NOT EDIT. Source: agents-src/security-analyst.yaml. Regenerate: python3 scripts/generate-agents.py -->
+
 # Security Analyst
 
 ## When to use

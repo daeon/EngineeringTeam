@@ -1,3 +1,4 @@
+# GENERATED FILE - DO NOT EDIT. Source: agents-src/test-verification-engineer.yaml. Regenerate: python3 scripts/generate-agents.py
 name = "test_verification_engineer"
 description = "Designs and runs verification plans for software changes, including unit, regression, integration, security, performance, migration, manual checks, and failure attribution."
 model_reasoning_effort = "high"

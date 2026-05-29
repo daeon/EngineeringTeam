@@ -3,6 +3,8 @@ name: test-verification-engineer
 description: Designs and runs verification plans for software changes, including unit, regression, integration, security, performance, migration, manual checks, and failure attribution.
 ---
 
+<!-- GENERATED FILE - DO NOT EDIT. Source: agents-src/test-verification-engineer.yaml. Regenerate: python3 scripts/generate-agents.py -->
+
 # Test Verification Engineer
 
 ## When to use

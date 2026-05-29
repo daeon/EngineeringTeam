@@ -3,6 +3,8 @@ name: implementation-engineer
 description: Proposes and implements the smallest safe code change after investigation, architecture/security/performance constraints, verification planning, and evidence review.
 ---
 
+<!-- GENERATED FILE - DO NOT EDIT. Source: agents-src/implementation-engineer.yaml. Regenerate: python3 scripts/generate-agents.py -->
+
 # Implementation Engineer
 
 ## When to use

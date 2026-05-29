@@ -3,12 +3,17 @@
 
 Idempotent: existing files are skipped unless --force is passed.
 
+Targets `codex` and `github` copy files. Targets `claude`, `cursor`,
+`gemini`, and `opencode` print the exact manual setup steps for marketplace /
+extension / plugin-path harnesses (no files are copied).
+
 Usage:
   python3 scripts/install.py --target codex --scope project --repo .
   python3 scripts/install.py --target codex --scope user
   python3 scripts/install.py --target github --scope project --repo .
   python3 scripts/install.py --target claude --scope project --repo .
   python3 scripts/install.py --target cursor --scope project --repo .
+  python3 scripts/install.py --target gemini --scope project --repo .
   python3 scripts/install.py --target opencode --scope project --repo .
 """
 
@@ -101,6 +106,16 @@ def install_cursor(scope: str, repo: str, force: bool) -> int:
     return 0
 
 
+def install_gemini(scope: str, repo: str, force: bool) -> int:
+    print("Gemini CLI installs EngineeringTeam as an extension, not by copying files.")
+    print("From this repository root, run:")
+    print()
+    print("  gemini extensions install .")
+    print()
+    print("Gemini reads gemini-extension.json, GEMINI.md, and AGENTS.md.")
+    return 0
+
+
 def install_opencode(scope: str, repo: str, force: bool) -> int:
     plugin = REPO_ROOT / ".opencode" / "plugins" / "engineering-team.js"
     print("OpenCode loads a plugin file directly. Plugin path:")
@@ -111,11 +126,15 @@ def install_opencode(scope: str, repo: str, force: bool) -> int:
     return 0
 
 
+# Targets that copy files vs. targets that print manual setup steps.
+COPY_TARGETS = {"codex", "github"}
+
 INSTALLERS = {
     "codex": install_codex,
     "github": install_github,
     "claude": install_claude,
     "cursor": install_cursor,
+    "gemini": install_gemini,
     "opencode": install_opencode,
 }
 
@@ -127,6 +146,12 @@ def main() -> int:
     parser.add_argument("--repo", default=".", help="Target repo root for project scope")
     parser.add_argument("--force", action="store_true", help="Overwrite existing files")
     args = parser.parse_args()
+
+    if args.target in COPY_TARGETS:
+        print(f"[{args.target}] copying files into the target harness...")
+    else:
+        print(f"[{args.target}] manual setup — no files are copied; follow the steps below:")
+    print()
 
     result = INSTALLERS[args.target](args.scope, args.repo, args.force)
 

@@ -97,14 +97,7 @@ Rules:
 
 ## Context budget policy
 
-Select the smallest useful context package for every teammate:
-
-| Context budget | Use for | Contents |
-|---|---|---|
-| `brief-only` | Advisor default, security/release decision checks, narrow review | Curated decision brief only |
-| `component-context` | Focused specialist work | Component Brief plus focused file paths/symbols |
-| `artifact-context` | Multi-step review or verification | Repo Atlas, Contract Graph, Evidence Ledger, Verification Plan |
-| `full-context` | Rare fallback when the lead cannot safely summarize | Full-history fork; state why |
+`references/subagent-context-policy.md` owns the canonical context-budget table (`brief-only`, `component-context`, `artifact-context`, `full-context`). Select the smallest useful budget for every teammate.
 
 Default Advisor Consultant to `brief-only` with `fork_context: false`. Use `fork_context: true` and `full-context` only when the lead cannot safely summarize; state the reason explicitly.
 

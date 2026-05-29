@@ -212,9 +212,18 @@ These make the agent's reasoning inspectable: a reviewer can see whether it unde
 
 ## 📦 Install
 
-One command validates the package; one command installs for a target harness.
+`python3 scripts/install.py --target <harness>` is the single entry point. Two targets **copy files**; the rest **print the exact manual setup steps** for their marketplace / extension / plugin model (nothing is copied).
 
-### Codex custom agents
+| Harness | What `install.py` does | Mechanism |
+|---|---|---|
+| Codex | Copies `.codex/agents/*.toml` into the project or user config | File copy (idempotent; `--force` to overwrite) |
+| GitHub Copilot | Copies `.github/agents/*.md` into the target repo | File copy (idempotent; `--force` to overwrite) |
+| Claude Code | Prints the local-marketplace commands to run | `/plugin marketplace add .` |
+| Cursor | Prints the local plugin-source steps | Reads `.cursor-plugin/plugin.json`, `skills/`, `agents/` |
+| Gemini CLI | Prints the extension install command | `gemini extensions install .` |
+| OpenCode | Prints the plugin path + points to `.opencode/INSTALL.md` | Loads `.opencode/plugins/engineering-team.js` |
+
+### Codex custom agents (file copy)
 
 ```bash
 python3 scripts/install.py --target codex --scope project --repo .
@@ -222,33 +231,34 @@ python3 scripts/install.py --target codex --scope project --repo .
 python3 scripts/install.py --target codex --scope user
 ```
 
-### GitHub Copilot custom agents
+### GitHub Copilot custom agents (file copy)
 
 ```bash
 python3 scripts/install.py --target github --scope project --repo /path/to/repo
 ```
 
-### Claude Code
+### Claude Code (local marketplace)
 
 ```bash
 /plugin marketplace add .
 /plugin install engineering-team@engineering-team-dev
 ```
 
-### Cursor / Gemini CLI / OpenCode
+### Cursor / Gemini CLI / OpenCode (manual setup — prints steps, copies nothing)
 
 ```bash
 python3 scripts/install.py --target cursor --scope project --repo .
+python3 scripts/install.py --target gemini --scope project --repo .
 python3 scripts/install.py --target opencode --scope project --repo .
 ```
 
 Gemini CLI installs as an extension:
 
 ```bash
-gemini extensions install /path/to/EngineeringTeam
+gemini extensions install .
 ```
 
-Installs are idempotent: existing files are skipped unless you pass `--force`.
+File-copy installs (Codex, GitHub) are idempotent: existing files are skipped unless you pass `--force`.
 
 ## Keeping main context clean
 

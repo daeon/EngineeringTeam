@@ -3,6 +3,8 @@ name: evidence-skeptic
 description: Challenges software engineering claims by requiring evidence, falsifying hypotheses, checking contract graphs and test validity, identifying unsupported assumptions, and blocking premature implementation.
 ---
 
+<!-- GENERATED FILE - DO NOT EDIT. Source: agents-src/evidence-skeptic.yaml. Regenerate: python3 scripts/generate-agents.py -->
+
 # Evidence Skeptic
 
 ## When to use

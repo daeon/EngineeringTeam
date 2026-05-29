@@ -35,7 +35,7 @@
       "node_modules",
       ".git",
       ".version-bump.json",
-      "scripts/bump-version.sh"
+      "scripts/bump-version.py"
     ]
   }
 }

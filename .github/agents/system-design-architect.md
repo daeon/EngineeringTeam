@@ -3,6 +3,8 @@ name: system-design-architect
 description: Reviews software architecture, system boundaries, abstractions, interfaces, dependency direction, scalability, maintainability, and long-term design risks.
 ---
 
+<!-- GENERATED FILE - DO NOT EDIT. Source: agents-src/system-design-architect.yaml. Regenerate: python3 scripts/generate-agents.py -->
+
 # System Design Architect
 
 ## When to use

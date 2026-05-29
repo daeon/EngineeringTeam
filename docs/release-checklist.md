@@ -5,7 +5,7 @@
 - [ ] `npm run validate` passes locally.
 - [ ] `python3 scripts/doctor.py` reports 0 failures.
 - [ ] Generated agents are current (`python3 scripts/generate-agents.py --check`).
-- [ ] Versions are in sync (`bash scripts/bump-version.sh --check`).
+- [ ] Versions are in sync (`python3 scripts/bump-version.py --check`).
 - [ ] `CHANGELOG.md` has an entry for this version.
 - [ ] README quick start and install commands are accurate.
 - [ ] Example suite is green (`cd examples/buggy-python-service && python3 -m unittest discover -s tests`).
@@ -13,8 +13,8 @@
 
 ## Version bump
 
-- [ ] `bash scripts/bump-version.sh <new-version>`
-- [ ] `bash scripts/bump-version.sh --check`
+- [ ] `python3 scripts/bump-version.py <new-version>`
+- [ ] `python3 scripts/bump-version.py --check`
 - [ ] Move `Unreleased` notes under the new version in `CHANGELOG.md`.
 
 ## Publish

@@ -1,3 +1,4 @@
+# GENERATED FILE - DO NOT EDIT. Source: agents-src/system-design-architect.yaml. Regenerate: python3 scripts/generate-agents.py
 name = "system_design_architect"
 description = "Reviews software architecture, system boundaries, abstractions, interfaces, dependency direction, scalability, maintainability, and long-term design risks."
 model_reasoning_effort = "high"

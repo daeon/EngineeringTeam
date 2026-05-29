@@ -21,11 +21,18 @@ GENERATED_DIRS = [
     Path("agents"),
     Path(".codex") / "agents",
     Path("skills") / "engineering-team" / "assets" / "agents",
-    Path("skills") / "engineering-team" / "references" / "codex-custom-agents",
     Path(".github") / "agents",
 ]
 
 GENERATED_SUFFIXES = ("*.md", "*.toml")
+
+
+# Pure-Python schema for agents-src/*.yaml (kept dependency-free on purpose).
+ALLOWED_TOP_KEYS = {"name", "description", "claude", "codex", "instructions"}
+ALLOWED_CLAUDE_KEYS = {"tools", "model", "color"}
+ALLOWED_CODEX_KEYS = {"model", "model_reasoning_effort", "sandbox_mode", "nickname_candidates"}
+REASONING_EFFORTS = {"low", "medium", "high", "xhigh"}
+SANDBOX_MODES = {"read-only", "workspace-write"}
 
 
 def parse_scalar(value: str) -> str | None:
@@ -103,6 +110,64 @@ def parse_agent(path: Path) -> dict:
     return agent
 
 
+def validate_agent(agent: dict, source: Path) -> None:
+    """Fail fast on malformed agent sources before rendering any output."""
+    if agent["name"] != source.stem:
+        raise ValueError(f"{source}: name {agent['name']!r} must match filename stem {source.stem!r}")
+
+    extra_top = set(agent) - ALLOWED_TOP_KEYS
+    if extra_top:
+        raise ValueError(f"{source}: unknown top-level keys: {sorted(extra_top)}")
+
+    claude = agent.get("claude", {})
+    extra_claude = set(claude) - ALLOWED_CLAUDE_KEYS
+    if extra_claude:
+        raise ValueError(f"{source}: unknown claude keys: {sorted(extra_claude)}")
+
+    codex = agent.get("codex", {})
+    extra_codex = set(codex) - ALLOWED_CODEX_KEYS
+    if extra_codex:
+        raise ValueError(f"{source}: unknown codex keys: {sorted(extra_codex)}")
+
+    effort = codex.get("model_reasoning_effort", "high")
+    if effort not in REASONING_EFFORTS:
+        raise ValueError(f"{source}: model_reasoning_effort {effort!r} not in {sorted(REASONING_EFFORTS)}")
+
+    sandbox = codex.get("sandbox_mode", "read-only")
+    if sandbox not in SANDBOX_MODES:
+        raise ValueError(f"{source}: sandbox_mode {sandbox!r} not in {sorted(SANDBOX_MODES)}")
+
+    nicknames = codex.get("nickname_candidates", [])
+    if not isinstance(nicknames, list):
+        raise ValueError(f"{source}: nickname_candidates must be a list")
+
+
+def load_agents() -> list[dict]:
+    """Parse and validate every agent source. Single entry point for generate and check."""
+    agents: list[dict] = []
+    for path in sorted(AGENT_SOURCE_DIR.glob("*.yaml")):
+        agent = parse_agent(path)
+        validate_agent(agent, path)
+        agents.append(agent)
+    if not agents:
+        raise SystemExit("No agent source files found")
+    return agents
+
+
+def md_banner(agent: dict) -> str:
+    return (
+        f"<!-- GENERATED FILE - DO NOT EDIT. Source: agents-src/{agent['name']}.yaml. "
+        "Regenerate: python3 scripts/generate-agents.py -->"
+    )
+
+
+def toml_banner(agent: dict) -> str:
+    return (
+        f"# GENERATED FILE - DO NOT EDIT. Source: agents-src/{agent['name']}.yaml. "
+        "Regenerate: python3 scripts/generate-agents.py"
+    )
+
+
 def toml_string(value: str) -> str:
     return '"' + value.replace("\\", "\\\\").replace('"', '\\"') + '"'
 
@@ -126,6 +191,8 @@ def render_markdown(agent: dict) -> str:
             f"model: {claude.get('model', 'sonnet')}",
             f"color: {claude.get('color', 'blue')}",
             "---",
+            "",
+            md_banner(agent),
             "",
             agent["instructions"].rstrip(),
             "",
@@ -159,6 +226,8 @@ def render_github_markdown(agent: dict) -> str:
             f"name: {name}",
             f"description: {agent['description']}",
             "---",
+            "",
+            md_banner(agent),
             "",
             f"# {title_case_role(name)}",
             "",
@@ -195,6 +264,7 @@ def render_toml(agent: dict) -> str:
     instructions = wrapper + agent["instructions"].rstrip() + "\n"
 
     lines = [
+        toml_banner(agent),
         f"name = {toml_string(name)}",
         f"description = {toml_string(agent['description'])}",
     ]
@@ -224,7 +294,6 @@ def output_paths(agent: dict) -> list[tuple[Path, str]]:
         (REPO_ROOT / "agents" / f"{name}.md", md),
         (REPO_ROOT / ".codex" / "agents" / f"{underscore}.toml", toml),
         (REPO_ROOT / "skills" / "engineering-team" / "assets" / "agents" / f"{underscore}.toml", toml),
-        (REPO_ROOT / "skills" / "engineering-team" / "references" / "codex-custom-agents" / f"{underscore}.toml", toml),
         (REPO_ROOT / ".github" / "agents" / f"{name}.md", github_md),
     ]
 
@@ -254,9 +323,7 @@ def expected_outputs(agents: list[dict]) -> dict[Path, str]:
 
 
 def generate() -> None:
-    agents = [parse_agent(path) for path in sorted(AGENT_SOURCE_DIR.glob("*.yaml"))]
-    if not agents:
-        raise SystemExit("No agent source files found")
+    agents = load_agents()
 
     for directory in generated_dirs():
         directory.mkdir(parents=True, exist_ok=True)
@@ -271,9 +338,7 @@ def generate() -> None:
 
 
 def check() -> int:
-    agents = [parse_agent(path) for path in sorted(AGENT_SOURCE_DIR.glob("*.yaml"))]
-    if not agents:
-        raise SystemExit("No agent source files found")
+    agents = load_agents()
 
     expected = expected_outputs(agents)
     expected_paths = set(expected)

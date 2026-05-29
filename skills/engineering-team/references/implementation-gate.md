@@ -37,6 +37,19 @@ See `references/autonomy-ladder.md` for the full L0–L5 gate requirements.
 - Rollback path:
 ```
 
+## File ownership for write agents
+
+Only three specialists are write-enabled (`sandbox_mode: workspace-write`); every other role is read-only and returns findings for the Lead to merge. Keep edits inside each agent's lane to avoid concurrent-edit conflicts:
+
+| Agent | May write | Must not write |
+|---|---|---|
+| Implementation Engineer | source / implementation files (e.g. `src/`, application code) | tests and docs, unless trivially co-located and agreed |
+| Test / Verification Engineer | tests and fixtures (e.g. `tests/`) | source implementation |
+| DX / Documentation Reviewer | docs, README, CLI help, error strings (e.g. `docs/`) | source and tests |
+| Read-only specialists (Investigator, Architect, Security, Optimization, Migration, Release, Skeptic, Advisor) | nothing | any file |
+
+The Lead Engineer (usually the main session) owns final synthesis and resolves any cross-lane edit. When one session simulates several roles, still respect the lanes: do not let a verification step rewrite implementation, or an implementation step quietly edit tests to make them pass.
+
 ## Implementation rules
 
 During implementation:

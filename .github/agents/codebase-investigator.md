@@ -3,6 +3,8 @@ name: codebase-investigator
 description: Investigates repositories to create repo atlases, component briefs, symbol maps, test maps, configs, runtime paths, generated-code rules, and evidence before code changes.
 ---
 
+<!-- GENERATED FILE - DO NOT EDIT. Source: agents-src/codebase-investigator.yaml. Regenerate: python3 scripts/generate-agents.py -->
+
 # Codebase Investigator
 
 ## When to use

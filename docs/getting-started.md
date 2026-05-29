@@ -4,17 +4,30 @@ This guide helps you install EngineeringTeam, invoke the skill, and understand t
 
 ## Install The Plugin
 
-EngineeringTeam is a single repository that exposes different manifest files for different agent harnesses.
+EngineeringTeam targets multiple agent harnesses from one skill bundle. `scripts/install.py` is the single entry point: two targets **copy files**, the rest **print exact manual setup steps** (nothing is copied).
 
-Use the harness-specific install path:
+```bash
+# Copies files into the harness config:
+python3 scripts/install.py --target codex --scope project --repo .
+python3 scripts/install.py --target github --scope project --repo .
 
-- Claude Code: `.claude-plugin/plugin.json` and `.claude-plugin/marketplace.json`
-- Codex: `.codex-plugin/plugin.json`
-- Cursor: `.cursor-plugin/plugin.json`
-- Gemini CLI: `gemini-extension.json`
-- OpenCode: `.opencode/plugins/engineering-team.js`
+# Prints manual setup steps (marketplace / extension / plugin path):
+python3 scripts/install.py --target claude
+python3 scripts/install.py --target cursor
+python3 scripts/install.py --target gemini
+python3 scripts/install.py --target opencode
+```
 
-After installation, the skill name is `engineering-team`.
+| Harness | Install path | Reads |
+|---|---|---|
+| Claude Code | local marketplace: `/plugin marketplace add .` then `/plugin install engineering-team@engineering-team-dev` | `.claude-plugin/`, `agents/*.md`, `skills/` |
+| Codex | `install.py --target codex` (file copy) | `.codex-plugin/plugin.json`, `.codex/agents/*.toml`, `skills/` |
+| Cursor | add this repo as a local plugin source | `.cursor-plugin/plugin.json`, `agents/*.md`, `skills/` |
+| Gemini CLI | `gemini extensions install .` | `gemini-extension.json`, `GEMINI.md`, `AGENTS.md` |
+| OpenCode | plugin path in `.opencode/INSTALL.md` | `.opencode/plugins/engineering-team.js` |
+| GitHub Copilot | `install.py --target github` (file copy) | `.github/agents/*.md` |
+
+Validate the package first with `python3 scripts/doctor.py` and `npm run validate`. After installation, the skill name is `engineering-team`.
 
 ## First Prompt
 
@@ -34,6 +47,18 @@ For review work:
 
 ```text
 Use engineering-team to review this branch. Focus on bugs, regressions, missing tests, security risks, and rollout risk.
+```
+
+For read-only analysis (no edits):
+
+```text
+Use engineering-team in read-only analysis mode to understand this repository. Route to codebase-analysis, map the main components and contracts, and return an evidence-backed report without editing files.
+```
+
+To transfer work to another agent or a fresh session:
+
+```text
+Use handoff to summarize this task for a fresh agent. Focus the next session on finishing verification and preparing the PR.
 ```
 
 ## Expected First Outputs

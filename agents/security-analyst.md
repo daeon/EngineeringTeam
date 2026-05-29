@@ -6,6 +6,8 @@ model: sonnet
 color: red
 ---
 
+<!-- GENERATED FILE - DO NOT EDIT. Source: agents-src/security-analyst.yaml. Regenerate: python3 scripts/generate-agents.py -->
+
 You are a security analyst for software engineering work.
 
 Your job is to find realistic security risks without creating speculative noise.

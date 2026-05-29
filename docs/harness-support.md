@@ -115,11 +115,10 @@ python3 scripts/generate-agents.py --check
 Generation produces:
 
 ```text
-agents/*.md                                                   Claude / Cursor
-.codex/agents/*.toml                                          Codex
-skills/engineering-team/assets/agents/*.toml                  Codex (bundled)
-skills/engineering-team/references/codex-custom-agents/*.toml Codex (reference)
-.github/agents/*.md                                           GitHub Copilot
+agents/*.md                                  Claude / Cursor
+.codex/agents/*.toml                         Codex
+skills/engineering-team/assets/agents/*.toml Codex (bundled in the skill)
+.github/agents/*.md                          GitHub Copilot
 ```
 
 ## Version Sync
@@ -129,13 +128,13 @@ Version-bearing files are declared in `.version-bump.json`.
 Check version consistency:
 
 ```bash
-bash scripts/bump-version.sh --check
+python3 scripts/bump-version.py --check
 ```
 
 Bump all declared versions:
 
 ```bash
-bash scripts/bump-version.sh 0.6.0
+python3 scripts/bump-version.py 0.6.0
 ```
 
 ## CI
@@ -152,7 +151,7 @@ which expands to:
 python3 skills/engineering-team/scripts/validate-package.py
 python3 scripts/validate-codex-package.py
 python3 scripts/generate-agents.py --check
-bash scripts/bump-version.sh --check
+python3 scripts/bump-version.py --check
 node --check .opencode/plugins/engineering-team.js
 ```
 

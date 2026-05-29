@@ -59,6 +59,10 @@ REFERENCE_CONTRACTS: dict[str, list[str]] = {
         "# Implementation Gate",
         "## Gate output",
     ],
+    "references/impact-map.md": [
+        "# Impact Map",
+        "## Artifact: Impact Map",
+    ],
     "references/verification-loop.md": [
         "# Verification Loop",
         "## Artifact: Verification Report",

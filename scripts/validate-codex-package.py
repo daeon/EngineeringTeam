@@ -1,9 +1,17 @@
 #!/usr/bin/env python3
 from pathlib import Path
+import importlib.util as _ilu
 import json
 import re
 import sys
 import tomllib
+
+
+def _load_advisor_source_codex() -> dict:
+    spec = _ilu.spec_from_file_location("gen_agents", root / "scripts" / "generate-agents.py")
+    gen = _ilu.module_from_spec(spec)
+    spec.loader.exec_module(gen)
+    return gen.parse_agent(root / "agents-src" / "advisor-consultant.yaml")["codex"]
 
 root = Path(__file__).resolve().parents[1]
 errors = []
@@ -40,7 +48,6 @@ else:
 agent_dirs = [
     root / ".codex" / "agents",
     root / "skills" / "engineering-team" / "assets" / "agents",
-    root / "skills" / "engineering-team" / "references" / "codex-custom-agents",
 ]
 
 for agent_dir in agent_dirs:
@@ -58,12 +65,20 @@ if not advisor.exists():
     errors.append("missing .codex/agents/advisor_consultant.toml")
 else:
     data = tomllib.loads(advisor.read_text())
-    if data.get("model") != "gpt-5.5":
-        errors.append("advisor_consultant model should be gpt-5.5")
-    if data.get("model_reasoning_effort") != "xhigh":
-        errors.append("advisor_consultant model_reasoning_effort should be xhigh")
-    if data.get("sandbox_mode") != "read-only":
-        errors.append("advisor_consultant sandbox_mode should be read-only")
+    advisor_yaml = root / "agents-src" / "advisor-consultant.yaml"
+    if not advisor_yaml.exists():
+        errors.append("missing agents-src/advisor-consultant.yaml (needed to validate advisor_consultant model fields)")
+    else:
+        src = _load_advisor_source_codex()
+        expected_model = src.get("model")
+        expected_effort = src.get("model_reasoning_effort", "high")
+        expected_sandbox = src.get("sandbox_mode", "read-only")
+        if data.get("model") != expected_model:
+            errors.append(f"advisor_consultant model should be {expected_model!r} (from agents-src/advisor-consultant.yaml)")
+        if data.get("model_reasoning_effort") != expected_effort:
+            errors.append(f"advisor_consultant model_reasoning_effort should be {expected_effort!r}")
+        if data.get("sandbox_mode") != expected_sandbox:
+            errors.append(f"advisor_consultant sandbox_mode should be {expected_sandbox!r}")
 
 # "Advisor Consultant" must anchor in the SKILL.md entrypoint.
 if skill.exists():

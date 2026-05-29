@@ -31,20 +31,7 @@ For every verification command, record:
 
 ## Failure attribution
 
-If verification fails, classify the failure before patching:
-
-- wrong implementation
-- wrong test expectation
-- missing dependency
-- environment issue
-- flaky test
-- incomplete repo understanding
-- hidden contract violation
-- generated-code mismatch
-- stale documentation
-- permission/tooling issue
-
-See `references/failure-attribution.md` for the triage protocol.
+If verification fails, classify the failure before patching. `references/failure-attribution.md` owns the canonical failure classes (wrong implementation, wrong test expectation, missing dependency, environment, flaky test, incomplete repo understanding, hidden contract violation, generated-code mismatch, stale documentation, permission/tooling) and the triage protocol.
 
 Loop:
 

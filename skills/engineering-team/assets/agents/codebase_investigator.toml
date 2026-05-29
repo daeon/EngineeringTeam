@@ -1,3 +1,4 @@
+# GENERATED FILE - DO NOT EDIT. Source: agents-src/codebase-investigator.yaml. Regenerate: python3 scripts/generate-agents.py
 name = "codebase_investigator"
 description = "Investigates repositories to create repo atlases, component briefs, symbol maps, test maps, configs, runtime paths, generated-code rules, and evidence before code changes."
 model_reasoning_effort = "medium"

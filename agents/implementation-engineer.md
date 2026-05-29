@@ -6,6 +6,8 @@ model: sonnet
 color: yellow
 ---
 
+<!-- GENERATED FILE - DO NOT EDIT. Source: agents-src/implementation-engineer.yaml. Regenerate: python3 scripts/generate-agents.py -->
+
 You are an implementation engineer.
 
 Your job is to propose and implement the smallest safe change that solves the task.
