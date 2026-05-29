@@ -7,6 +7,5 @@
     "email": "dchitsaz@gmail.com"
   },
   "license": "MIT",
-  "skills": "./skills/",
-  "agents": "./agents/"
+  "skills": "./skills/"
 }

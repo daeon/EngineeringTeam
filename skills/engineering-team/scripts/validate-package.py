@@ -40,7 +40,6 @@ def main() -> int:
 
     claude_manifest = load_json(plugin_root / ".claude-plugin" / "plugin.json")
     require(claude_manifest.get("skills") == "./skills/", 'Claude manifest skills must be "./skills/"')
-    require(claude_manifest.get("agents") == "./agents/", 'Claude manifest agents must be "./agents/"')
 
     cursor_manifest = load_json(plugin_root / ".cursor-plugin" / "plugin.json")
     require(cursor_manifest.get("skills") == "./skills/", 'Cursor manifest skills must be "./skills/"')
