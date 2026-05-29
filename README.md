@@ -1,14 +1,23 @@
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/assets/engineering-team-hero-dark.svg">
+    <source media="(prefers-color-scheme: light)" srcset="docs/assets/engineering-team-hero-light.svg">
+    <img alt="EngineeringTeam workflow: map, trace, route, gate, verify, and hand off" src="docs/assets/engineering-team-hero-light.svg" width="88%">
+  </picture>
+</p>
+
 # EngineeringTeam
 
 [![Validate](https://github.com/daeon/EngineeringTeam/actions/workflows/validate.yml/badge.svg)](https://github.com/daeon/EngineeringTeam/actions/workflows/validate.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 ![Multi-harness](https://img.shields.io/badge/harness-Claude%20%7C%20Codex%20%7C%20Cursor%20%7C%20Gemini%20%7C%20OpenCode%20%7C%20GitHub-blue)
-![Repo-first](https://img.shields.io/badge/workflow-repo--first-orange)
+![Workflow](https://img.shields.io/badge/workflow-map%20%E2%86%92%20gate%20%E2%86%92%20verify-orange)
 ![Evidence-gated](https://img.shields.io/badge/edits-evidence--gated-purple)
+![No hooks](https://img.shields.io/badge/session--start%20hooks-none-brightgreen)
 
 **Make your AI coding agent behave like a senior engineering team.**
 
-EngineeringTeam is a repo-first workflow layer for AI coding agents. It supports both implementation mode and read-only analysis mode: the agent maps the repo, traces contracts, gathers evidence, routes specialists selectively, gates implementation when edits are requested, verifies changes, and hands off reviewable artifacts before claiming success.
+EngineeringTeam is a repo-first workflow layer for AI coding agents. It supports implementation, read-only analysis, and handoff workflows: the agent maps the repo, traces contracts, gathers evidence, routes specialists selectively, gates implementation when edits are requested, verifies changes, and hands off reviewable artifacts before claiming success.
 
 > Stop vibe-coding legacy repos. Make the agent prove it understands the code before it edits.
 
@@ -22,17 +31,54 @@ Use `handoff` when you want the current task transferred to another agent or a f
 
 Specialist agents (security, architecture, performance, migration, release, verification, evidence skepticism) are **selective, not mandatory**. The workflow routes only the ones a task actually needs.
 
+## 🧠 How it works
 
-## 🧭 Two workflow modes
+```mermaid
+flowchart LR
+    request[User request] --> router{EngineeringTeam router}
 
-EngineeringTeam now routes requests into two broad modes:
+    router -->|Fix / feature / refactor| impl[Implementation mode]
+    router -->|Understand / debug / logs / perf| analysis[Read-only analysis mode]
+    router -->|Continue elsewhere| handoff[Handoff mode]
 
-| Mode | Use it for | Typical output |
+    impl --> atlas[Repo Atlas]
+    atlas --> brief[Component Brief]
+    brief --> contracts[Contract Graph]
+    contracts --> evidence[Evidence Ledger]
+    evidence --> gate{Implementation Gate}
+    gate -->|Pass| patch[Small safe patch]
+    patch --> verify[Verification Report]
+    verify --> final[Final Report]
+
+    analysis --> findings[Evidence-backed diagnosis]
+    findings --> probes[Next-probe plan]
+
+    handoff --> capsule[Continuation document]
+```
+
+## 🧭 Pick the right workflow
+
+| I need to... | Use | Typical output |
 |---|---|---|
-| **Implementation mode** | Fixes, feature work, refactors, tests, PR-ready changes | Repo Atlas, Component Brief, Contract Graph, Evidence Ledger, Implementation Gate, Verification Report, Final Report |
-| **Read-only analysis mode** | Understanding codebases, debugging without patching, log analysis, performance investigation | Codebase analysis report, debugging hypothesis matrix, log forensics report, performance forensics report, next-probe plan |
+| Fix, implement, refactor, or prepare a PR | `engineering-team` | Repo Atlas → Component Brief → Contract Graph → Evidence Ledger → Implementation Gate → Verification Report → Final Report |
+| Understand an unfamiliar repository | `codebase-analysis` | Component map, call paths, contracts, findings, confidence, unknowns |
+| Investigate a bug without patching yet | `debugging-forensics` | Hypothesis matrix, supporting/counter evidence, falsifying probes, fix readiness |
+| Analyze logs or noisy failure output | `log-forensics` | Timeline, signals, findings, redactions, ruled-out claims, next probes |
+| Investigate latency, throughput, memory, or locking | `performance-forensics` | Measurement frame, hot-path map, bottleneck hypotheses, probe-first recommendations |
+| Transfer work to another agent or fresh session | `handoff` | Continuation document with decisions, evidence, risks, suggested skills, and next actions |
 
 The main `engineering-team` skill remains the router. It keeps the existing repo-first implementation workflow for change requests and routes analysis requests to focused read-only skills: `codebase-analysis`, `debugging-forensics`, `log-forensics`, and `performance-forensics`. If an investigation uncovers a likely fix, the agent should hand off an evidence-backed diagnosis and verification strategy before editing unless you explicitly ask it to implement.
+
+## 🧪 Raw agent vs EngineeringTeam
+
+| Raw agent often does this | EngineeringTeam forces this |
+|---|---|
+| Edits the nearest plausible file | Finds the owning component and call path first |
+| Explains after the patch | Produces evidence before the patch |
+| Treats tests as optional cleanup | Defines verification before implementation |
+| Changes behavior without tracing consumers | Builds a contract graph for behavior changes |
+| Dumps long reasoning or loses context | Emits compact, reviewable artifacts |
+| Leaves the next session cold | Creates a handoff document another agent can continue from |
 
 ## 📏 The rule
 
@@ -46,6 +92,21 @@ No non-trivial edit until the agent can answer:
 6. What proves the change works?
 
 If those are unanswered, the agent keeps mapping instead of editing.
+
+<details>
+<summary>Advanced: what the implementation gate checks</summary>
+
+The implementation gate requires the agent to name:
+
+- The files allowed to change.
+- The evidence supporting the diagnosis or design.
+- The affected contracts and consumers for behavior changes.
+- The verification commands or manual checks that prove success.
+- The rollback path for risky changes.
+
+If the gate fails, the agent keeps mapping, asks a targeted question, or returns an evidence-backed diagnosis instead of patching prematurely.
+
+</details>
 
 ## 🛑 When your agent should not edit yet
 
@@ -85,6 +146,30 @@ To transfer work to another agent or session:
 Use handoff to summarize this task for a fresh agent. Focus the next session on finishing verification and preparing the PR.
 ```
 
+## 🧑‍💻 Specialist routing
+
+```mermaid
+flowchart TD
+    risk[Intake risk] --> route{Distinct specialist risk?}
+
+    route -->|Unknown ownership| investigator[Codebase Investigator]
+    route -->|Security boundary| security[Security Analyst]
+    route -->|Public API/module boundary| architect[System Design Architect]
+    route -->|Latency / memory / throughput| perf[Optimization Engineer]
+    route -->|Weak evidence| skeptic[Evidence Skeptic]
+    route -->|No| lead[Lead Engineer only]
+
+    investigator --> capsule[Context capsule]
+    security --> capsule
+    architect --> capsule
+    perf --> capsule
+    skeptic --> capsule
+    capsule --> lead
+    lead --> decision[Evidence-backed decision]
+```
+
+Subagents receive bounded briefs and return compact context capsules, not transcripts. The lead agent stays responsible for the final decision.
+
 ## 🎬 Demo
 
 See the worked, runnable example and the talking points:
@@ -106,22 +191,24 @@ See the worked, runnable example and the talking points:
 
 All harnesses point at the same canonical skill bundle under `skills/`, with `skills/engineering-team/SKILL.md` as the main router and focused read-only skills beside it. Native agent definitions are generated from one source of truth (`agents-src/*.yaml`) — see `docs/harness-support.md`.
 
-## 🗂️ What the artifacts look like
+## 🗂️ Artifact gallery
 
 EngineeringTeam makes the agent produce compact, reviewable artifacts before and after implementation:
 
-- **Repo Atlas** — system type, entry points, build/test commands, generated-code rules, high-risk areas.
-- **Component Brief** — owning component, key files/symbols, related tests, inputs, outputs, side effects.
-- **Contract Graph** — producer, contract/data shape, consumer, failure mode, coverage, risk.
-- **Evidence Ledger** — claim, evidence, confidence, impact.
-- **Verification Report** — command, result, important output, failure attribution, residual risk.
-- **Codebase Analysis Report** — scope, component map, call paths, contracts, findings, confidence, and unknowns.
-- **Debugging Hypothesis Matrix** — ranked hypotheses, supporting/counter evidence, falsifying probes, and fix readiness.
-- **Log Forensics Report** — timeline, signals, findings, redactions, ruled-out claims, and next probes.
-- **Performance Forensics Report** — measurement frame, hot path map, bottleneck hypotheses, and probe-first recommendations.
-- **Handoff Document** — continuation context for another agent or session, with decisions, evidence, artifact links, open questions, risks, suggested skills, and next actions.
+| Artifact | What it proves | Example |
+|---|---|---|
+| Repo Atlas | The agent understands the repo shape, entry points, tests, generated-code rules, and risky areas | [`repo-atlas.md`](examples/buggy-python-service/expected-artifacts/repo-atlas.md) |
+| Component Brief | The agent found the owner, key files, symbols, call path, inputs, outputs, and side effects | [`component-brief.md`](examples/buggy-python-service/expected-artifacts/component-brief.md) |
+| Contract Graph | The agent traced producer, contract/data shape, consumer, failure mode, coverage, and risk | [`contract-graph.md`](examples/buggy-python-service/expected-artifacts/contract-graph.md) |
+| Evidence Ledger | Major claims are backed by source paths, tests, logs, runtime observations, schemas, or docs | [`evidence-ledger.md`](examples/buggy-python-service/expected-artifacts/evidence-ledger.md) |
+| Verification Report | Success was checked and residual risk was reported instead of assumed away | [`verification-report.md`](examples/buggy-python-service/expected-artifacts/verification-report.md) |
+| Codebase Analysis Report | Read-only analysis produced scope, component map, call paths, contracts, findings, confidence, and unknowns | `codebase-analysis` skill output |
+| Debugging Hypothesis Matrix | Bug work is ranked by evidence, counter-evidence, falsifying probes, and fix readiness | `debugging-forensics` skill output |
+| Log Forensics Report | Logs become a timeline with signals, findings, redactions, ruled-out claims, and next probes | `log-forensics` skill output |
+| Performance Forensics Report | Performance work starts with a measurement frame, hot-path map, bottleneck hypotheses, and probes | `performance-forensics` skill output |
+| Handoff Document | Another agent or session can continue with decisions, evidence, open questions, risks, suggested skills, and next actions | `handoff` skill output |
 
-These make the agent's reasoning inspectable: a reviewer can see whether it understood the code path, not just whether the diff looks plausible. Filled-in samples live in `examples/buggy-python-service/expected-artifacts/`.
+These make the agent's reasoning inspectable: a reviewer can see whether it understood the code path, not just whether the diff looks plausible.
 
 ## 📦 Install
 
