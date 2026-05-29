@@ -1,0 +1,122 @@
+# Agent Routing
+
+## Score agents (0–3)
+
+- 0 = not useful; 1 = possibly useful; 2 = useful; 3 = essential
+
+| Task signal | Lead | Investigator | Implementer | Verifier | Skeptic | Advisor | Architect | Security | Optimization | Migration | Release | DX |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| small typo/local obvious edit | 3 | 0 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| failing/flaky test | 3 | 3 | 1 | 3 | 3 | 0-1 if unresolved | 0-1 | 0-1 | 1-2 if timing/concurrency | 0 | 0 | 0 |
+| bug/root cause | 3 | 3 | 2 | 2 | 3 | 2-3 if unclear/conflicting | 1-2 if boundary implicated | 1-3 if trust/input/auth | 1-3 if hot path | 1-3 if legacy | 1 if prod | 0 |
+| feature implementation | 3 | 2 | 3 | 2 | 2 | 1-2 if assumption-heavy | 2 if API/boundary | 2-3 if exposed/user input | 1-2 if hot path | 1-2 if compatibility | 1-2 if rollout | 1-2 if UX/docs |
+| broad refactor | 3 | 2 | 3 | 2 | 3 | 2 if cross-component | 3 | 1-2 | 1-2 | 1-2 | 1 | 0 |
+| architecture/API design | 3 | 2 | 1-2 | 1-2 | 3 | 2-3 if consequential | 3 | 1-2 | 1-2 | 1-2 | 1-2 | 1-2 |
+| security-sensitive change | 3 | 2 | 2 | 2 | 3 | 2-3 if L5/uncertain | 1-2 | 3 | 1 | 1 | 1-2 | 0 |
+| performance investigation | 3 | 2 | 1-2 | 2 | 3 | 1-2 if production-sensitive | 1-2 | 0-1 | 3 | 0-1 | 1 | 0 |
+| migration/compatibility | 3 | 2 | 2 | 2 | 3 | 2-3 if irreversible/ambiguous | 1-2 | 1-2 if semantics/security | 1 if scale | 3 | 1-2 | 0 |
+
+## Agent descriptions
+
+| Agent | Spawn when score is 2-3 |
+|---|---|
+| Lead Engineer (`lead_engineer`) | Always; usually the main session acts as lead |
+| Codebase Investigator (`codebase_investigator`) | Unknown repository impact, bug, feature, refactor, migration, test discovery |
+| Implementation Engineer (`implementation_engineer`) | Code change likely after evidence gate |
+| Test / Verification Engineer (`test_verification_engineer`) | Behavior change, bug, flaky test, regression, CI issue, quality risk |
+| Evidence Skeptic (`evidence_skeptic`) | Any non-trivial task, unclear root cause, high-risk change, conflicting evidence |
+| System Design Architect (`system_design_architect`) | Architecture, broad refactor, public API, module boundary, long-term maintainability |
+| Security Analyst (`security_analyst`) | Trust boundary, auth, permissions, secrets, user input, shell, filesystem, network, dependency risk |
+| Optimization Engineer (`optimization_engineer`) | Latency, throughput, memory, CPU, IO, concurrency, scalability, caching, polling, benchmark validity |
+| Migration Analyst (`migration_analyst`) | Legacy behavior, compatibility, schema/config/API translation, import/export, upgrade path |
+| Release / Rollback Engineer (`release_rollback_engineer`) | Production risk, deployment, rollout, feature flag, rollback, observability |
+| DX / Documentation Reviewer (`dx_documentation_reviewer`) | User-facing docs, CLI behavior, error messages, developer ergonomics, onboarding, examples |
+| Advisor Consultant (`advisor_consultant`) | Gate-only second opinion for L4/L5, unclear root cause after investigation, conflicting evidence, security/migration/release/production-sensitive decisions, or assumption-heavy completion checks |
+
+## Selection rules
+
+- Always include Lead Engineer as coordinator.
+- Spawn all agents scored 3.
+- Spawn agents scored 2 only when they cover a distinct risk area.
+- Include Evidence Skeptic for non-trivial L3+ work.
+- Include Advisor Consultant only when a risk gate requires independent decision review.
+- Initially cap at 5 teammates unless the task is clearly complex.
+- If more than 5 agents score 2-3, spawn the top 5 first and defer the rest with explicit triggers.
+
+## Routing output
+
+```md
+## Agent routing
+
+| Agent | Score | Reason | Initial question |
+|---|---:|---|---|
+
+## Deferred agents
+
+| Agent | Why deferred | Spawn trigger |
+|---|---|---|
+```
+
+## Single-session simulation
+
+When subagents are unavailable or not warranted, simulate specialist roles in the main session. Label each reasoning step with the active role so the work is auditable:
+
+```text
+[Investigator] Searched for all callers of X — found 3 files: ...
+[Skeptic] Claim "X is unused" is unproven: grep shows Y still imports it.
+[Lead] Revised plan: patch X but preserve Y's import path.
+[Verifier] Ran targeted tests: 2 pass, 0 fail.
+```
+
+Rules for single-session simulation:
+- At minimum simulate Lead, Investigator, and Skeptic for L3+ work.
+- The Skeptic step must run before implementation — not after.
+- Do not skip a role because you believe its conclusion is obvious.
+
+## Team creation and fallback
+
+If the user explicitly requests subagents or parallel review, spawn Codex subagents or custom agents. Otherwise, simulate the roles in the main session while preserving the same evidence and implementation gates.
+
+Rules:
+- The current session is the Lead Engineer.
+- Give teammates task-specific context; teammates do not inherit full conversation history.
+- Assign non-overlapping questions.
+- Require independent investigation before deliberation.
+- During investigation, teammates must not edit files.
+- Avoid concurrent edits to the same file.
+
+## Context budget policy
+
+Select the smallest useful context package for every teammate:
+
+| Context budget | Use for | Contents |
+|---|---|---|
+| `brief-only` | Advisor default, security/release decision checks, narrow review | Curated decision brief only |
+| `component-context` | Focused specialist work | Component Brief plus focused file paths/symbols |
+| `artifact-context` | Multi-step review or verification | Repo Atlas, Contract Graph, Evidence Ledger, Verification Plan |
+| `full-context` | Rare fallback when the lead cannot safely summarize | Full-history fork; state why |
+
+Default Advisor Consultant to `brief-only` with `fork_context: false`. Use `fork_context: true` and `full-context` only when the lead cannot safely summarize; state the reason explicitly.
+
+## Deliberation protocol
+
+Before implementation, every selected teammate answers:
+
+1. What do you believe is true?
+2. What evidence supports it?
+3. What could make you wrong?
+4. What is the smallest safe next action?
+5. What should not be changed?
+
+The Lead Engineer synthesizes one plan. Resolve contradictions with evidence or targeted follow-up checks. Do not concatenate opinions; do not average contradictory conclusions.
+
+## Adaptive spawning
+
+Spawn additional specialists when evidence justifies them:
+
+- Auth middleware touched → Security Analyst
+- Public interface changed → System Design Architect
+- Polling, caching, locking, batching, buffering, memory ownership touched → Optimization Engineer
+- Legacy/config/schema conversion touched → Migration Analyst
+- Runtime/prod behavior changed → Release / Rollback Engineer
+- CLI/docs/error behavior changed → DX / Documentation Reviewer

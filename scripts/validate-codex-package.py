@@ -65,17 +65,34 @@ else:
     if data.get("sandbox_mode") != "read-only":
         errors.append("advisor_consultant sandbox_mode should be read-only")
 
+# "Advisor Consultant" must anchor in the SKILL.md entrypoint.
 if skill.exists():
     text = skill.read_text()
+    if "Advisor Consultant" not in text:
+        errors.append("SKILL.md missing required anchor: Advisor Consultant")
+
+# Detailed advisor contract lives in references/advisor-gate.md.
+advisor_gate = root / "skills" / "engineering-team" / "references" / "advisor-gate.md"
+if not advisor_gate.exists():
+    errors.append("missing references/advisor-gate.md")
+else:
+    gate_text = advisor_gate.read_text()
     for required in [
-        "Advisor Consultant",
-        "Default Advisor Consultant to `brief-only`",
         "## Decision Needed",
         "## Go / No-Go",
         "## Advisor Decision Receipt",
     ]:
-        if required not in text:
-            errors.append(f"SKILL.md missing advisor contract text: {required}")
+        if required not in gate_text:
+            errors.append(f"references/advisor-gate.md missing advisor contract text: {required}")
+
+# Context budget policy lives in references/agent-routing.md.
+agent_routing = root / "skills" / "engineering-team" / "references" / "agent-routing.md"
+if not agent_routing.exists():
+    errors.append("missing references/agent-routing.md")
+else:
+    routing_text = agent_routing.read_text()
+    if "Default Advisor Consultant to `brief-only`" not in routing_text:
+        errors.append("references/agent-routing.md missing context budget policy")
 
 if not (root / "AGENTS.md").exists():
     errors.append("missing AGENTS.md")

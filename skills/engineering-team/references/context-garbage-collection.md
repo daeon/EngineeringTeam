@@ -1,5 +1,7 @@
 # Context Garbage Collection
 
+**Always run this step at task end, even when no durable updates are needed.** Produce the artifact to confirm — a silent skip looks like forgetting.
+
 At task completion, decide whether durable context should change.
 
 Update durable knowledge only for reusable facts:
@@ -35,3 +37,13 @@ Use `CONTEXT.md` only for domain language:
 - resolved ambiguities
 
 Offer an ADR only when the decision is hard to reverse, surprising without context, and the result of a real trade-off.
+
+## Artifact: Context GC output
+
+```md
+## Context garbage collection
+
+- Durable knowledge to update:
+- Stale context found:
+- One-off details not retained:
+```

@@ -1,5 +1,7 @@
 # Output Contracts
 
+Agent-level report formats. For phase artifact templates, see the dedicated reference files.
+
 ## Agent selection report
 
 ```md
@@ -28,64 +30,6 @@
 
 | Agent | Why not spawned yet | Spawn trigger |
 |---|---|---|
-```
-
-## Repo Atlas
-
-```md
-# Repo Atlas
-
-## System Type
-## Main Languages / Frameworks
-## Runtime / Build Model
-## Main Components
-## Entry Points
-## Test Surfaces
-## Domain Context
-## Relevant ADRs
-## Generated Code Rules
-## Config / Schema Sources
-## External Integration Points
-## Known High-Risk Areas
-## Repo-Specific Instructions
-## Build / Test Commands
-## Last Verified
-```
-
-## Component Brief
-
-```md
-# Component Brief
-
-## Relevant Component
-## Responsibility
-## Important Files
-## Relevant Symbols
-## Main Call Path
-## Related Tests
-## Similar Existing Patterns
-## Inputs / Outputs
-## Side Effects
-## Open Questions
-## Evidence
-```
-
-## Contract Graph
-
-```md
-# Contract Graph
-
-| Edge | Producer | Contract / Data Shape | Consumer | Side Effect | Failure Mode | Coverage | Risk |
-|---|---|---|---|---|---|---|---|
-```
-
-## Evidence Ledger
-
-```md
-# Evidence Ledger
-
-| Claim | Evidence | Confidence | Impact |
-|---|---|---:|---|
 ```
 
 ## Individual agent report
@@ -122,19 +66,6 @@
 ## Recommendation
 ```
 
-## Verification Report
-
-```md
-# Verification Report
-
-| Command | Result | Relevant Output | Related? | Next Action |
-|---|---|---|---|---|
-
-## Failure Attribution
-## Coverage Gaps
-## Unverified Risks
-```
-
 ## Analysis Report (L0 tasks)
 
 ```md
@@ -156,30 +87,14 @@
 
 Severity: `high` (correctness, security, trust), `medium` (maintainability, DX), `low` (style, optional). Every finding must reference a file path, line number, command output, or documented behavior. Unverified claims must be labeled as assumptions.
 
-## Final report (L2+ tasks)
+## Phase artifact templates
 
-```md
-## Result
-
-## Agent routing
-
-## Repo mental model
-
-## Focused component
-
-## Contract graph
-
-## Evidence
-
-## Changes
-
-## Verification
-
-## Risks
-
-## Rollback
-
-## Context updates
-
-## Follow-ups
-```
+| Artifact | Canonical reference |
+|---|---|
+| Repo Atlas | `references/repo-atlas.md` |
+| Component Brief | `references/component-brief.md` |
+| Contract Graph | `references/contract-graph.md` |
+| Evidence Ledger | `references/evidence-ledger.md` |
+| Verification Report | `references/verification-loop.md` |
+| Advisor Decision Receipt | `references/advisor-gate.md` |
+| Final Report (L2+) | `references/final-report.md` |
