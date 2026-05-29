@@ -13,6 +13,8 @@ Use this schema to build concise, evidence-backed repo understanding before impl
 ## Main Components
 ## Entry Points
 ## Test Surfaces
+## Domain Context
+## Relevant ADRs
 ## Generated Code Rules
 ## Config / Schema Sources
 ## External Integration Points
@@ -44,6 +46,9 @@ Use this schema to build concise, evidence-backed repo understanding before impl
 
 - Keep the atlas concise.
 - Prefer code and executable commands over stale docs.
+- Read `CONTEXT.md`, `CONTEXT-MAP.md`, and relevant ADRs when present; treat them as soft dependencies.
+- Use canonical domain vocabulary in repo artifacts when a glossary defines it.
+- Record whether domain context exists and where under `## Domain Context`; record relevant ADR paths under `## Relevant ADRs`.
 - Cite file paths and symbols for every important claim.
 - Expand context only when it reduces implementation or verification risk.
 - Do not persist one-off task details as durable repo knowledge.

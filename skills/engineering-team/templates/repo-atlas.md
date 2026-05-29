@@ -12,6 +12,10 @@
 
 ## Test Surfaces
 
+## Domain Context
+
+## Relevant ADRs
+
 ## Generated Code Rules
 
 ## Config / Schema Sources

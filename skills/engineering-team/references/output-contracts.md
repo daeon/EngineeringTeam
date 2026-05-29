@@ -10,6 +10,15 @@
 - Risk dimensions:
 - Autonomy level:
 
+## Alignment
+
+- Resolved decisions:
+- Recommended defaults accepted:
+- Open user decisions:
+- Acceptance criteria:
+- Non-goals:
+- Repo-answerable questions checked:
+
 ## Selected agents
 
 | Agent | Score | Reason | Initial question |
@@ -32,6 +41,8 @@
 ## Main Components
 ## Entry Points
 ## Test Surfaces
+## Domain Context
+## Relevant ADRs
 ## Generated Code Rules
 ## Config / Schema Sources
 ## External Integration Points

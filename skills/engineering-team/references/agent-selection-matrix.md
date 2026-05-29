@@ -24,3 +24,5 @@ Score 0-3:
 Spawn the smallest team that covers all score-3 areas and distinct score-2 risks.
 
 Advisor is gate-only. Do not spawn it for low-risk local work or routine L2/L3 tasks with clear evidence and verification.
+
+For bug/root-cause and performance investigations, build the feedback loop from `diagnosis-loop.md` before implementation. For behavior changes that need tests, prefer the vertical tracer-bullet workflow from `tdd-discipline.md`.

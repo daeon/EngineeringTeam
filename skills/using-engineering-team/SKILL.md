@@ -26,10 +26,12 @@ Do not use the full team workflow for tiny typo fixes, obvious local edits, or w
 Default workflow:
 
 1. Classify the task.
-2. Route the smallest useful specialist set.
-3. Gather repository evidence before editing.
-4. Require an evidence gate before implementation.
-5. Make the smallest safe change.
-6. Verify with focused commands and report dataflow, inputs, outputs, risks, and rollback.
+2. Align on user intent when scope, behavior, or L3+ risk requires it.
+3. Route the smallest useful specialist set.
+4. Gather repository evidence, including domain context and ADRs when present, before editing.
+5. Require an evidence gate before implementation.
+6. For bug work, build a feedback loop before fixing; for test-first work, use vertical tracer-bullet cycles.
+7. Make the smallest safe change.
+8. Verify with focused commands and report dataflow, inputs, outputs, risks, and rollback.
 
 If native subagents are unavailable, simulate the roles in the main session while preserving the same evidence gate.

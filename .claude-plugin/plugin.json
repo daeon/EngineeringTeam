@@ -5,17 +5,5 @@
   "author": {
     "name": "Damon Chitsaz",
     "email": "dchitsaz@gmail.com"
-  },
-  "license": "MIT",
-  "keywords": [
-    "software-engineering",
-    "repo-intelligence",
-    "agent-team",
-    "skills",
-    "verification",
-    "multi-agent"
-  ],
-  "skills": "./skills/",
-  "agents": "./agents/",
-  "hooks": "./hooks/hooks.json"
+  }
 }

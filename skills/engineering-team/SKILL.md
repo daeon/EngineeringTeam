@@ -31,6 +31,7 @@ Default flow:
 Task
   → classify risk
   → choose risk mode and context budget
+  → align on user intent when scope, behavior, or L3+ risk requires it
   → select smallest useful agent team
   → build repo atlas
   → build component brief
@@ -54,6 +55,8 @@ repo map → component map → feature map → contract graph → focused files 
 ```
 
 Never jump directly into editing unless the owning component, affected contract, call path, risk level, and verification strategy are clear.
+
+When user intent is ambiguous, align before mapping too deeply. Ask one question at a time, include the recommended answer, and explore the repo instead of asking whenever the repo can answer the question.
 
 ## When to use this skill
 
@@ -141,12 +144,12 @@ Choose one primary risk mode:
 | Risk mode | Meaning | Default routing |
 |---|---|---|
 | `low-risk-local` | Obvious local edit or explanation | Lead only; no advisor |
-| `behavior-change` | Local behavior, tests, or contracts may change | Verifier + skeptic as needed |
+| `behavior-change` | Local behavior, tests, or contracts may change | Verifier + skeptic as needed; use diagnosis loop for bug-driven changes |
 | `cross-component` | Multiple modules, packages, services, or owners | Investigator + architect + skeptic |
 | `security-sensitive` | Trust boundary, auth, inputs, secrets, shell, filesystem, network, dependency risk | Security + skeptic; advisor for L5 or uncertainty |
 | `migration/compatibility` | Legacy behavior, config/schema/API translation, upgrade or import/export risk | Migration + release + skeptic; advisor for irreversible or ambiguous choices |
 | `release/production` | Runtime, rollout, rollback, observability, live system, or production behavior | Release + advisor; human approval before sensitive side effects |
-| `uncertain-root-cause` | Investigation has not converged on evidence-backed root cause | Investigator + skeptic + advisor before implementation |
+| `uncertain-root-cause` | Investigation has not converged on evidence-backed root cause | Investigator + skeptic + advisor before implementation; feedback loop before hypotheses |
 | `conflicting-evidence` | Source, tests, docs, logs, or runtime observations disagree | Investigator + skeptic + advisor before implementation |
 
 Output:
@@ -164,6 +167,36 @@ Output:
 - Known constraints:
 - First areas to inspect:
 ```
+
+---
+
+# Phase 1.5: Alignment and audit gate
+
+Use this gate when scope, behavior, acceptance criteria, terminology, or trade-offs are ambiguous, or when autonomy is L3 or higher. Skip it for `low-risk-local` work where the request and verification path are already clear.
+
+Rules:
+
+- Ask one question at a time.
+- Include the recommended answer and why.
+- If a question can be answered from the repository, inspect the repo instead of asking the user.
+- Walk dependencies between decisions in order; do not ask downstream questions before the upstream choice is resolved.
+- Challenge vague or overloaded terms and propose precise wording.
+- Stop the audit when the next safe action, acceptance criteria, non-goals, and verification signal are clear.
+
+Output when the gate runs:
+
+```md
+## Alignment
+
+- Resolved decisions:
+- Recommended defaults accepted:
+- Open user decisions:
+- Acceptance criteria:
+- Non-goals:
+- Repo-answerable questions checked:
+```
+
+See `references/alignment-audit.md` for the detailed protocol.
 
 ---
 
@@ -264,12 +297,15 @@ Before focusing on the requested area, inspect the repository at a shallow level
 Look for:
 
 - `AGENTS.md`, `CLAUDE.md`, repo-local skill docs, harness instructions
+- `CONTEXT.md`, `CONTEXT-MAP.md`, and `docs/adr/` for domain language and prior decisions
 - `README.md`, `CONTRIBUTING.md`, architecture docs
 - build files, package manifests, dependency files
 - test configuration and CI configuration
 - source roots, scripts, tools, codegen definitions
 - route/entry-point files
 - config/schema files
+
+Treat domain docs as a soft dependency: use them when present, but do not block work when they are absent. If `CONTEXT.md` defines project terms, use that vocabulary in artifacts, plans, tests, and final reports. If ADRs exist near the touched area, respect them unless current evidence justifies reopening the decision. See `references/domain-context.md` for glossary and ADR rules.
 
 Prefer structured repo intelligence over raw file reading.
 
@@ -295,6 +331,8 @@ Required artifact for non-trivial tasks:
 ## Main Components
 ## Entry Points
 ## Test Surfaces
+## Domain Context
+## Relevant ADRs
 ## Generated Code Rules
 ## Config / Schema Sources
 ## External Integration Points
@@ -598,6 +636,9 @@ During implementation:
 - Preserve public contracts unless explicitly required.
 - Add comments only for non-obvious reasoning.
 - Update tests close to the changed behavior.
+- For test-first work, use vertical tracer-bullet cycles: one behavior test, minimal implementation, repeat.
+- Tests should verify behavior through public interfaces, not private implementation details.
+- See `references/tdd-discipline.md` for the full tracer-bullet and test-surface rules.
 - Track every changed file.
 - Avoid concurrent edits to the same file.
 - If generated code is involved, determine whether to modify source definitions, generated outputs, or both according to repo convention.
@@ -617,6 +658,10 @@ Prefer mechanically enforced rules over prose instructions:
 # Phase 13: Verification and failure attribution
 
 Run the narrowest useful verification first, then expand as risk requires.
+
+For bug investigations, regressions, flaky behavior, crashes, or performance regressions, build a fast deterministic feedback loop before fixing. Use `references/diagnosis-loop.md` to reproduce the exact symptom, rank falsifiable hypotheses, instrument one prediction at a time, and convert the minimized repro into a regression signal when a correct seam exists.
+
+For new behavior or regression coverage, use `references/tdd-discipline.md`: avoid horizontal "all tests then all implementation" slicing, prefer one vertical tracer bullet at a time, and reject tests that do not exercise the real public contract.
 
 Preferred order:
 
@@ -684,10 +729,20 @@ Update durable context only when the task reveals reusable information, such as:
 - new component ownership
 - new integration contract
 - new verification command
+- resolved or sharpened domain term that belongs in `CONTEXT.md`
+- hard-to-reverse architectural decision that deserves an ADR
 
 Do not update durable context with one-off task details.
 
 If durable context appears stale, report it separately instead of silently trusting it.
+
+Create durable context lazily. If no `CONTEXT.md` exists, create or propose one only when a reusable domain term is resolved. Offer an ADR only when all three are true:
+
+1. The decision is hard to reverse.
+2. The decision will be surprising without context.
+3. The decision reflects a real trade-off among alternatives.
+
+See `references/domain-context.md` for the glossary and ADR formats.
 
 Output:
 
@@ -735,6 +790,10 @@ Return:
 
 Keep the final report concise. Include concrete file paths, commands, tests, and remaining risks.
 
+For architecture reviews, migration impact maps, performance investigations, or cross-component contract analysis, consider a self-contained temporary HTML visual report when diagrams or side-by-side layout would make the evidence easier to inspect. See `references/visual-review-reports.md`.
+
+If the user asks for terse or compressed output, reduce filler and keep exact technical terms, commands, paths, errors, and risks intact.
+
 ---
 
 # Failure modes to actively avoid
@@ -769,15 +828,20 @@ Keep the final report concise. Include concrete file paths, commands, tests, and
 Use these only when needed:
 
 - `references/agent-selection-matrix.md` for detailed routing rules.
+- `references/alignment-audit.md` for resolving ambiguous user intent before routing or implementation.
 - `references/role-definitions.md` for role contracts.
 - `references/output-contracts.md` for report templates.
 - `references/routing-examples.md` for examples.
 - `references/repo-intelligence-schema.md` for repo atlas and component brief schemas.
+- `references/domain-context.md` for optional `CONTEXT.md` glossary and ADR usage.
 - `references/contract-graph-schema.md` for interaction and contract mapping.
 - `references/evidence-ledger-schema.md` for evidence discipline.
 - `references/autonomy-ladder.md` for implementation gates.
+- `references/diagnosis-loop.md` for feedback-loop-first bug and performance diagnosis.
+- `references/tdd-discipline.md` for vertical-slice behavior testing and anti-test-theater rules.
 - `references/failure-attribution.md` for verifier-loop triage.
 - `references/context-garbage-collection.md` for durable-context updates.
+- `references/visual-review-reports.md` for optional temporary HTML review artifacts.
 
 # Supporting scripts
 

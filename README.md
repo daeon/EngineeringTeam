@@ -34,7 +34,8 @@ Use it when you want your agent to:
 flowchart LR
     userRequest[User_Request] --> invokeSkill[Invoke_engineering_team]
     invokeSkill --> classify[Classify_Risk]
-    classify --> mapRepo[Repo_Atlas]
+    classify --> align[Alignment_Gate]
+    align --> mapRepo[Repo_Atlas]
     mapRepo --> componentBrief[Component_Brief]
     componentBrief --> contractGraph[Contract_Graph]
     contractGraph --> evidenceGate[Evidence_Gate]
@@ -66,6 +67,7 @@ Skip the full workflow for typo fixes, obvious one-line edits, and tasks where t
 EngineeringTeam makes the agent produce compact, reviewable artifacts before and after implementation:
 
 - `Repo Atlas`: system type, entry points, build/test commands, generated-code rules, and high-risk areas.
+- `Alignment`: resolved decisions, acceptance criteria, non-goals, and repo-answerable questions checked.
 - `Component Brief`: owning component, key files/symbols, related tests, inputs, outputs, and side effects.
 - `Contract Graph`: producer, contract/data shape, consumer, failure mode, coverage, and risk.
 - `Evidence Ledger`: claim, evidence, confidence, and impact.
