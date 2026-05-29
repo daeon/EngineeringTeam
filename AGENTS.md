@@ -4,6 +4,10 @@
 
 Use this file as repo-level guidance for any coding agent. Keep it short. Put detailed procedures in the installed `engineering-team` skill.
 
+## Project-Scoped Memory
+
+Before EngineeringTeam work, read `.engineering-team/memory/index.md` when it exists. Treat project memory as advisory: current source code, tests, and generated outputs win over memory. Do not store secrets, credentials, private user information, temporary logs, or speculation. Durable memory entries should include evidence/source paths.
+
 ## Default Engineering Rule
 
 For non-trivial software work, use the EngineeringTeam workflow:

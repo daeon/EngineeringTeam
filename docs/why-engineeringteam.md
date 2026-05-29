@@ -18,7 +18,20 @@ Common agent failure modes:
 - Treating security, performance, migration, or release concerns as afterthoughts.
 - Reporting success without fresh verification.
 
-EngineeringTeam exists to make those failures harder.
+EngineeringTeam exists to make those failures harder. It inserts a lightweight engineering harness between the request and the edit, so the agent has to expose ownership, contracts, evidence, and verification before it changes the repo.
+
+## Why A Harness Plugin Helps
+
+A prompt can ask an agent to be careful once. A harness plugin makes the discipline reusable across sessions, repositories, and tools. EngineeringTeam packages the workflow, specialist roles, templates, validation scripts, and harness manifests together so teams do not have to rebuild the same guardrails for every agent environment.
+
+This matters because agent failures are usually process failures:
+
+- The agent did not know which contract it was changing.
+- The agent optimized for an edit before finding the owner.
+- The agent used stale documentation as authority.
+- The agent produced a plausible patch without a meaningful verification path.
+
+EngineeringTeam turns those risks into explicit gates and artifacts. Human reviewers can inspect what the agent believed, what evidence supported it, and which checks exercised the changed behavior.
 
 ## The Value
 
@@ -65,3 +78,7 @@ Teams can use EngineeringTeam to get:
 - Cleaner handoffs from AI work to human review.
 
 The product promise is simple: EngineeringTeam helps your coding agent slow down at the right moments so it can move faster safely.
+
+## Design Documentation
+
+For the deeper architecture, safety model, memory model, and harness-plugin rationale, see `docs/design.md`.
