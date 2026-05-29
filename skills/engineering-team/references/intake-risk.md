@@ -1,6 +1,6 @@
 # Intake and Risk Classification
 
-**Produce the `## Intake` artifact as your first output — before any file reads, searches, or tool calls.**
+**Produce the `## Intake` artifact before deep routing or implementation.** Minimal repo discovery is allowed when needed to classify scope accurately, but do not start broad investigation, specialist routing, or edits before intake is recorded.
 
 Classify every task before routing or implementing.
 
@@ -33,7 +33,7 @@ See `references/autonomy-ladder.md` for the single-owner L0–L5 definition.
 
 | Level | Meaning | Required before edit |
 |---|---|---|
-| L0 | Read-only exploration or analysis (no edits) | Repo Atlas + Analysis Report |
+| L0 | Read-only exploration or analysis (no edits) | Lightweight Repo Atlas + Analysis Report |
 | L1 | Plan only | Repo Atlas |
 | L2 | Local patch, no behavior change | Component Brief + nearby pattern/test |
 | L3 | Behavior change | Contract Graph + regression test or verification path |
@@ -57,7 +57,7 @@ Escalate level when a change touches public contracts, auth, permissions, persis
 
 ## L0 fast path
 
-When autonomy level is L0, proceed to Repo Atlas (`references/repo-atlas.md`) then produce an Analysis Report. Skip agent routing, contract graph, evidence ledger, advisor gate, implementation gate, and verification loop. Context GC still applies.
+When autonomy level is L0, proceed to a lightweight Repo Atlas, then produce an Analysis Report. Skip agent routing, contract graph, evidence ledger, advisor gate, implementation gate, and verification loop. Context GC still applies.
 
 L0 tasks: codebase audits, feedback requests, "analyze this repo", "what are the risks here?", architecture surveys with no planned change, PR or diff reviews that produce findings only.
 
@@ -67,6 +67,7 @@ Produce artifacts at the depth the level requires. Do not skip artifacts entirel
 
 | Level | Repo Atlas | Component Brief | Contract Graph | Evidence Ledger |
 |---|---|---|---|---|
+| L0 | Lightweight summary inside the Analysis Report | Not required | Not required | Not required |
 | L2 | One paragraph + 3–5 key paths | 5-bullet summary | Affected edges only (2–4 rows) | Top 3 claims |
 | L3 | Full template | Full template | Full edge table | Full table |
 | L4+ | Full template + cross-component view | Full template per owner | Full edge table + impact map | Full table + skeptic pass |

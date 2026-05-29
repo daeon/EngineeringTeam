@@ -89,6 +89,11 @@ CONTEXT_DISCIPLINE_PHRASES = [
     "Context discipline",
 ]
 
+NO_SESSION_START_PHRASES = [
+    "No session-start shell behavior",
+    "session-start magic",
+]
+
 
 def require(condition: bool, message: str) -> None:
     if not condition:
@@ -98,6 +103,31 @@ def require(condition: bool, message: str) -> None:
 def load_json(path: Path) -> dict:
     require(path.exists(), f"missing {path}")
     return json.loads(path.read_text())
+
+
+def validate_no_session_start_hooks(plugin_root: Path, cursor_manifest: dict) -> None:
+    """Keep code and docs aligned with the public no-startup-injection promise."""
+
+    require(
+        "hooks" not in cursor_manifest,
+        "Cursor manifest must not define hooks while docs promise no session-start magic",
+    )
+    require(
+        not (plugin_root / "hooks").exists(),
+        "hooks/ directory exists while docs promise no session-start shell behavior",
+    )
+    require(
+        not (plugin_root / "skills" / "using-engineering-team").exists(),
+        "session-start bootstrap skill still exists after hooks were removed",
+    )
+
+    readme = plugin_root / "README.md"
+    security = plugin_root / "SECURITY.md"
+    require(readme.exists(), "missing README.md")
+    require(security.exists(), "missing SECURITY.md")
+    combined_docs = readme.read_text() + "\n" + security.read_text()
+    for phrase in NO_SESSION_START_PHRASES:
+        require(phrase in combined_docs, f"missing no-session-start documentation phrase: {phrase}")
 
 
 def main() -> int:
@@ -125,6 +155,7 @@ def main() -> int:
     cursor_manifest = load_json(plugin_root / ".cursor-plugin" / "plugin.json")
     require(cursor_manifest.get("skills") == "./skills/", 'Cursor manifest skills must be "./skills/"')
     require(cursor_manifest.get("agents") == "./agents/", 'Cursor manifest agents must be "./agents/"')
+    validate_no_session_start_hooks(plugin_root, cursor_manifest)
 
     marketplace = load_json(plugin_root / ".claude-plugin" / "marketplace.json")
     require(marketplace.get("plugins", [{}])[0].get("source") == "./", 'Claude marketplace source must be "./"')

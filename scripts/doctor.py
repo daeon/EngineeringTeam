@@ -103,10 +103,10 @@ def check_harness_dirs() -> None:
             warn(f"Harness output missing: {rel} ({label})")
 
 
-def run_script(label: str, args: list[str]) -> None:
+def run_script(label: str, args: list[str], cwd: Path | None = None) -> None:
     try:
         proc = subprocess.run(
-            args, cwd=REPO_ROOT, capture_output=True, text=True, timeout=180
+            args, cwd=cwd or REPO_ROOT, capture_output=True, text=True, timeout=180
         )
     except FileNotFoundError as exc:
         fail(f"{label}: command not found ({exc})")
@@ -137,6 +137,11 @@ def main() -> int:
     run_script(
         "Codex package validation",
         [sys.executable, "scripts/validate-codex-package.py"],
+    )
+    run_script(
+        "Worked example test suite",
+        [sys.executable, "-m", "unittest", "discover", "-s", "tests", "-v"],
+        cwd=REPO_ROOT / "examples" / "buggy-python-service",
     )
     if has_node:
         run_script(

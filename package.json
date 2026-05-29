@@ -4,7 +4,8 @@
   "type": "module",
   "main": ".opencode/plugins/engineering-team.js",
   "scripts": {
-    "validate": "python3 skills/engineering-team/scripts/validate-package.py && python3 scripts/validate-codex-package.py && python3 scripts/generate-agents.py --check && bash scripts/bump-version.sh --check && node --check .opencode/plugins/engineering-team.js",
+    "validate": "python3 skills/engineering-team/scripts/validate-package.py && python3 scripts/validate-codex-package.py && python3 scripts/generate-agents.py --check && bash scripts/bump-version.sh --check && node --check .opencode/plugins/engineering-team.js && npm run test:examples",
+    "test:examples": "cd examples/buggy-python-service && python3 -m unittest discover -s tests -v",
     "generate:agents": "python3 scripts/generate-agents.py",
     "check:agents": "python3 scripts/generate-agents.py --check",
     "doctor": "python3 scripts/doctor.py",

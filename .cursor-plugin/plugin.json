@@ -17,6 +17,5 @@
     "multi-agent"
   ],
   "skills": "./skills/",
-  "agents": "./agents/",
-  "hooks": "./hooks/hooks-cursor.json"
+  "agents": "./agents/"
 }
