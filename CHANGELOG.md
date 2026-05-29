@@ -4,6 +4,11 @@
 
 Public-launch polish.
 
+- Removed session-start bootstrap behavior: deleted `hooks/`, removed the Cursor manifest hook entry, and retired `skills/using-engineering-team/` so the package matches the documented no-session-start-magic posture.
+- Hardened validation to fail if session-start hooks or bootstrap skills reappear while the public security posture says they are absent.
+- Hardened generated-agent drift checks to detect stale extra generated files after source-agent renames or removals.
+- Added the worked example suite to `npm run validate` and `scripts/doctor.py`.
+- Softened Intake ordering so minimal repo discovery is allowed when needed to classify scope accurately before deep routing or implementation.
 - Fixed package correctness: added `license`, `skills`, and `agents` fields to `.claude-plugin/plugin.json` so `validate-package.py` passes.
 - Added `npm run validate`, `generate:agents`, and `check:agents` scripts so local and CI validation share one command.
 - Added GitHub Copilot custom-agent generation under `.github/agents/*.md` (experimental), wired into generation, drift checks, and package validation.
