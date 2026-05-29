@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+# SessionStart hook for EngineeringTeam plugin.
+
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+PLUGIN_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
+BOOTSTRAP_SKILL="${PLUGIN_ROOT}/skills/using-engineering-team/SKILL.md"
+
+if [ -f "$BOOTSTRAP_SKILL" ]; then
+  bootstrap_content="$(<"$BOOTSTRAP_SKILL")"
+else
+  bootstrap_content="Error reading using-engineering-team skill"
+fi
+
+escape_for_json() {
+  local s="$1"
+  s="${s//\\/\\\\}"
+  s="${s//\"/\\\"}"
+  s="${s//$'\n'/\\n}"
+  s="${s//$'\r'/\\r}"
+  s="${s//$'\t'/\\t}"
+  printf '%s' "$s"
+}
+
+bootstrap_escaped="$(escape_for_json "$bootstrap_content")"
+session_context="<EXTREMELY_IMPORTANT>\nYou have EngineeringTeam.\n\nBelow is the full content of your 'using-engineering-team' bootstrap skill. Follow it to decide when to invoke the 'engineering-team' skill.\n\n${bootstrap_escaped}\n</EXTREMELY_IMPORTANT>"
+
+if [ -n "${CURSOR_PLUGIN_ROOT:-}" ]; then
+  printf '{\n  "additional_context": "%s"\n}\n' "$session_context"
+elif [ -n "${CLAUDE_PLUGIN_ROOT:-}" ] && [ -z "${COPILOT_CLI:-}" ]; then
+  printf '{\n  "hookSpecificOutput": {\n    "hookEventName": "SessionStart",\n    "additionalContext": "%s"\n  }\n}\n' "$session_context"
+else
+  printf '{\n  "additionalContext": "%s"\n}\n' "$session_context"
+fi
+
+exit 0

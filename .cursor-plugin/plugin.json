@@ -1,0 +1,22 @@
+{
+  "name": "engineering-team",
+  "displayName": "EngineeringTeam",
+  "description": "Repo-first software engineering workflow: map the repo, route the smallest useful specialist team, trace contracts, gate risky decisions, require evidence, verify changes, and preserve reusable repo knowledge.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Damon Chitsaz",
+    "email": "dchitsaz@gmail.com"
+  },
+  "license": "MIT",
+  "keywords": [
+    "software-engineering",
+    "repo-intelligence",
+    "agent-team",
+    "skills",
+    "verification",
+    "multi-agent"
+  ],
+  "skills": "./skills/",
+  "agents": "./agents/",
+  "hooks": "./hooks/hooks-cursor.json"
+}

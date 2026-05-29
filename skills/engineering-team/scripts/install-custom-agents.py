@@ -1,0 +1,66 @@
+#!/usr/bin/env python3
+"""Install bundled Codex custom-agent templates.
+
+Usage:
+  python3 scripts/install-custom-agents.py --scope project
+  python3 scripts/install-custom-agents.py --scope user
+  python3 scripts/install-custom-agents.py --scope project --repo /path/to/repo
+"""
+
+from __future__ import annotations
+
+import argparse
+import shutil
+from pathlib import Path
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description="Install Codex custom-agent TOML templates.")
+    parser.add_argument("--scope", choices=["project", "user"], default="project")
+    parser.add_argument("--repo", default=".", help="Repository root for project-scoped installs")
+    parser.add_argument("--force", action="store_true", help="Overwrite existing agent files")
+    args = parser.parse_args()
+
+    skill_root = Path(__file__).resolve().parents[1]
+    source_dir = skill_root / "assets" / "agents"
+    if not source_dir.exists():
+        raise SystemExit(f"Missing agent template directory: {source_dir}")
+
+    if args.scope == "project":
+        target_dir = Path(args.repo).resolve() / ".codex" / "agents"
+    else:
+        target_dir = Path.home() / ".codex" / "agents"
+
+    target_dir.mkdir(parents=True, exist_ok=True)
+
+    copied = []
+    skipped = []
+    for source in sorted(source_dir.glob("*.toml")):
+        target = target_dir / source.name
+        if target.exists() and not args.force:
+            skipped.append(target.name)
+            continue
+        shutil.copy2(source, target)
+        copied.append(target.name)
+
+    print(f"Installed Codex custom agents to: {target_dir}")
+    if copied:
+        print("Copied:")
+        for name in copied:
+            print(f"  - {name}")
+    if skipped:
+        print("Skipped existing files; pass --force to overwrite:")
+        for name in skipped:
+            print(f"  - {name}")
+
+    config_path = (Path(args.repo).resolve() / ".codex" / "config.toml") if args.scope == "project" else (Path.home() / ".codex" / "config.toml")
+    if not config_path.exists():
+        print("\nRecommended config:")
+        print("[agents]")
+        print("max_threads = 6")
+        print("max_depth = 1")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

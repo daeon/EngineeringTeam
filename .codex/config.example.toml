@@ -1,0 +1,11 @@
+# Optional Codex settings for using this workflow.
+# Copy relevant sections into ~/.codex/config.toml or repo-local .codex/config.toml.
+
+# AGENTS.md discovery limit. Codex defaults to 32 KiB; raise only when your project instructions are intentionally larger.
+project_doc_max_bytes = 65536
+
+[agents]
+# Keep fan-out bounded. The skill prefers the smallest useful specialist set.
+max_threads = 6
+max_depth = 1
+# job_max_runtime_seconds = 1800

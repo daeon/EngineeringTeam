@@ -1,0 +1,20 @@
+{
+  "name": "engineering-team-dev",
+  "description": "Development marketplace for the EngineeringTeam plugin",
+  "owner": {
+    "name": "Damon Chitsaz",
+    "email": "dchitsaz@gmail.com"
+  },
+  "plugins": [
+    {
+      "name": "engineering-team",
+      "description": "Repo-first software engineering workflow: map the repo, route the smallest useful specialist team, trace contracts, gate risky decisions, require evidence, verify changes, and preserve reusable repo knowledge.",
+      "version": "0.1.0",
+      "source": "./",
+      "author": {
+        "name": "Damon Chitsaz",
+        "email": "dchitsaz@gmail.com"
+      }
+    }
+  ]
+}
