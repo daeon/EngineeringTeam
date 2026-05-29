@@ -143,7 +143,7 @@ npm run validate
 python3 scripts/doctor.py
 ```
 
-`npm run validate` runs the same checks as CI: JSON manifests, TOML agents, generated-agent drift, version consistency, OpenCode JS syntax, and package structure. The same command runs in GitHub Actions via `.github/workflows/validate.yml`.
+`npm run validate` runs the same checks as CI: JSON manifests, TOML agents, generated-agent drift including stale generated files, version consistency, OpenCode JS syntax, package structure, no session-start hook regression, and the worked example test suite. The same command runs in GitHub Actions via `.github/workflows/validate.yml`.
 
 ## 📚 Documentation
 
