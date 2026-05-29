@@ -2,28 +2,7 @@
 
 EngineeringTeam is a harness plugin and skill bundle for turning a general coding agent into a repo-first engineering workflow. It does not replace the model, the editor, the terminal, or the project's existing build system. It adds a disciplined operating model around them: map before editing, trace contracts before changing behavior, require evidence for claims, route specialist review only where useful, and verify the result before handoff.
 
-## Design Goals
-
-EngineeringTeam is designed for teams that want agent work to be inspectable, reviewable, and safe enough for real repositories.
-
-Primary goals:
-
-- **Repo-first behavior:** the agent learns the repository's entry points, ownership boundaries, tests, generated-code rules, and local instructions before making non-trivial edits.
-- **Evidence-backed decisions:** every important claim should point to source files, tests, logs, schemas, runtime output, or documented contracts.
-- **Contract awareness:** behavior changes are treated as producer/consumer changes, not isolated line edits.
-- **Smallest useful team:** specialists are selected by risk instead of spawned by default.
-- **Harness portability:** the same canonical skill content works across multiple coding-agent harnesses.
-- **Low operational overhead:** there is no daemon, external service, database, or mandatory network dependency in the workflow.
-- **Human-reviewable artifacts:** the agent produces compact artifacts that explain what it understood, what it changed, and how it verified the result.
-
-Non-goals:
-
-- Replace project CI, tests, code review, or release processes.
-- Store private task history or secrets.
-- Force a fixed multi-agent workflow for every small edit.
-- Hide decisions in long transcripts that reviewers cannot audit.
-
-## The Core Problem
+## ⚙️ The Core Problem
 
 Coding agents are often competent at local edits once the target file and desired behavior are clear. Real engineering work is harder because the highest-risk decisions happen before typing:
 
@@ -36,17 +15,21 @@ Coding agents are often competent at local edits once the target file and desire
 
 Without a workflow, agents can optimize for speed: edit the nearest file, add a plausible test, and summarize success. EngineeringTeam changes the default: uncertainty must be mapped and retired before implementation.
 
-## Architecture Overview
+## 🏗️ Architecture Overview
 
-```text
-User request
-  -> Harness entrypoint
-  -> Canonical EngineeringTeam skill
-  -> Progressive reference loading
-  -> Optional specialist agents
-  -> Evidence-gated implementation
-  -> Verification and final handoff
-  -> Context GC / optional repo-scoped memory
+```mermaid
+flowchart TD
+    request[User request] --> harness[Harness entrypoint]
+    harness --> skill[Canonical EngineeringTeam skill]
+    skill --> refs[Progressive reference loading]
+    refs --> routing{Distinct risk?}
+    routing -->|Yes| specialists[Optional specialist agents]
+    routing -->|No| lead[Lead engineer path]
+    specialists --> gate[Evidence-gated implementation]
+    lead --> gate
+    gate --> verify[Verification and final handoff]
+    verify --> gc[Context GC]
+    gc --> memory[(Optional repo-scoped memory)]
 ```
 
 The repository is organized around a canonical skill bundle and thin harness adapters.
@@ -61,7 +44,7 @@ The repository is organized around a canonical skill bundle and thin harness ada
 | Generated agents | Harness-native agent files are generated into `.codex/`, `agents/`, `.github/`, and bundled skill assets. |
 | Validation | `npm run validate` checks manifests, generated-agent drift, version sync, and plugin syntax. |
 
-## Harness Plugin Model
+## 🔌 Harness Plugin Model
 
 EngineeringTeam is packaged as a harness plugin because teams rarely use only one AI coding environment. The plugin provides a consistent workflow while allowing each harness to load skills and agents in its native format.
 
@@ -76,45 +59,52 @@ Supported harness surfaces include:
 
 The design keeps harness-specific files shallow. The canonical behavior lives in the skill and references, so improvements to the workflow can be made once and distributed consistently.
 
-## Workflow Design
+## 🧭 Workflow Design
 
 EngineeringTeam uses a narrowing workflow:
 
-```text
-repo map -> component map -> feature map -> contract graph -> focused files -> change plan -> implementation -> verification
+```mermaid
+flowchart LR
+    repo[Repo map] --> component[Component map]
+    component --> feature[Feature map]
+    feature --> contracts[Contract graph]
+    contracts --> files[Focused files]
+    files --> plan[Change plan]
+    plan --> implementation[Implementation]
+    implementation --> verification[Verification]
 ```
 
 The important design choice is sequencing. The agent should not start with a patch. It should first produce enough context to make the patch reviewable.
 
-### Intake And Risk
+### 1️⃣ Intake And Risk
 
 The agent restates the task as an engineering problem, identifies unknowns, and classifies risk. This controls how much process is needed. A local typo can use a fast path; a behavior change across API boundaries needs contract tracing and stronger verification.
 
-### Repo Atlas
+### 2️⃣ Repo Atlas
 
 The repo atlas is a shallow, task-scoped map of the system. It records languages, entry points, test commands, generated-code conventions, project instructions, and high-risk areas. It prevents the agent from treating an unfamiliar repository as a blank text directory.
 
-### Component Brief
+### 3️⃣ Component Brief
 
 The component brief narrows from repository to owner. It identifies relevant files, symbols, call paths, nearby tests, similar patterns, inputs, outputs, and side effects. This is the minimum useful context before most implementation work.
 
-### Contract Graph
+### 4️⃣ Contract Graph
 
 For behavior changes, EngineeringTeam traces producer-to-consumer edges. The graph captures data shape, ownership, error behavior, compatibility concerns, coverage, and failure modes. This makes it harder to accidentally change public behavior while only checking the edited file.
 
-### Evidence Ledger
+### 5️⃣ Evidence Ledger
 
 The evidence ledger separates claims from assumptions. A claim is useful only when backed by source paths, symbols, tests, logs, runtime observations, schemas, or docs. Unsupported ideas remain hypotheses until verified.
 
-### Implementation Gate
+### 6️⃣ Implementation Gate
 
 The implementation gate names the files allowed to change, evidence for the design, affected contracts, verification plan, and rollback path. It is a deliberate pause before writes.
 
-### Verification And Handoff
+### 7️⃣ Verification And Handoff
 
 Verification starts narrow and expands only when risk justifies it. The final handoff reports the changed files, commands run, residual risk, and reusable context that should be preserved.
 
-## Specialist Routing Design
+## 🧑‍💻 Specialist Routing Design
 
 EngineeringTeam does not require a large team for every task. The lead agent selects specialists when a distinct risk needs a distinct lens.
 
@@ -133,9 +123,25 @@ Examples:
 | Documentation, CLI, onboarding | DX Documentation Reviewer |
 | L4/L5 or assumption-heavy decision | Advisor Consultant |
 
+```mermaid
+flowchart TD
+    intake[Intake risk] --> classify{Risk type}
+    classify -->|Unknown ownership| investigator[Codebase Investigator]
+    classify -->|Behavior change| verifier[Test Verification Engineer]
+    classify -->|Security boundary| security[Security Analyst]
+    classify -->|Public API/module boundary| architect[System Design Architect]
+    classify -->|Conflicting evidence| skeptic[Evidence Skeptic]
+    investigator --> capsule[Context capsule]
+    verifier --> capsule
+    security --> capsule
+    architect --> capsule
+    skeptic --> capsule
+    capsule --> lead[Lead Engineer decision]
+```
+
 Subagents are bounded by context capsules. They return findings, evidence, risk, and recommended next action instead of transcripts. The lead agent remains responsible for the final decision.
 
-## Memory And Context Design
+## 🧠 Memory And Context Design
 
 EngineeringTeam distinguishes between task-scoped artifacts and durable memory.
 
@@ -145,9 +151,20 @@ EngineeringTeam distinguishes between task-scoped artifacts and durable memory.
 - Memory entries must include evidence/source paths.
 - Secrets, credentials, private user information, temporary logs, and speculation do not belong in memory.
 
+```mermaid
+flowchart LR
+    session[Task-scoped artifacts] --> gc[Context GC]
+    gc --> durable{Reusable and evidence-backed?}
+    durable -->|No| discard[Do not retain]
+    durable -->|Yes| memory[Repo-scoped memory]
+    source[Current source/tests/generated outputs] --> wins[Always wins]
+    memory --> advisory[Advisory context]
+    wins --> advisory
+```
+
 This design avoids turning memory into stale authority. Memory helps agents start faster, but the repository remains the source of truth.
 
-## Safety Model
+## 🛡️ Safety Model
 
 EngineeringTeam's safety model is based on friction at the right moments:
 
@@ -158,7 +175,7 @@ EngineeringTeam's safety model is based on friction at the right moments:
 
 This is especially valuable for security-sensitive work, generated code, migrations, public APIs, release behavior, and performance-sensitive paths.
 
-## Why Use A Harness Plugin Instead Of A Prompt?
+## 🚀 Why Use A Harness Plugin Instead Of A Prompt?
 
 A single prompt can remind an agent to be careful, but a harness plugin is easier to reuse and maintain:
 
@@ -171,7 +188,7 @@ A single prompt can remind an agent to be careful, but a harness plugin is easie
 
 The result is less reliance on one perfect prompt and more reliance on a repeatable engineering process.
 
-## Adoption Guidance
+## ✅ Adoption Guidance
 
 Use EngineeringTeam when a wrong answer would come from missing context rather than missing syntax:
 
@@ -185,7 +202,7 @@ Use EngineeringTeam when a wrong answer would come from missing context rather t
 
 Do not use the full workflow for obvious one-line edits. The design intentionally supports a fast path so the process stays proportional to risk.
 
-## Maintenance Model
+## 🛠️ Maintenance Model
 
 The package is maintained like code:
 
