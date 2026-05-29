@@ -28,6 +28,10 @@ If durable context is stale, report it instead of silently trusting it.
 
 Create context lazily. Do not create `CONTEXT.md` or ADR files just because they are missing.
 
+## Repo-scoped memory
+
+When `.engineering-team/memory/index.md` exists, Context GC / session closeout may create or update repo-scoped memory files under `.engineering-team/memory/` for reusable, evidence-backed knowledge. Memory is advisory: current source code, tests, and generated outputs win over memory. Do not store secrets, credentials, private user information, temporary logs, or speculation. Every durable memory entry should include evidence/source paths.
+
 Use `CONTEXT.md` only for domain language:
 
 - canonical terms

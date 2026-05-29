@@ -147,6 +147,9 @@ python3 scripts/doctor.py
 
 ## 📚 Documentation
 
+Full docs page: https://github.com/daeon/EngineeringTeam/tree/main/docs
+
+- `docs/design.md` — architecture, design principles, harness boundaries, and adoption model.
 - `docs/why-engineeringteam.md` — product value, target users, positioning.
 - `docs/getting-started.md` — install, first prompts, expected outputs.
 - `docs/workflow.md` — detailed workflow, dataflow, and gates.

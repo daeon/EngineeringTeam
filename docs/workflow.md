@@ -22,6 +22,21 @@ flowchart TB
     verification --> handoff[Final_Handoff]
 ```
 
+
+## Why The Workflow Exists
+
+The workflow is not ceremony for its own sake. It counters the most expensive failure mode in agent-assisted engineering: acting confidently with incomplete repository context. Each stage retires a different kind of uncertainty:
+
+- Intake retires ambiguity about the requested outcome.
+- Repo Atlas retires uncertainty about project shape and local rules.
+- Component Brief retires uncertainty about ownership and call path.
+- Contract Graph retires uncertainty about consumers and compatibility.
+- Evidence Ledger retires unsupported claims.
+- Implementation Gate retires accidental broad edits.
+- Verification retires unproven success.
+
+For small, obvious edits, EngineeringTeam can take a fast path. For risky changes, the workflow creates a reviewable trail from user request to validated patch.
+
 ## Stage 1: Intake And Risk
 
 The agent restates the task in engineering terms and classifies:

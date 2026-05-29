@@ -71,11 +71,15 @@ Task
   → pass Implementation Gate     references/implementation-gate.md  ← output gate block before any file write
   → implement
   → verify                       references/verification-loop.md
-  → GC context                   references/context-garbage-collection.md  ← always required, even with no updates
+  → GC context                   references/context-garbage-collection.md  ← always required; may update repo-scoped memory
   → final report                 references/final-report.md        ← use the template, not a PR summary
 ```
 
 **L0 fast path:** Classify risk → Repo Atlas → Analysis Report → Context GC. Skip agent routing, contract graph, evidence ledger, Advisor Gate, implementation gate, and verification loop. Use Advisor Consultant only at defined risk gates.
+
+## Project-scoped memory
+
+When `.engineering-team/memory/index.md` exists, read it before EngineeringTeam work to discover advisory repo memory. During Context GC / session closeout, create or update files under `.engineering-team/memory/` only for reusable, evidence-backed knowledge. Current source code, tests, and generated outputs always win over memory. Do not store secrets, credentials, private user information, temporary logs, or speculation. Every durable memory entry should include evidence/source paths.
 
 ## Required artifacts
 
