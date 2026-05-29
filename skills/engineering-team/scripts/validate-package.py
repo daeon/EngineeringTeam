@@ -21,6 +21,12 @@ REFERENCE_CONTRACTS: dict[str, list[str]] = {
         "## Delegation envelope",
         "## Context capsule rule",
     ],
+    "references/analysis-routing.md": [
+        "# Read-Only Analysis Routing",
+        "## Mode selection",
+        "## Routing graph",
+        "## Read-only analysis rules",
+    ],
     "references/subagent-context-policy.md": [
         "# Subagent Context Policy",
         "## Main agent owns",
@@ -81,6 +87,63 @@ TEMPLATE_CONTRACTS: dict[str, list[str]] = {
         "## Scope",
         "## Findings",
         "## Recommended next action",
+    ],
+    "templates/codebase-analysis-report.md": [
+        "# Codebase Analysis Report",
+        "## Scope",
+        "## Repo / Component Map",
+        "## Call Paths and Contracts",
+    ],
+    "templates/debugging-hypothesis-matrix.md": [
+        "# Debugging Hypothesis Matrix",
+        "## Symptom",
+        "## Hypotheses",
+        "## Current conclusion",
+    ],
+    "templates/log-forensics-report.md": [
+        "# Log Forensics Report",
+        "## Scope and Data Handling",
+        "## Timeline",
+        "## Findings",
+    ],
+    "templates/performance-forensics-report.md": [
+        "# Performance Forensics Report",
+        "## Measurement Frame",
+        "## Hot Path Map",
+        "## Bottleneck Hypotheses",
+    ],
+    "templates/next-probe-plan.md": [
+        "# Next-Probe Plan",
+        "## Goal",
+        "## Probes",
+        "## Stop conditions",
+    ],
+}
+
+READ_ONLY_SKILL_CONTRACTS: dict[str, list[str]] = {
+    "codebase-analysis": [
+        "name: codebase-analysis",
+        "## Default posture",
+        "Read-only by default",
+        "## Required output",
+    ],
+    "debugging-forensics": [
+        "name: debugging-forensics",
+        "## Default posture",
+        "Read-only by default",
+        "## Required output",
+    ],
+    "log-forensics": [
+        "name: log-forensics",
+        "## Default posture",
+        "Read-only by default",
+        "## Required output",
+    ],
+    "performance-forensics": [
+        "name: performance-forensics",
+        "## Default posture",
+        "Read-only by default",
+        "## Required output",
     ],
 }
 
@@ -185,6 +248,14 @@ def main() -> int:
         text = full_path.read_text()
         for heading in required_headings:
             require(heading in text, f"{rel_path} missing required heading: {heading}")
+
+    for skill_name, required_phrases in READ_ONLY_SKILL_CONTRACTS.items():
+        read_only_skill_path = plugin_root / "skills" / skill_name / "SKILL.md"
+        require(read_only_skill_path.exists(), f"missing read-only analysis skill: {skill_name}")
+        text = read_only_skill_path.read_text()
+        require(text.startswith("---\n"), f"{skill_name} missing frontmatter")
+        for phrase in required_phrases:
+            require(phrase in text, f"{skill_name} missing required phrase: {phrase}")
 
     generated_agents_dir = skill_dir / "assets" / "agents"
     require(generated_agents_dir.exists(), f"missing generated agents dir: {generated_agents_dir}")

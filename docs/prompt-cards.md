@@ -5,6 +5,34 @@ for the repo-first workflow: map before editing, route specialists only when
 useful, require evidence, and verify. Use `handoff` when transferring active work
 to another agent or fresh session.
 
+
+## Read-only codebase analysis
+
+```text
+Use engineering-team in read-only analysis mode to understand this codebase.
+Route to codebase-analysis, build a repo/component map, identify entry points,
+contracts, generated-code rules, and risk areas, and return an evidence-backed
+codebase analysis report. Do not edit files.
+```
+
+## Read-only debugging forensics
+
+```text
+Use engineering-team in read-only analysis mode to debug this issue without
+patching yet. Route to debugging-forensics, map the failing path, build a
+hypothesis matrix with supporting and counter-evidence, and produce the next
+probe plan needed to confirm or reject the likely root cause.
+```
+
+## Read-only log forensics
+
+```text
+Use engineering-team in read-only analysis mode to analyze these logs. Route to
+log-forensics, redact sensitive values, reconstruct the timeline, identify
+correlated signals and likely failure modes, and return a log forensics report
+with next probes. Do not dump raw logs back to me.
+```
+
 ## Bug investigation
 
 ```text
@@ -23,13 +51,22 @@ and verification lenses only where the diff warrants. Return an evidence-backed
 review with risks, missing tests, and a go/no-go.
 ```
 
-## Performance investigation
+## Read-only performance forensics
 
 ```text
-Use engineering-team to investigate this performance regression. Establish a
-deterministic measurement first, identify the hot path with evidence, rank
-falsifiable hypotheses, and only then propose a change. Show before/after
-numbers and confirm no behavior change.
+Use engineering-team in read-only analysis mode to investigate this performance
+regression. Route to performance-forensics, define the target metric and
+baseline, map the suspected hot path, rank bottleneck hypotheses from evidence,
+and produce the next measurement plan. Do not optimize or edit files yet.
+```
+
+## Performance implementation
+
+```text
+Use engineering-team to implement a performance fix after the bottleneck is
+evidence-backed. Establish a deterministic measurement first, identify the hot
+path with evidence, make the smallest safe change, show before/after numbers,
+and confirm no behavior change.
 ```
 
 ## Security-sensitive change

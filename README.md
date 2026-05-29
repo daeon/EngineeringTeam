@@ -8,7 +8,7 @@
 
 **Make your AI coding agent behave like a senior engineering team.**
 
-EngineeringTeam is a repo-first workflow layer for AI coding agents. It makes the agent map the repo, trace contracts, gather evidence, route specialists selectively, gate implementation, verify changes, and hand off reviewable artifacts before claiming success.
+EngineeringTeam is a repo-first workflow layer for AI coding agents. It supports both implementation mode and read-only analysis mode: the agent maps the repo, traces contracts, gathers evidence, routes specialists selectively, gates implementation when edits are requested, verifies changes, and hands off reviewable artifacts before claiming success.
 
 > Stop vibe-coding legacy repos. Make the agent prove it understands the code before it edits.
 
@@ -16,11 +16,23 @@ EngineeringTeam is a repo-first workflow layer for AI coding agents. It makes th
 
 Most coding agents are fast, but speed is not judgment. On a real codebase the hard part is not typing code — it is finding the owning component, understanding the call path, preserving contracts, choosing the smallest safe change, and proving the change works.
 
-EngineeringTeam turns that discipline into a reusable skill that works across the agent you already use. It does not add a runtime service, network calls, or session-start magic. You invoke `engineering-team` when a task deserves a rigorous workflow, and the agent produces compact, human-reviewable artifacts as it goes.
+EngineeringTeam turns that discipline into a reusable skill that works across the agent you already use. It does not add a runtime service, network calls, or session-start magic. You invoke `engineering-team` when a task deserves a rigorous workflow, and the agent produces compact, human-reviewable artifacts as it goes. Use it for PR-ready implementation work or for read-only investigations where the right answer is a diagnosis, map, hypothesis matrix, log report, or performance probe plan rather than a diff.
 
 Use `handoff` when you want the current task transferred to another agent or a fresh session. It compacts the work into a continuation document with decisions, evidence, open questions, artifact links, suggested skills, and next actions.
 
 Specialist agents (security, architecture, performance, migration, release, verification, evidence skepticism) are **selective, not mandatory**. The workflow routes only the ones a task actually needs.
+
+
+## 🧭 Two workflow modes
+
+EngineeringTeam now routes requests into two broad modes:
+
+| Mode | Use it for | Typical output |
+|---|---|---|
+| **Implementation mode** | Fixes, feature work, refactors, tests, PR-ready changes | Repo Atlas, Component Brief, Contract Graph, Evidence Ledger, Implementation Gate, Verification Report, Final Report |
+| **Read-only analysis mode** | Understanding codebases, debugging without patching, log analysis, performance investigation | Codebase analysis report, debugging hypothesis matrix, log forensics report, performance forensics report, next-probe plan |
+
+The main `engineering-team` skill remains the router. It keeps the existing repo-first implementation workflow for change requests and routes analysis requests to focused read-only skills: `codebase-analysis`, `debugging-forensics`, `log-forensics`, and `performance-forensics`. If an investigation uncovers a likely fix, the agent should hand off an evidence-backed diagnosis and verification strategy before editing unless you explicitly ask it to implement.
 
 ## 📏 The rule
 
@@ -61,6 +73,12 @@ Then, in your coding agent:
 Use engineering-team to investigate this bug. Map the repo first, find the owning component, trace the affected contract graph, and propose the smallest safe fix with verification.
 ```
 
+For read-only analysis:
+
+```text
+Use engineering-team in read-only analysis mode to understand this repository. Route to codebase-analysis, map the main components and contracts, and return an evidence-backed report without editing files.
+```
+
 To transfer work to another agent or session:
 
 ```text
@@ -73,7 +91,7 @@ See the worked, runnable example and the talking points:
 
 - `examples/buggy-python-service/` — a small service with a real bug, the raw-agent prompt, the EngineeringTeam prompt, and filled-in expected artifacts.
 - `docs/demo-script.md` — 60-second and 5-minute demo scripts, plus a raw-agent vs EngineeringTeam comparison.
-- `docs/prompt-cards.md` — copy-paste prompts for bug investigation, PR review, performance, security, migration, release, architecture, test strategy, and handoff.
+- `docs/prompt-cards.md` — copy-paste prompts for implementation, read-only codebase analysis, debugging forensics, log forensics, performance forensics, security, migration, release, architecture, test strategy, and handoff.
 
 ## 🔌 Supported harnesses
 
@@ -86,7 +104,7 @@ See the worked, runnable example and the talking points:
 | OpenCode | `.opencode/plugins/engineering-team.js` | Supported |
 | GitHub Copilot | `.github/agents/*.md` | Experimental |
 
-All harnesses point at the same canonical skill bundle: `skills/engineering-team/SKILL.md`. Native agent definitions are generated from one source of truth (`agents-src/*.yaml`) — see `docs/harness-support.md`.
+All harnesses point at the same canonical skill bundle under `skills/`, with `skills/engineering-team/SKILL.md` as the main router and focused read-only skills beside it. Native agent definitions are generated from one source of truth (`agents-src/*.yaml`) — see `docs/harness-support.md`.
 
 ## 🗂️ What the artifacts look like
 
@@ -97,6 +115,10 @@ EngineeringTeam makes the agent produce compact, reviewable artifacts before and
 - **Contract Graph** — producer, contract/data shape, consumer, failure mode, coverage, risk.
 - **Evidence Ledger** — claim, evidence, confidence, impact.
 - **Verification Report** — command, result, important output, failure attribution, residual risk.
+- **Codebase Analysis Report** — scope, component map, call paths, contracts, findings, confidence, and unknowns.
+- **Debugging Hypothesis Matrix** — ranked hypotheses, supporting/counter evidence, falsifying probes, and fix readiness.
+- **Log Forensics Report** — timeline, signals, findings, redactions, ruled-out claims, and next probes.
+- **Performance Forensics Report** — measurement frame, hot path map, bottleneck hypotheses, and probe-first recommendations.
 - **Handoff Document** — continuation context for another agent or session, with decisions, evidence, artifact links, open questions, risks, suggested skills, and next actions.
 
 These make the agent's reasoning inspectable: a reviewer can see whether it understood the code path, not just whether the diff looks plausible. Filled-in samples live in `examples/buggy-python-service/expected-artifacts/`.
