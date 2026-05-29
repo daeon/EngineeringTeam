@@ -28,7 +28,7 @@ Prefer temporary artifacts under `.agent-state/` unless the repo already has a c
 
 ## Agent-Team Policy
 
-Spawn specialist agents only when the user explicitly asks for agent-team coordination or when the task is clearly parallelizable and the prompt permits it. Keep fan-out small.
+Spawn specialist agents only when a proactive trigger is met, the work is bounded, and the output can be returned as a compact context capsule. Keep fan-out small. If subagents are unavailable or not worth the overhead, simulate the role in the main session.
 
 Recommended specialists, when installed:
 
