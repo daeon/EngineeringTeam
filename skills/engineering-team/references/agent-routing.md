@@ -75,7 +75,7 @@ Rules for single-session simulation:
 
 ## Team creation and fallback
 
-If the user explicitly requests subagents or parallel review, spawn Codex subagents or custom agents. Otherwise, simulate the roles in the main session while preserving the same evidence and implementation gates.
+If the harness supports subagents and a proactive trigger is met, delegate bounded work using `templates/subagent-brief.md`. If subagents are unavailable, unsafe, or not worth the overhead, simulate the roles in the main session while preserving the same evidence and implementation gates.
 
 Rules:
 - The current session is the Lead Engineer.
