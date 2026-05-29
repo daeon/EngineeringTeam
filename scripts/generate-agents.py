@@ -9,14 +9,23 @@ from __future__ import annotations
 
 import argparse
 import difflib
-import shutil
 import sys
-import tempfile
 from pathlib import Path
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 AGENT_SOURCE_DIR = REPO_ROOT / "agents-src"
+
+
+GENERATED_DIRS = [
+    Path("agents"),
+    Path(".codex") / "agents",
+    Path("skills") / "engineering-team" / "assets" / "agents",
+    Path("skills") / "engineering-team" / "references" / "codex-custom-agents",
+    Path(".github") / "agents",
+]
+
+GENERATED_SUFFIXES = ("*.md", "*.toml")
 
 
 def parse_scalar(value: str) -> str | None:
@@ -221,13 +230,27 @@ def output_paths(agent: dict) -> list[tuple[Path, str]]:
 
 
 def generated_dirs() -> list[Path]:
-    return [
-        REPO_ROOT / "agents",
-        REPO_ROOT / ".codex" / "agents",
-        REPO_ROOT / "skills" / "engineering-team" / "assets" / "agents",
-        REPO_ROOT / "skills" / "engineering-team" / "references" / "codex-custom-agents",
-        REPO_ROOT / ".github" / "agents",
-    ]
+    return [REPO_ROOT / rel for rel in GENERATED_DIRS]
+
+
+def generated_files() -> set[Path]:
+    files: set[Path] = set()
+    for rel_dir in GENERATED_DIRS:
+        directory = REPO_ROOT / rel_dir
+        if not directory.exists():
+            continue
+        for suffix in GENERATED_SUFFIXES:
+            for path in directory.glob(suffix):
+                files.add(path.relative_to(REPO_ROOT))
+    return files
+
+
+def expected_outputs(agents: list[dict]) -> dict[Path, str]:
+    expected: dict[Path, str] = {}
+    for agent in agents:
+        for path, content in output_paths(agent):
+            expected[path.relative_to(REPO_ROOT)] = content
+    return expected
 
 
 def generate() -> None:
@@ -237,7 +260,7 @@ def generate() -> None:
 
     for directory in generated_dirs():
         directory.mkdir(parents=True, exist_ok=True)
-        for suffix in ("*.md", "*.toml"):
+        for suffix in GENERATED_SUFFIXES:
             for existing in directory.glob(suffix):
                 existing.unlink()
 
@@ -248,58 +271,43 @@ def generate() -> None:
 
 
 def check() -> int:
-    with tempfile.TemporaryDirectory() as tmp:
-        tmp_root = Path(tmp) / "engineering-team"
+    agents = [parse_agent(path) for path in sorted(AGENT_SOURCE_DIR.glob("*.yaml"))]
+    if not agents:
+        raise SystemExit("No agent source files found")
 
-        for rel_dir in [
-            Path("agents"),
-            Path(".codex") / "agents",
-            Path("skills") / "engineering-team" / "assets" / "agents",
-            Path("skills") / "engineering-team" / "references" / "codex-custom-agents",
-            Path(".github") / "agents",
-        ]:
-            src = REPO_ROOT / rel_dir
-            dst = tmp_root / rel_dir
-            if src.exists():
-                shutil.copytree(src, dst, ignore=shutil.ignore_patterns("__pycache__", "*.pyc"))
+    expected = expected_outputs(agents)
+    expected_paths = set(expected)
+    actual_paths = generated_files()
+    mismatches: list[str] = []
 
-        agents = [parse_agent(path) for path in sorted(AGENT_SOURCE_DIR.glob("*.yaml"))]
-        if not agents:
-            raise SystemExit("No agent source files found")
+    for missing in sorted(expected_paths - actual_paths):
+        mismatches.append(f"missing generated file: {missing}")
 
-        for agent in agents:
-            for path, content in output_paths(agent):
-                rel = path.relative_to(REPO_ROOT)
-                dst = tmp_root / rel
-                dst.parent.mkdir(parents=True, exist_ok=True)
-                dst.write_text(content)
+    for extra in sorted(actual_paths - expected_paths):
+        mismatches.append(f"extra stale generated file: {extra}")
 
-        mismatches: list[str] = []
-        for generated in sorted(tmp_root.rglob("*")):
-            if not generated.is_file():
-                continue
-            rel = generated.relative_to(tmp_root)
-            actual = REPO_ROOT / rel
-            if not actual.exists():
-                mismatches.append(f"missing generated file: {rel}")
-                continue
-            actual_text = actual.read_text()
-            generated_text = generated.read_text()
-            if actual_text != generated_text:
-                diff = "\n".join(
-                    difflib.unified_diff(
-                        actual_text.splitlines(),
-                        generated_text.splitlines(),
-                        fromfile=str(rel),
-                        tofile=f"{rel} (generated)",
-                        lineterm="",
-                    )
+    for rel, generated_text in sorted(expected.items()):
+        actual = REPO_ROOT / rel
+        if not actual.exists():
+            continue
+        actual_text = actual.read_text()
+        if actual_text != generated_text:
+            diff = "\n".join(
+                difflib.unified_diff(
+                    actual_text.splitlines(),
+                    generated_text.splitlines(),
+                    fromfile=str(rel),
+                    tofile=f"{rel} (generated)",
+                    lineterm="",
                 )
-                mismatches.append(diff)
-        if mismatches:
-            print("Generated agent files are out of date:")
-            print("\n\n".join(mismatches))
-            return 1
+            )
+            mismatches.append(diff)
+
+    if mismatches:
+        print("Generated agent files are out of date:")
+        print("\n\n".join(mismatches))
+        return 1
+
     print("Generated agent files are up to date.")
     return 0
 
