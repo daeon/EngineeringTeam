@@ -57,6 +57,8 @@ Examples:
 - Production behavior: Release Rollback Engineer.
 - Unclear evidence: Evidence Skeptic or Advisor Consultant.
 
+When a task is broad, noisy, or specialist-heavy, the Lead Engineer delegates bounded work to subagents using `templates/subagent-brief.md`. Each subagent returns a compact context capsule. The Lead Engineer uses capsules as evidence and owns the final decision.
+
 ## Stage 3: Repo Atlas
 
 The repo atlas is a shallow map of the system:

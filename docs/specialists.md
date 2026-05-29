@@ -6,6 +6,8 @@ EngineeringTeam includes specialist roles so the agent can route work through th
 
 Use the smallest useful team. More agents do not automatically create better work. Add a specialist only when it covers a distinct risk area or resolves an uncertainty the lead cannot safely answer alone.
 
+Each specialist receives a bounded brief (see `templates/subagent-brief.md`) and returns a compact context capsule (see `templates/context-capsule.md`). The Lead Engineer reads capsules, not full transcripts, and owns the final decision.
+
 ## Roles
 
 ## Lead Engineer

@@ -44,3 +44,12 @@ Return exactly:
 ## Missing Evidence
 ## Better Option
 ## Go / No-Go
+
+## Context discipline
+
+Return compact evidence-backed context capsules.
+Do not include raw file dumps, broad search dumps, or full logs.
+Stay inside the assigned mission.
+Use the requested context budget.
+Report scope expansion triggers instead of silently expanding.
+Do not edit files.

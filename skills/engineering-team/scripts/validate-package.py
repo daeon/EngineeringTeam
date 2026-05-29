@@ -9,6 +9,87 @@ import sys
 from pathlib import Path
 
 
+REFERENCE_CONTRACTS: dict[str, list[str]] = {
+    "references/intake-risk.md": [
+        "# Intake and Risk Classification",
+        "## Required output: Intake artifact",
+    ],
+    "references/agent-routing.md": [
+        "# Agent Routing",
+        "## Context budget policy",
+        "## Proactive subagent triggers",
+        "## Delegation envelope",
+        "## Context capsule rule",
+    ],
+    "references/subagent-context-policy.md": [
+        "# Subagent Context Policy",
+        "## Main agent owns",
+        "## Subagents own",
+        "## Delegate when",
+        "## Do not delegate when",
+        "## Context budgets",
+    ],
+    "references/repo-atlas.md": [
+        "# Repo Atlas",
+        "## Artifact: Repo Atlas",
+    ],
+    "references/component-brief.md": [
+        "# Component Brief",
+        "## Artifact: Component Brief",
+    ],
+    "references/contract-graph.md": [
+        "# Contract Graph",
+        "## Artifact: Contract Graph",
+    ],
+    "references/evidence-ledger.md": [
+        "# Evidence Ledger",
+        "## Artifact: Evidence Ledger",
+    ],
+    "references/advisor-gate.md": [
+        "# Advisor Gate",
+        "## Advisor brief contract",
+    ],
+    "references/implementation-gate.md": [
+        "# Implementation Gate",
+        "## Gate output",
+    ],
+    "references/verification-loop.md": [
+        "# Verification Loop",
+        "## Artifact: Verification Report",
+    ],
+    "references/context-garbage-collection.md": [
+        "# Context Garbage Collection",
+        "## Artifact: Context GC output",
+    ],
+    "references/final-report.md": [
+        "# Final Report",
+        "## Final Report template",
+    ],
+}
+
+TEMPLATE_CONTRACTS: dict[str, list[str]] = {
+    "templates/subagent-brief.md": [
+        "# Subagent Brief",
+        "## Role",
+        "## Mission",
+        "## Context budget",
+        "## Required output",
+        "## Do not",
+    ],
+    "templates/context-capsule.md": [
+        "# Context Capsule",
+        "## Scope",
+        "## Findings",
+        "## Recommended next action",
+    ],
+}
+
+CONTEXT_DISCIPLINE_PHRASES = [
+    "compact evidence-backed context capsules",
+    "Context discipline",
+]
+
+
 def require(condition: bool, message: str) -> None:
     if not condition:
         raise AssertionError(message)
@@ -54,6 +135,32 @@ def main() -> int:
     require(frontmatter is not None, "SKILL.md missing frontmatter")
     require("name:" in frontmatter.group(1), "SKILL.md missing name")
     require("description:" in frontmatter.group(1), "SKILL.md missing description")
+
+    skill_dir = skill_path.parent
+
+    for rel in sorted(set(re.findall(r"`(references/[^`]+\.md)`", skill))):
+        require((skill_dir / rel).exists(), f"SKILL.md links missing reference: {rel}")
+
+    for rel_path, required_headings in REFERENCE_CONTRACTS.items():
+        full_path = skill_dir / rel_path
+        require(full_path.exists(), f"missing required reference: {rel_path}")
+        text = full_path.read_text()
+        for heading in required_headings:
+            require(heading in text, f"{rel_path} missing required heading: {heading}")
+
+    for rel_path, required_headings in TEMPLATE_CONTRACTS.items():
+        full_path = skill_dir / rel_path
+        require(full_path.exists(), f"missing required template: {rel_path}")
+        text = full_path.read_text()
+        for heading in required_headings:
+            require(heading in text, f"{rel_path} missing required heading: {heading}")
+
+    generated_agents_dir = skill_dir / "assets" / "agents"
+    require(generated_agents_dir.exists(), f"missing generated agents dir: {generated_agents_dir}")
+    for agent_file in sorted(generated_agents_dir.glob("*.toml")):
+        agent_text = agent_file.read_text()
+        has_discipline = any(phrase in agent_text for phrase in CONTEXT_DISCIPLINE_PHRASES)
+        require(has_discipline, f"generated agent missing context-discipline language: {agent_file.name}")
 
     for agent_dir, pattern, minimum in [
         (plugin_root / "skills" / "engineering-team" / "assets" / "agents", "*.toml", 8),

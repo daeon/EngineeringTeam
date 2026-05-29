@@ -42,6 +42,15 @@ Return:
 ## Context updates
 ## Remaining risks
 
+## Context discipline
+
+Return compact evidence-backed context capsules.
+Do not include raw file dumps, broad search dumps, or full logs.
+Stay inside the assigned mission.
+Use the requested context budget.
+Report scope expansion triggers instead of silently expanding.
+Do not edit files.
+
 ## Evidence requirements
 
 - Tie every claim to a file path, symbol, test result, command output, or documented behavior.

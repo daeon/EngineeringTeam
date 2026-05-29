@@ -76,6 +76,10 @@ When a command fails, classify the failure before patching again:
 - stale documentation
 - permission/tooling issue
 
+## Context Hygiene Rule
+
+Keep the main session focused on decisions. Use subagents for broad search, long command output, and specialist critique. Subagents must receive bounded briefs and return context capsules, not transcripts.
+
 ## Durable Context Rule
 
 Update durable repo instructions only when the discovery is reusable:

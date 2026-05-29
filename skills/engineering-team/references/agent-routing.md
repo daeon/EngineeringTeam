@@ -120,3 +120,60 @@ Spawn additional specialists when evidence justifies them:
 - Legacy/config/schema conversion touched → Migration Analyst
 - Runtime/prod behavior changed → Release / Rollback Engineer
 - CLI/docs/error behavior changed → DX / Documentation Reviewer
+
+## Proactive subagent triggers
+
+Spawn a read-only investigator when:
+
+- more than 5 files may be relevant
+- ownership is unknown
+- the same term appears in multiple components
+- generated code may be involved
+- public API, config, schema, or contract boundary may be touched
+
+Spawn Evidence Skeptic when:
+
+- root cause is inferred but not proven
+- docs, tests, runtime behavior, or code disagree
+- a proposed fix changes behavior
+- the plan depends on "probably", "seems", "unused", or "should be safe"
+
+Spawn Test / Task Runner when:
+
+- test/build output may be long
+- dependency setup may be noisy
+- failure attribution requires command output
+- the main context should not absorb logs
+
+Spawn a domain specialist when:
+
+- a distinct risk domain appears
+- the specialist has a bounded question
+- the result can be summarized as a context capsule
+
+## Delegation envelope
+
+Every subagent assignment must include:
+
+- role
+- mission
+- context budget
+- allowed tools
+- inputs
+- output limit
+- required output
+- explicit "do not" boundaries
+
+Use `templates/subagent-brief.md`.
+
+## Context capsule rule
+
+Every subagent returns a context capsule using `templates/context-capsule.md`.
+
+The Lead Engineer reads capsules, not full transcripts, unless a capsule is insufficient or contradictory.
+
+## Main agent ownership
+
+The Lead Engineer owns the final decision.
+
+Subagent findings are evidence, not authority. The Lead must reconcile contradictions using the Evidence Ledger and, when needed, Advisor Gate.

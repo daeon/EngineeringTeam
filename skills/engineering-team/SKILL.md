@@ -92,6 +92,8 @@ Task
 | Analysis Report | L0 only | `references/output-contracts.md` |
 | Final Report | L2+ | `references/final-report.md` |
 
+When work is broad, noisy, or specialist-heavy, delegate using `references/subagent-context-policy.md`; subagents must return context capsules, not transcripts.
+
 ## Load references only when needed
 
 | Need | Load |
@@ -108,6 +110,7 @@ Task
 | run and interpret tests | `references/verification-loop.md` |
 | preserve durable knowledge | `references/context-garbage-collection.md` |
 | write final handoff | `references/final-report.md` |
+| delegate context-heavy work | `references/subagent-context-policy.md` |
 
 ## Key failure modes
 

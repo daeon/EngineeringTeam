@@ -6,6 +6,9 @@
   "scripts": {
     "validate": "python3 skills/engineering-team/scripts/validate-package.py && python3 scripts/validate-codex-package.py && python3 scripts/generate-agents.py --check && bash scripts/bump-version.sh --check && node --check .opencode/plugins/engineering-team.js",
     "generate:agents": "python3 scripts/generate-agents.py",
-    "check:agents": "python3 scripts/generate-agents.py --check"
+    "check:agents": "python3 scripts/generate-agents.py --check",
+    "doctor": "python3 scripts/doctor.py",
+    "generate": "python3 scripts/generate-agents.py",
+    "check:references": "python3 skills/engineering-team/scripts/validate-package.py"
   }
 }

@@ -132,6 +132,10 @@ gemini extensions install /path/to/EngineeringTeam
 
 Installs are idempotent: existing files are skipped unless you pass `--force`.
 
+## Keeping main context clean
+
+EngineeringTeam uses the main agent as the Lead Engineer. Broad search, noisy test output, and specialist review can be delegated to subagents. Subagents receive bounded briefs and return compact context capsules, not transcripts. This keeps the main session focused on evidence, decisions, implementation gates, and final handoff.
+
 ## ✅ Validation
 
 ```bash
