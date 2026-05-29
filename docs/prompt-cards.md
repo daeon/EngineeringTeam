@@ -1,8 +1,9 @@
 # Prompt Cards
 
-Copy-paste prompts by task type. Each one invokes `engineering-team` and asks
+Copy-paste prompts by task type. Most prompts invoke `engineering-team` and ask
 for the repo-first workflow: map before editing, route specialists only when
-useful, require evidence, and verify.
+useful, require evidence, and verify. Use `handoff` when transferring active work
+to another agent or fresh session.
 
 ## Bug investigation
 
@@ -74,4 +75,14 @@ Use engineering-team to design a test strategy for this component. Map the
 existing test surfaces and coverage gaps, identify the public contracts that
 need protection, and propose vertical tracer-bullet tests that exercise the real
 path rather than implementation details.
+```
+
+## Handoff to another agent
+
+```text
+Use handoff to prepare this task for another agent or fresh session. Create a
+compact continuation document with current state, decisions made, relevant
+artifacts, files and symbols worth keeping in context, evidence confidence, open
+questions, risks, suggested skills or agents, next actions, and work that should
+not be repeated.
 ```
