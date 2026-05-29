@@ -18,6 +18,8 @@ Most coding agents are fast, but speed is not judgment. On a real codebase the h
 
 EngineeringTeam turns that discipline into a reusable skill that works across the agent you already use. It does not add a runtime service, network calls, or session-start magic. You invoke `engineering-team` when a task deserves a rigorous workflow, and the agent produces compact, human-reviewable artifacts as it goes.
 
+Use `handoff` when you want the current task transferred to another agent or a fresh session. It compacts the work into a continuation document with decisions, evidence, open questions, artifact links, suggested skills, and next actions.
+
 Specialist agents (security, architecture, performance, migration, release, verification, evidence skepticism) are **selective, not mandatory**. The workflow routes only the ones a task actually needs.
 
 ## 📏 The rule
@@ -59,13 +61,19 @@ Then, in your coding agent:
 Use engineering-team to investigate this bug. Map the repo first, find the owning component, trace the affected contract graph, and propose the smallest safe fix with verification.
 ```
 
+To transfer work to another agent or session:
+
+```text
+Use handoff to summarize this task for a fresh agent. Focus the next session on finishing verification and preparing the PR.
+```
+
 ## 🎬 Demo
 
 See the worked, runnable example and the talking points:
 
 - `examples/buggy-python-service/` — a small service with a real bug, the raw-agent prompt, the EngineeringTeam prompt, and filled-in expected artifacts.
 - `docs/demo-script.md` — 60-second and 5-minute demo scripts, plus a raw-agent vs EngineeringTeam comparison.
-- `docs/prompt-cards.md` — copy-paste prompts for bug investigation, PR review, performance, security, migration, release, architecture, and test strategy.
+- `docs/prompt-cards.md` — copy-paste prompts for bug investigation, PR review, performance, security, migration, release, architecture, test strategy, and handoff.
 
 ## 🔌 Supported harnesses
 
@@ -89,6 +97,7 @@ EngineeringTeam makes the agent produce compact, reviewable artifacts before and
 - **Contract Graph** — producer, contract/data shape, consumer, failure mode, coverage, risk.
 - **Evidence Ledger** — claim, evidence, confidence, impact.
 - **Verification Report** — command, result, important output, failure attribution, residual risk.
+- **Handoff Document** — continuation context for another agent or session, with decisions, evidence, artifact links, open questions, risks, suggested skills, and next actions.
 
 These make the agent's reasoning inspectable: a reviewer can see whether it understood the code path, not just whether the diff looks plausible. Filled-in samples live in `examples/buggy-python-service/expected-artifacts/`.
 
