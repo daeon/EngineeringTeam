@@ -14,6 +14,7 @@ Expected outputs are routing expectations, not implementation answers.
 | Production workaround | "Patch this live production failure and preserve rollback." | `release/production` | Release + Advisor + human approval before side effects |
 | Broad refactor | "Move this behavior across modules and preserve public contracts." | `cross-component` | Investigator + Architect + Skeptic; Advisor if consequences are broad or assumptions remain |
 | Docs-only UX | "Clarify CLI error docs after a verified local change." | `low-risk-local` or `behavior-change` | DX as needed; no Advisor Consultant |
+| Codebase audit / analysis | "Analyze this repo and provide feedback." | `low-risk-local` | L0 fast path: Lead only; Repo Atlas → Analysis Report → Context GC; no specialists, no advisor |
 
 Advisor anti-patterns:
 

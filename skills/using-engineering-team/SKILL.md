@@ -19,6 +19,7 @@ Invoke `engineering-team` before implementation when the task involves:
 - migration, compatibility, legacy behavior, schema/config/API translation, imports/exports, or upgrades
 - release, rollout, rollback, observability, production behavior, or operational risk
 - PR review requiring several lenses
+- codebase audit, analysis, feedback, or "what are the risks in this repo?" requests
 - user requests for agents, teams, deliberation, debate, review board, red team, or coordination
 
 Do not use the full team workflow for tiny typo fixes, obvious local edits, or work that is clearly sequential and isolated to one file.

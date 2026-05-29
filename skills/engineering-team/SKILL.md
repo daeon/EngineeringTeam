@@ -71,6 +71,7 @@ Use for non-trivial software engineering work involving any of these:
 - migration, compatibility, legacy behavior, schema/config/API translation, imports/exports, upgrades
 - release, rollout, rollback, observability, production behavior, operational risk
 - PR or diff review requiring multiple lenses
+- codebase audit, analysis, feedback, or improvement planning without implementation
 - user asks for agents, teams, deliberation, debate, review board, red team, or coordination
 
 ## When not to use a full team
@@ -132,7 +133,7 @@ Assign an autonomy level:
 
 | Level | Meaning | Required before edit |
 |---|---|---|
-| L0 | Read-only exploration | None |
+| L0 | Read-only exploration or analysis (no edits) | Repo Atlas + Analysis Report |
 | L1 | Plan only | Repo Atlas |
 | L2 | Local patch, no behavior change | Component Brief + nearby pattern/test |
 | L3 | Behavior change | Contract Graph + regression test or verification path |
@@ -152,6 +153,8 @@ Choose one primary risk mode:
 | `uncertain-root-cause` | Investigation has not converged on evidence-backed root cause | Investigator + skeptic + advisor before implementation; feedback loop before hypotheses |
 | `conflicting-evidence` | Source, tests, docs, logs, or runtime observations disagree | Investigator + skeptic + advisor before implementation |
 
+Always produce this artifact — even for L0 tasks — it is the routing receipt that makes the risk classification auditable.
+
 Output:
 
 ```md
@@ -167,6 +170,10 @@ Output:
 - Known constraints:
 - First areas to inspect:
 ```
+
+**L0 fast path:** When autonomy level is L0, proceed directly to Phase 4 then Phase 4.5 (Analysis Report). Skip Phases 1.5 through 3.5 and Phases 5 through 13. Phase 14 (Context GC) still applies.
+
+L0 tasks include: codebase audits, feedback requests, "analyze this repo", "what are the risks here?", architecture surveys with no planned change, and PR or diff reviews that produce findings only.
 
 ---
 
@@ -320,7 +327,7 @@ Use or produce:
 - generated-code map
 - external integration map
 
-Required artifact for non-trivial tasks:
+Required artifact for L2+ tasks. For L0 analysis tasks, a concise prose summary with file-path-backed evidence is sufficient — see Phase 4.5.
 
 ```md
 # Repo Atlas
@@ -343,6 +350,39 @@ Required artifact for non-trivial tasks:
 ```
 
 Do not turn the Repo Atlas into a giant permanent document. Keep it concise and evidence-backed.
+
+---
+
+# Phase 4.5: Analysis Report (L0 tasks only)
+
+For read-only exploration and analysis tasks, produce an Analysis Report after completing Phase 4, then skip to Phase 14 (Context GC).
+
+The Analysis Report replaces the Final Report for L0 work. It is the deliverable: findings, evidence, and follow-ups — no implementation plan, no rollback section.
+
+Produce this artifact:
+
+```md
+# Analysis Report
+
+## What works well
+
+## Key findings
+
+| Finding | Severity | Evidence | Location |
+|---|---|---|---|
+
+## Improvement candidates
+
+## Verification performed
+
+## Follow-ups
+```
+
+Severity levels: `high` (correctness, security, trust), `medium` (maintainability, DX), `low` (style, optional).
+
+Tie every finding to a file path, line number, command output, or documented behavior. Label unverified claims as assumptions.
+
+See `references/output-contracts.md` for the full contract and `templates/analysis-report.md` for a filled-in example.
 
 ---
 
@@ -756,7 +796,9 @@ Output:
 
 ---
 
-# Final report
+# Final report (L2+ tasks)
+
+For L0 analysis tasks, use the Analysis Report from Phase 4.5 instead of this template.
 
 Return:
 
@@ -820,6 +862,8 @@ If the user asks for terse or compressed output, reduce filler and keep exact te
 - Premature optimization
 - Reporting success without verification
 - Forgetting to garbage-collect context
+- Producing an implementation Final Report for a read-only analysis task
+- Skipping the `## Intake` block — it is always required as the routing receipt
 
 ---
 
@@ -842,6 +886,7 @@ Use these only when needed:
 - `references/failure-attribution.md` for verifier-loop triage.
 - `references/context-garbage-collection.md` for durable-context updates.
 - `references/visual-review-reports.md` for optional temporary HTML review artifacts.
+- `templates/analysis-report.md` for the Analysis Report artifact template for L0 tasks.
 
 # Supporting scripts
 

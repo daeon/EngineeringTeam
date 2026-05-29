@@ -135,7 +135,28 @@
 ## Unverified Risks
 ```
 
-## Final report
+## Analysis Report (L0 tasks)
+
+```md
+# Analysis Report
+
+## What works well
+
+## Key findings
+
+| Finding | Severity | Evidence | Location |
+|---|---|---|---|
+
+## Improvement candidates
+
+## Verification performed
+
+## Follow-ups
+```
+
+Severity: `high` (correctness, security, trust), `medium` (maintainability, DX), `low` (style, optional). Every finding must reference a file path, line number, command output, or documented behavior. Unverified claims must be labeled as assumptions.
+
+## Final report (L2+ tasks)
 
 ```md
 ## Result
