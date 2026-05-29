@@ -14,6 +14,9 @@
 | architecture/API design | 3 | 2 | 1-2 | 1-2 | 3 | 2-3 if consequential | 3 | 1-2 | 1-2 | 1-2 | 1-2 | 1-2 |
 | security-sensitive change | 3 | 2 | 2 | 2 | 3 | 2-3 if L5/uncertain | 1-2 | 3 | 1 | 1 | 1-2 | 0 |
 | performance investigation | 3 | 2 | 1-2 | 2 | 3 | 1-2 if production-sensitive | 1-2 | 0-1 | 3 | 0-1 | 1 | 0 |
+| read-only codebase analysis | 3 | 3 | 0 | 0-1 | 1-2 | 0-1 if consequential | 2-3 | 0-1 | 0-1 | 0-1 | 0 | 1 |
+| read-only debugging forensics | 3 | 3 | 0 | 1-2 for repro commands | 3 | 1-2 if unclear/conflicting | 1-2 if boundary implicated | 1-2 if trust/input/auth | 1-2 if timing/hot path | 1 if legacy | 1 if prod | 0 |
+| read-only log forensics | 3 | 2 | 0 | 0-1 | 3 | 1-2 if incident-sensitive | 0-1 | 1 if sensitive data | 1-2 if latency/saturation | 0-1 | 2-3 for observability/rollback | 0 |
 | migration/compatibility | 3 | 2 | 2 | 2 | 3 | 2-3 if irreversible/ambiguous | 1-2 | 1-2 if semantics/security | 1 if scale | 3 | 1-2 | 0 |
 
 ## Agent descriptions
@@ -32,6 +35,13 @@
 | Release / Rollback Engineer (`release_rollback_engineer`) | Production risk, deployment, rollout, feature flag, rollback, observability |
 | DX / Documentation Reviewer (`dx_documentation_reviewer`) | User-facing docs, CLI behavior, error messages, developer ergonomics, onboarding, examples |
 | Advisor Consultant (`advisor_consultant`) | Gate-only second opinion for L4/L5, unclear root cause after investigation, conflicting evidence, security/migration/release/production-sensitive decisions, or assumption-heavy completion checks |
+
+Conceptual read-only roles may be simulated with installed agents when no native agent exists: Codebase Cartographer maps repositories, Runtime Trace Analyst traces execution, Reproduction Engineer designs repro probes, Log Forensics Analyst reconstructs timelines, Observability Architect evaluates telemetry, and Performance Investigator designs measurements.
+
+
+## Skill routing graph
+
+For selecting between implementation and read-only investigation skills, load `references/analysis-routing.md`. It contains the high-level routing graph from `engineering-team` to `codebase-analysis`, `debugging-forensics`, `log-forensics`, `performance-forensics`, implementation workflow, and `handoff`, plus the conceptual specialist roles useful for each path.
 
 ## Selection rules
 

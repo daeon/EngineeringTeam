@@ -1,6 +1,6 @@
 ---
 name: engineering-team
-description: "Use for non-trivial software engineering: map the repo before edits, classify risk, route the smallest useful EngineeringTeam, trace contract graphs, require evidence, implement safely, verify changes, and preserve reusable repo knowledge."
+description: "Use for non-trivial software engineering and read-only investigation: route implementation, codebase analysis, debugging forensics, log forensics, performance forensics, handoff, evidence gates, verification, and reusable repo knowledge."
 ---
 
 # EngineeringTeam
@@ -8,6 +8,18 @@ description: "Use for non-trivial software engineering: map the repo before edit
 Use this skill for non-trivial software engineering. Do not rely on it as a giant memory file — load references only when needed.
 
 Invocation: mention `engineering-team` in the prompt, choose it from `/skills`, or let a harness select it based on task type.
+
+
+## Two operating modes
+
+EngineeringTeam is the main router for two broad modes:
+
+| Mode | Use when | Route | Edit posture |
+|---|---|---|---|
+| Implementation mode | The user asks to fix, change, implement, refactor, add tests, or prepare PR-ready work | Follow the existing EngineeringTeam implementation workflow | Edits only after the Implementation Gate |
+| Read-only analysis mode | The user asks to analyze, understand, investigate, debug, inspect logs, or profile performance without requesting changes | Load `references/analysis-routing.md` and route to `codebase-analysis`, `debugging-forensics`, `log-forensics`, or `performance-forensics` | No file edits; produce evidence-backed analysis and next probes |
+
+If a read-only investigation finds a likely fix, stop at a handoff-ready diagnosis unless the user explicitly asks for implementation.
 
 ## Non-negotiable rule
 
@@ -62,7 +74,7 @@ If any answer is unclear, keep mapping.
 Task
   → classify risk and autonomy   references/intake-risk.md       ← produce Intake block first, before any tool calls
   → align on intent if needed    references/alignment-audit.md
-  → select specialists           references/agent-routing.md
+  → select mode and specialists  references/analysis-routing.md / references/agent-routing.md
   → build Repo Atlas             references/repo-atlas.md
   → build Component Brief        references/component-brief.md
   → trace Contract Graph         references/contract-graph.md
@@ -104,6 +116,7 @@ When work is broad, noisy, or specialist-heavy, delegate using `references/subag
 |---|---|
 | classify task risk and autonomy | `references/intake-risk.md` |
 | resolve ambiguous user intent | `references/alignment-audit.md` |
+| choose analysis vs implementation route | `references/analysis-routing.md` |
 | choose and score specialists | `references/agent-routing.md` |
 | map the repository | `references/repo-atlas.md` |
 | identify owner and component | `references/component-brief.md` |
@@ -129,3 +142,4 @@ When work is broad, noisy, or specialist-heavy, delegate using `references/subag
 - Reporting success without verification
 - Skipping the Intake block — it is always required as the routing receipt
 - Producing an implementation Final Report for a read-only L0 task
+- Editing during read-only analysis instead of returning a diagnosis, report, or next-probe plan
