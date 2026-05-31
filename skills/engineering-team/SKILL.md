@@ -17,7 +17,7 @@ EngineeringTeam is the main router for two broad modes:
 | Mode | Use when | Route | Edit posture |
 |---|---|---|---|
 | Implementation mode | The user asks to fix, change, implement, refactor, add tests, or prepare PR-ready work | Follow the existing EngineeringTeam implementation workflow | Edits only after the Implementation Gate |
-| Read-only analysis mode | The user asks to analyze, understand, investigate, debug, inspect logs, or profile performance without requesting changes | Load `references/analysis-routing.md` and route to `codebase-analysis`, `debugging-forensics`, `log-forensics`, or `performance-forensics` | No file edits; produce evidence-backed analysis and next probes |
+| Read-only analysis mode | The user asks to analyze, understand, investigate, debug, inspect logs, or profile performance without requesting changes | Load `references/analysis-routing.md` and route to `codebase-analysis`, `debugging-forensics`, `log-forensics`, or `performance-forensics` | No file edits; still assign L0-L5 depth by complexity and risk |
 
 If a read-only investigation finds a likely fix, stop at a handoff-ready diagnosis unless the user explicitly asks for implementation.
 
@@ -88,7 +88,7 @@ Task
   → final report                 references/final-report.md        ← use the template, not a PR summary
 ```
 
-**L0 fast path:** Classify risk → Repo Atlas → Analysis Report → Context GC. Skip agent routing, contract graph, evidence ledger, Advisor Gate, implementation gate, and verification loop. Use Advisor Consultant only at defined risk gates.
+**L0 fast path:** Use only for trivial local explanation, simple summary, or obvious one-file inspection with no cross-file, behavior, contract, performance, security, migration, release, or production claims. Classify read-only investigations by depth; read-only does not automatically mean L0. L0 uses Classify risk → lightweight Repo Atlas → Analysis Report → Context GC. Skip agent routing, contract graph, evidence ledger, Advisor Gate, implementation gate, and verification loop. Use Advisor Consultant only at defined risk gates.
 
 ## Run Ledger and project-scoped memory
 
@@ -159,5 +159,6 @@ When work is broad, noisy, or specialist-heavy, delegate using `references/subag
 - Reporting success without verification
 - Skipping the Intake block — it is always required as the routing receipt
 - Producing an implementation Final Report for a read-only L0 task
+- Treating read-only mode as automatic L0 instead of assigning L0-L5 depth by complexity and risk
 - Editing during read-only analysis instead of returning a diagnosis, report, or next-probe plan
 - Treating Run Ledger artifacts as durable memory instead of promoting only curated memory candidates
