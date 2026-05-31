@@ -87,17 +87,11 @@ Rules for single-session simulation:
 
 If the harness supports subagents and a proactive trigger is met, delegate bounded work using `templates/subagent-brief.md`. If subagents are unavailable, unsafe, or not worth the overhead, simulate the roles in the main session while preserving the same evidence and implementation gates.
 
-Rules:
-- The current session is the Lead Engineer.
-- Give teammates task-specific context; teammates do not inherit full conversation history.
-- Assign non-overlapping questions.
-- Require independent investigation before deliberation.
-- During investigation, teammates must not edit files.
-- Avoid concurrent edits to the same file.
+`references/subagent-context-policy.md` owns the canonical ownership split, delegation triggers, non-delegation cases, context budgets, and capsule discipline. Apply those rules here rather than copying them into routing decisions.
 
 ## Context budget policy
 
-`references/subagent-context-policy.md` owns the canonical context-budget table (`brief-only`, `component-context`, `artifact-context`, `full-context`). Select the smallest useful budget for every teammate.
+Use the canonical context-budget table in `references/subagent-context-policy.md` (`brief-only`, `component-context`, `artifact-context`, `full-context`) and select the smallest useful budget for every teammate.
 
 Default Advisor Consultant to `brief-only` with `fork_context: false`. Use `fork_context: true` and `full-context` only when the lead cannot safely summarize; state the reason explicitly.
 
@@ -126,57 +120,16 @@ Spawn additional specialists when evidence justifies them:
 
 ## Proactive subagent triggers
 
-Spawn a read-only investigator when:
-
-- more than 5 files may be relevant
-- ownership is unknown
-- the same term appears in multiple components
-- generated code may be involved
-- public API, config, schema, or contract boundary may be touched
-
-Spawn Evidence Skeptic when:
-
-- root cause is inferred but not proven
-- docs, tests, runtime behavior, or code disagree
-- a proposed fix changes behavior
-- the plan depends on "probably", "seems", "unused", or "should be safe"
-
-Spawn Test / Task Runner when:
-
-- test/build output may be long
-- dependency setup may be noisy
-- failure attribution requires command output
-- the main context should not absorb logs
-
-Spawn a domain specialist when:
-
-- a distinct risk domain appears
-- the specialist has a bounded question
-- the result can be summarized as a context capsule
+Use `references/subagent-context-policy.md` for the canonical delegation trigger list. In routing output, record only the trigger(s) that apply to this task and the specific question each subagent will answer.
 
 ## Delegation envelope
 
-Every subagent assignment must include:
-
-- role
-- mission
-- context budget
-- allowed tools
-- inputs
-- output limit
-- required output
-- explicit "do not" boundaries
-
-Use `templates/subagent-brief.md`.
+Every subagent assignment uses `templates/subagent-brief.md`. Include role, mission, context budget, allowed tools, inputs, output limit, required output, and explicit "do not" boundaries.
 
 ## Context capsule rule
 
-Every subagent returns a context capsule using `templates/context-capsule.md`.
-
-The Lead Engineer reads capsules, not full transcripts, unless a capsule is insufficient or contradictory.
+Every subagent returns a context capsule using `templates/context-capsule.md`. The Lead Engineer reads capsules, not full transcripts, unless a capsule is insufficient or contradictory.
 
 ## Main agent ownership
 
-The Lead Engineer owns the final decision.
-
-Subagent findings are evidence, not authority. The Lead must reconcile contradictions using the Evidence Ledger and, when needed, Advisor Gate.
+The Lead Engineer owns the final decision. `references/subagent-context-policy.md` is canonical for the ownership split; subagent findings are evidence, not authority. Reconcile contradictions using the Evidence Ledger and, when needed, Advisor Gate.

@@ -135,16 +135,16 @@ When work is broad, noisy, or specialist-heavy, delegate using `references/subag
 | verify claims with evidence | `references/evidence-ledger.md` |
 | gate high-risk decisions | `references/advisor-gate.md` |
 | decide whether editing is allowed | `references/implementation-gate.md` |
-| run and interpret tests | `references/verification-loop.md` |
+| run verification flow; classify failed checks | `references/verification-loop.md` / `references/failure-attribution.md` |
 | build a fast bug/regression repro loop | `references/diagnosis-loop.md` |
 | write behavior-first tests (tracer bullets) | `references/tdd-discipline.md` |
-| preserve durable knowledge | `references/context-garbage-collection.md` / `references/memory-promotion.md` |
+| run context closeout; apply canonical memory promotion rules | `references/context-garbage-collection.md` / `references/memory-promotion.md` |
 | write the session final report (L2+) | `references/final-report.md` |
 | produce a visual HTML review report | `references/visual-review-reports.md` |
 | capture domain and business context | `references/domain-context.md` |
 | work within Codex constraints | `references/codex-compatibility.md` |
 | hand off work to another agent or a fresh session | `handoff` skill (`skills/handoff/SKILL.md`) |
-| delegate context-heavy work | `references/subagent-context-policy.md` |
+| apply canonical delegation context budgets and capsule rules | `references/subagent-context-policy.md` |
 
 ## Key failure modes
 

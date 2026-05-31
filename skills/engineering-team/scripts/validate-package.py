@@ -12,6 +12,7 @@ from pathlib import Path
 REFERENCE_CONTRACTS: dict[str, list[str]] = {
     "references/intake-risk.md": [
         "# Intake and Risk Classification",
+        "## Canonical gate ownership",
         "## Required output: Intake artifact",
     ],
     "references/agent-routing.md": [
@@ -35,12 +36,14 @@ REFERENCE_CONTRACTS: dict[str, list[str]] = {
     ],
     "references/memory-promotion.md": [
         "# Memory Promotion",
+        "## Canonical memory anchors",
         "## Promotion rules",
         "## Target files",
         "## Required metadata",
     ],
     "references/subagent-context-policy.md": [
         "# Subagent Context Policy",
+        "## Canonical delegation anchors",
         "## Main agent owns",
         "## Subagents own",
         "## Delegate when",
@@ -57,6 +60,7 @@ REFERENCE_CONTRACTS: dict[str, list[str]] = {
     ],
     "references/contract-graph.md": [
         "# Contract Graph",
+        "## Canonical contract anchors",
         "## Artifact: Contract Graph",
     ],
     "references/evidence-ledger.md": [
@@ -78,6 +82,11 @@ REFERENCE_CONTRACTS: dict[str, list[str]] = {
     "references/verification-loop.md": [
         "# Verification Loop",
         "## Artifact: Verification Report",
+    ],
+    "references/failure-attribution.md": [
+        "# Failure Attribution",
+        "## Canonical failure triage",
+        "## Failure classes",
     ],
     "references/context-garbage-collection.md": [
         "# Context Garbage Collection",
