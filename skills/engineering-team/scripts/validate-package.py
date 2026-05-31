@@ -27,6 +27,18 @@ REFERENCE_CONTRACTS: dict[str, list[str]] = {
         "## Routing graph",
         "## Read-only analysis rules",
     ],
+    "references/run-ledger.md": [
+        "# Run Ledger",
+        "## When to create it",
+        "## Separation from memory",
+        "## Promotion handoff",
+    ],
+    "references/memory-promotion.md": [
+        "# Memory Promotion",
+        "## Promotion rules",
+        "## Target files",
+        "## Required metadata",
+    ],
     "references/subagent-context-policy.md": [
         "# Subagent Context Policy",
         "## Main agent owns",
@@ -69,6 +81,7 @@ REFERENCE_CONTRACTS: dict[str, list[str]] = {
     ],
     "references/context-garbage-collection.md": [
         "# Context Garbage Collection",
+        "## Memory promotion flow",
         "## Artifact: Context GC output",
     ],
     "references/final-report.md": [
@@ -91,6 +104,19 @@ TEMPLATE_CONTRACTS: dict[str, list[str]] = {
         "## Scope",
         "## Findings",
         "## Recommended next action",
+    ],
+    "templates/run-ledger.md": [
+        "# Run Ledger",
+        "## Task",
+        "## Mode / Route Decision",
+        "## Memory Candidates",
+        "## Residual Risk",
+    ],
+    "templates/memory-candidates.md": [
+        "# Memory Candidates",
+        "## Candidate Table",
+        "## Promotion Summary",
+        "## Rejection Notes",
     ],
     "templates/codebase-analysis-report.md": [
         "# Codebase Analysis Report",
@@ -151,6 +177,59 @@ READ_ONLY_SKILL_CONTRACTS: dict[str, list[str]] = {
     ],
 }
 
+MEMORY_CONTRACTS: dict[str, list[str]] = {
+    "index.md": [
+        "# EngineeringTeam Memory Index",
+        "## Guardrails",
+        "## Entry Template",
+        "Origin run:",
+        "Confidence: high | medium | low",
+        "Review trigger:",
+    ],
+    "repo-atlas.md": [
+        "# Repo Atlas Memory",
+        "Evidence/source paths:",
+        "Origin run:",
+        "Confidence: high | medium | low",
+        "Review trigger:",
+    ],
+    "component-briefs.md": [
+        "# Component Briefs Memory",
+        "Evidence/source paths:",
+        "Origin run:",
+        "Confidence: high | medium | low",
+        "Review trigger:",
+    ],
+    "contracts.md": [
+        "# Contracts Memory",
+        "Evidence/source paths:",
+        "Origin run:",
+        "Confidence: high | medium | low",
+        "Review trigger:",
+    ],
+    "verification.md": [
+        "# Verification Memory",
+        "Evidence/source paths:",
+        "Origin run:",
+        "Confidence: high | medium | low",
+        "Review trigger:",
+    ],
+    "gotchas.md": [
+        "# Gotchas Memory",
+        "Evidence/source paths:",
+        "Origin run:",
+        "Confidence: high | medium | low",
+        "Review trigger:",
+    ],
+}
+
+FORBIDDEN_MEMORY_PATTERNS = [
+    r"(?i)password\s*=",
+    r"(?i)token\s*=",
+    r"(?i)secret\s*=",
+    r"BEGIN (?:RSA |EC |OPENSSH |)PRIVATE KEY",
+]
+
 CONTEXT_DISCIPLINE_PHRASES = [
     "compact evidence-backed context capsules",
     "Context discipline",
@@ -195,6 +274,23 @@ def validate_no_session_start_hooks(plugin_root: Path, cursor_manifest: dict) ->
     combined_docs = readme.read_text() + "\n" + security.read_text()
     for phrase in NO_SESSION_START_PHRASES:
         require(phrase in combined_docs, f"missing no-session-start documentation phrase: {phrase}")
+
+
+def validate_memory_contracts(plugin_root: Path) -> None:
+    memory_dir = plugin_root / ".engineering-team" / "memory"
+    require(memory_dir.exists(), "missing .engineering-team/memory directory")
+
+    for rel_path, required_phrases in MEMORY_CONTRACTS.items():
+        full_path = memory_dir / rel_path
+        require(full_path.exists(), f"missing memory file: {rel_path}")
+        text = full_path.read_text()
+        for phrase in required_phrases:
+            require(phrase in text, f"memory/{rel_path} missing required phrase: {phrase}")
+        for pattern in FORBIDDEN_MEMORY_PATTERNS:
+            require(
+                re.search(pattern, text) is None,
+                f"memory/{rel_path} appears to contain forbidden sensitive pattern: {pattern}",
+            )
 
 
 def main() -> int:
@@ -252,6 +348,8 @@ def main() -> int:
         text = full_path.read_text()
         for heading in required_headings:
             require(heading in text, f"{rel_path} missing required heading: {heading}")
+
+    validate_memory_contracts(plugin_root)
 
     for skill_name, required_phrases in READ_ONLY_SKILL_CONTRACTS.items():
         read_only_skill_path = plugin_root / "skills" / skill_name / "SKILL.md"
