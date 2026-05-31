@@ -1,7 +1,7 @@
 {
   "name": "engineering-team",
   "version": "0.1.0",
-  "description": "Multi-harness repo-first engineering plugin for Codex and other coding agents: map the repo, route specialists, gate risky decisions, verify changes, and preserve reusable context.",
+  "description": "Expert-routed EngineeringTeam plugin for Codex and other coding agents: select the right panel, build repo understanding, gate decisions with evidence, verify changes, and preserve reusable context.",
   "author": {
     "name": "Damon Chitsaz",
     "email": "dchitsaz@gmail.com"
@@ -19,8 +19,8 @@
   "skills": "./skills/",
   "interface": {
     "displayName": "EngineeringTeam",
-    "shortDescription": "Repo-first engineering workflow for coding agents.",
-    "longDescription": "Maps repositories before edits, routes the smallest useful specialist team, traces contracts, gates risky decisions with a read-only advisor, requires evidence, verifies changes, and preserves reusable repo knowledge without bloating context.",
+    "shortDescription": "Expert-routed engineering team workflow for coding agents.",
+    "longDescription": "Gives one coding agent a lead-engineer workflow that selects the smallest useful expert panel, maps repositories and contracts before edits, gates risky decisions with evidence and advisor review when needed, verifies changes, and preserves reusable repo knowledge without bloating context.",
     "developerName": "Damon Chitsaz",
     "category": "Developer Tools",
     "capabilities": [
@@ -28,9 +28,9 @@
       "Write"
     ],
     "defaultPrompt": [
-      "Use EngineeringTeam to investigate this bug. Map the repo first, trace the contract graph, then propose the smallest safe fix.",
+      "Use EngineeringTeam to investigate this bug. Pick the right expert panel, map the repo and contract graph first, then propose the smallest safe fix.",
       "Use EngineeringTeam to review this branch. Route to architecture, security, performance, verification, and evidence skepticism only where relevant.",
-      "Use EngineeringTeam to implement this feature. Build a repo atlas, component brief, evidence ledger, and verification report before final handoff.",
+      "Use EngineeringTeam to implement this feature. Assemble the needed experts, build a repo atlas, component brief, evidence ledger, and verification report before final handoff.",
       "Use EngineeringTeam advisor gate before a production-sensitive or conflicting-evidence decision."
     ],
     "brandColor": "#10A37F"

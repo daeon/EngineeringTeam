@@ -8,7 +8,7 @@
   "plugins": [
     {
       "name": "engineering-team",
-      "description": "Repo-first software engineering workflow: map the repo, route the smallest useful specialist team, trace contracts, gate risky decisions, require evidence, verify changes, and preserve reusable repo knowledge.",
+      "description": "Expert-routed software engineering workflow: a lead engineer selects the smallest useful expert panel, maps repo contracts and risk, gates decisions with evidence, verifies changes, and preserves reusable repo knowledge.",
       "version": "0.1.0",
       "source": "./",
       "author": {
