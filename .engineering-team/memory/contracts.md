@@ -13,7 +13,10 @@ Use this format:
 - Consumer:
 - Failure mode:
 - Evidence/source paths:
+- Origin run:
 - Last verified:
+- Confidence: high | medium | low
+- Review trigger:
 ```
 
 ## Agent source -> generated native agents

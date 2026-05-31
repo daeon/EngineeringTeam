@@ -27,9 +27,11 @@ Most coding agents are fast, but speed is not judgment. On a real codebase the h
 
 EngineeringTeam turns that discipline into a reusable skill that works across the agent you already use. It does not add a runtime service, network calls, or session-start magic. You invoke `engineering-team` when a task deserves a rigorous workflow, and the agent produces compact, human-reviewable artifacts as it goes. Use it for PR-ready implementation work or for read-only investigations where the right answer is a diagnosis, map, hypothesis matrix, log report, or performance probe plan rather than a diff.
 
+Read-only mode means **no edits**; it does not mean low rigor. Trivial local explanations can use L0, while broad codebase analysis, root-cause work, performance analysis, protected-boundary review, migration review, release planning, and multi-component PR review still use L2-L5 depth according to complexity and risk.
+
 Use `handoff` when you want the current task transferred to another agent or a fresh session. It compacts the work into a continuation document with decisions, evidence, open questions, artifact links, suggested skills, and next actions.
 
-Specialist agents (security, architecture, performance, migration, release, verification, evidence skepticism) are **selective, not mandatory**. The workflow routes only the ones a task actually needs.
+Specialist agents are **selective, not mandatory**. The workflow routes only the ones a task actually needs.
 
 ## 🧠 How it works
 
@@ -41,17 +43,19 @@ flowchart LR
     router -->|Understand / debug / logs / perf| analysis[Read-only analysis mode]
     router -->|Continue elsewhere| handoff[Handoff mode]
 
-    impl --> atlas[Repo Atlas]
+    impl --> depth[Assign L0-L5 depth]
+    analysis --> depth
+
+    depth --> atlas[Repo Atlas]
     atlas --> brief[Component Brief]
     brief --> contracts[Contract Graph]
     contracts --> evidence[Evidence Ledger]
     evidence --> gate{Implementation Gate}
     gate -->|Pass| patch[Small safe patch]
+    gate -->|Read-only| report[Diagnosis / report / next probes]
     patch --> verify[Verification Report]
-    verify --> final[Final Report]
-
-    analysis --> findings[Evidence-backed diagnosis]
-    findings --> probes[Next-probe plan]
+    report --> closeout[Run Ledger / Context GC]
+    verify --> closeout
 
     handoff --> capsule[Continuation document]
 ```
@@ -69,6 +73,10 @@ flowchart LR
 
 The main `engineering-team` skill remains the router. It keeps the existing repo-first implementation workflow for change requests and routes analysis requests to focused read-only skills: `codebase-analysis`, `debugging-forensics`, `log-forensics`, and `performance-forensics`. If an investigation uncovers a likely fix, the agent should hand off an evidence-backed diagnosis and verification strategy before editing unless you explicitly ask it to implement.
 
+### L0 fast path boundary
+
+Use L0 only for trivial local explanation, simple summary, or obvious one-file inspection with no cross-file, behavior, contract, performance, migration, release, production, or protected-boundary claims. Read-only investigations are classified by depth, not by edit posture.
+
 ## 🧪 Raw agent vs EngineeringTeam
 
 | Raw agent often does this | EngineeringTeam forces this |
@@ -82,16 +90,16 @@ The main `engineering-team` skill remains the router. It keeps the existing repo
 
 ## 📏 The rule
 
-No non-trivial edit until the agent can answer:
+No non-trivial edit or broad read-only claim until the agent can answer:
 
 1. Where does this behavior enter the system?
 2. Where is it transformed?
 3. Where does it leave?
 4. Which contracts and consumers are affected?
 5. What evidence supports the diagnosis or design?
-6. What proves the change works?
+6. What proves the change works, or what next probe would prove the diagnosis?
 
-If those are unanswered, the agent keeps mapping instead of editing.
+If those are unanswered, the agent keeps mapping instead of editing or finalizing the analysis.
 
 <details>
 <summary>Advanced: what the implementation gate checks</summary>
@@ -116,7 +124,7 @@ Hold off on editing — and let EngineeringTeam map first — when:
 - The owning component or call path is unknown.
 - The change crosses a contract, public API, or module boundary.
 - Source, tests, docs, or logs disagree.
-- The change touches auth, secrets, shell, filesystem, network, migrations, or release behavior.
+- The change touches migration, release, runtime, or other sensitive behavior.
 - There is no verification path yet.
 
 ## 🚀 Quick start
@@ -137,7 +145,7 @@ Use engineering-team to investigate this bug. Map the repo first, find the ownin
 For read-only analysis:
 
 ```text
-Use engineering-team in read-only analysis mode to understand this repository. Route to codebase-analysis, map the main components and contracts, and return an evidence-backed report without editing files.
+Use engineering-team in read-only analysis mode to understand this repository. Route to codebase-analysis, map the main components and contracts, and return an evidence-backed report without editing files. Assign L2-L4 depth based on breadth; do not classify broad analysis as L0.
 ```
 
 To transfer work to another agent or session:
@@ -153,7 +161,7 @@ flowchart TD
     risk[Intake risk] --> route{Distinct specialist risk?}
 
     route -->|Unknown ownership| investigator[Codebase Investigator]
-    route -->|Security boundary| security[Security Analyst]
+    route -->|Protected boundary| security[Security Analyst]
     route -->|Public API/module boundary| architect[System Design Architect]
     route -->|Latency / memory / throughput| perf[Optimization Engineer]
     route -->|Weak evidence| skeptic[Evidence Skeptic]
@@ -176,7 +184,7 @@ See the worked, runnable example and the talking points:
 
 - `examples/buggy-python-service/` — a small service with a real bug, the raw-agent prompt, the EngineeringTeam prompt, and filled-in expected artifacts.
 - `docs/demo-script.md` — 60-second and 5-minute demo scripts, plus a raw-agent vs EngineeringTeam comparison.
-- `docs/prompt-cards.md` — copy-paste prompts for implementation, read-only codebase analysis, debugging forensics, log forensics, performance forensics, security, migration, release, architecture, test strategy, and handoff.
+- `docs/prompt-cards.md` — copy-paste prompts for implementation, read-only codebase analysis, debugging forensics, log forensics, performance forensics, protected-boundary review, migration, release, architecture, test strategy, and handoff.
 
 ## 🔌 Supported harnesses
 
@@ -193,7 +201,7 @@ All harnesses point at the same canonical skill bundle under `skills/`, with `sk
 
 ## 🗂️ Artifact gallery
 
-EngineeringTeam makes the agent produce compact, reviewable artifacts before and after implementation:
+EngineeringTeam makes the agent produce compact, reviewable artifacts before and after implementation or investigation:
 
 | Artifact | What it proves | Example |
 |---|---|---|
@@ -202,6 +210,8 @@ EngineeringTeam makes the agent produce compact, reviewable artifacts before and
 | Contract Graph | The agent traced producer, contract/data shape, consumer, failure mode, coverage, and risk | [`contract-graph.md`](examples/buggy-python-service/expected-artifacts/contract-graph.md) |
 | Evidence Ledger | Major claims are backed by source paths, tests, logs, runtime observations, schemas, or docs | [`evidence-ledger.md`](examples/buggy-python-service/expected-artifacts/evidence-ledger.md) |
 | Verification Report | Success was checked and residual risk was reported instead of assumed away | [`verification-report.md`](examples/buggy-python-service/expected-artifacts/verification-report.md) |
+| Run Ledger | Risky or handoff-heavy runs have a task-scoped trace of route decisions, evidence, probes, verification, and residual risk | `templates/run-ledger.md` |
+| Memory Candidates | Reusable findings are separated from task-only run details before promotion to repo memory | `templates/memory-candidates.md` |
 | Codebase Analysis Report | Read-only analysis produced scope, component map, call paths, contracts, findings, confidence, and unknowns | `codebase-analysis` skill output |
 | Debugging Hypothesis Matrix | Bug work is ranked by evidence, counter-evidence, falsifying probes, and fix readiness | `debugging-forensics` skill output |
 | Log Forensics Report | Logs become a timeline with signals, findings, redactions, ruled-out claims, and next probes | `log-forensics` skill output |
@@ -271,7 +281,7 @@ npm run validate
 python3 scripts/doctor.py
 ```
 
-`npm run validate` runs the same checks as CI: JSON manifests, TOML agents, generated-agent drift including stale generated files, version consistency, OpenCode JS syntax, package structure, no session-start hook regression, and the worked example test suite. The same command runs in GitHub Actions via `.github/workflows/validate.yml`.
+`npm run validate` runs the same checks as CI: JSON manifests, TOML agents, generated-agent drift including stale generated files, version consistency, OpenCode JS syntax, package structure, no session-start hook regression, memory contracts, and the worked example test suite. The same command runs in GitHub Actions via `.github/workflows/validate.yml`.
 
 ## 📚 Documentation
 

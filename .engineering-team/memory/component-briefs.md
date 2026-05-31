@@ -11,7 +11,10 @@ Use this format:
 - Owner/scope:
 - Key files/symbols:
 - Evidence/source paths:
+- Origin run:
 - Last verified:
+- Confidence: high | medium | low
+- Review trigger:
 ```
 
 ## Agent generation pipeline

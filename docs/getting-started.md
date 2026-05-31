@@ -55,6 +55,8 @@ For read-only analysis (no edits):
 Use engineering-team in read-only analysis mode to understand this repository. Route to codebase-analysis, map the main components and contracts, and return an evidence-backed report without editing files.
 ```
 
+Read-only mode changes the edit posture, not the rigor level. A trivial file explanation can be L0, but broad codebase analysis, debugging forensics, performance analysis, security review, migration review, or release planning should be assigned L2-L5 depth according to complexity and risk.
+
 To transfer work to another agent or a fresh session:
 
 ```text
@@ -65,16 +67,22 @@ Use handoff to summarize this task for a fresh agent. Focus the next session on 
 
 EngineeringTeam should not jump straight into editing. For non-trivial work, expect:
 
-1. Intake and risk classification.
-2. Agent or role routing.
+1. Intake and risk classification, including mode and L0-L5 depth.
+2. Agent or role routing when risk warrants it.
 3. Repo orientation.
 4. Component brief.
-5. Contract graph for behavior changes.
+5. Contract graph for behavior changes or behavior-level investigations.
 6. Evidence ledger.
-7. Implementation gate.
-8. Verification plan.
+7. Implementation gate when edits are requested.
+8. Verification plan, diagnosis, or next-probe plan.
 
-Small tasks may use a lighter version of the same flow.
+Small tasks may use a lighter version of the same flow. L0 should be limited to trivial local explanation, simple summary, or obvious one-file inspection with no broad claims.
+
+## Run Ledgers And Memory
+
+For high-risk, forensics, or handoff-heavy work, EngineeringTeam may produce a Run Ledger. The Run Ledger records what happened during one task: route decisions, agents used, evidence, probes, verification, handoff state, and residual risk.
+
+Run Ledgers are not durable memory. During closeout, Context GC extracts memory candidates and promotes only reusable, evidence-backed knowledge into `.engineering-team/memory/`.
 
 ## Optional Codex Custom Agents
 
@@ -98,14 +106,14 @@ max_depth = 1
 
 ## How To Tell It Is Working
 
-EngineeringTeam is working when the agent can answer these questions before editing:
+EngineeringTeam is working when the agent can answer these questions before editing or before making broad read-only claims:
 
 - Where does this behavior enter the system?
 - Where is it transformed?
 - Where does it leave the system?
 - Which contracts and consumers are affected?
 - What evidence supports the diagnosis or design?
-- What will prove the change works?
+- What will prove the change works or what probe should run next?
 - What should not be changed?
 
-If those answers are missing, ask the agent to continue the EngineeringTeam mapping phase before implementation.
+If those answers are missing, ask the agent to continue the EngineeringTeam mapping phase before implementation or before finalizing the analysis.

@@ -12,7 +12,10 @@ Use this format:
 - Command:
 - Expected result:
 - Evidence/source paths:
+- Origin run:
 - Last verified:
+- Confidence: high | medium | low
+- Review trigger:
 ```
 
 ## Full package validation (CI gate)
