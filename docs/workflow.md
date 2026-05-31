@@ -1,218 +1,63 @@
 # EngineeringTeam Workflow
 
-EngineeringTeam is a staged workflow. Each stage narrows uncertainty before the agent is allowed to change code or make broad read-only claims.
+EngineeringTeam is a staged, repo-first operating model: map the system, narrow to the owning component, trace the affected contract, gather evidence, then either make the smallest safe change or hand back a diagnosis. This page explains the public rationale and points to the canonical operational files that agents should follow.
 
-## 🗺️ Dataflow
+## Canonical Source Of Truth
+
+Do not copy procedural workflow steps from this document into agent prompts. The executable guidance lives in the skill bundle:
+
+| Need | Canonical file |
+|---|---|
+| Main router, mode selection, and workflow order | [`skills/engineering-team/SKILL.md`](../skills/engineering-team/SKILL.md) |
+| Intake, mode, risk, and autonomy depth | [`skills/engineering-team/references/intake-risk.md`](../skills/engineering-team/references/intake-risk.md) |
+| Read-only analysis routing | [`skills/engineering-team/references/analysis-routing.md`](../skills/engineering-team/references/analysis-routing.md) |
+| Specialist routing | [`skills/engineering-team/references/agent-routing.md`](../skills/engineering-team/references/agent-routing.md) |
+| Repo and component mapping | [`skills/engineering-team/references/repo-atlas.md`](../skills/engineering-team/references/repo-atlas.md), [`skills/engineering-team/references/component-brief.md`](../skills/engineering-team/references/component-brief.md) |
+| Contract and evidence gates | [`skills/engineering-team/references/contract-graph.md`](../skills/engineering-team/references/contract-graph.md), [`skills/engineering-team/references/evidence-ledger.md`](../skills/engineering-team/references/evidence-ledger.md), [`skills/engineering-team/references/implementation-gate.md`](../skills/engineering-team/references/implementation-gate.md) |
+| Verification, final handoff, and memory promotion | [`skills/engineering-team/references/verification-loop.md`](../skills/engineering-team/references/verification-loop.md), [`skills/engineering-team/references/final-report.md`](../skills/engineering-team/references/final-report.md), [`skills/engineering-team/references/memory-promotion.md`](../skills/engineering-team/references/memory-promotion.md) |
+
+When the workflow changes, update the skill/reference files first. Public docs should summarize the concept and link back here rather than duplicating the full procedure.
+
+## Dataflow At A Glance
 
 ```mermaid
 flowchart TB
-    request[Request] --> intake[Intake_And_Risk]
-    intake --> mode{Mode}
-    mode -->|Implementation| implementationPath[Implementation_Posture]
-    mode -->|Read-only| analysisPath[Read_Only_Posture]
-    implementationPath --> depth[Assign_L0_to_L5_Depth]
-    analysisPath --> depth
-    depth --> alignment[Alignment_Gate]
-    alignment --> routing[Role_Routing]
-    routing --> repoAtlas[Repo_Atlas]
-    repoAtlas --> componentBrief[Component_Brief]
-    componentBrief --> contractGraph[Contract_Graph]
-    contractGraph --> evidenceLedger[Evidence_Ledger]
-    evidenceLedger --> advisorGate{Advisor_Gate_Needed}
-    advisorGate -->|Yes| advisor[Advisor_Decision]
-    advisorGate -->|No| implementationGate[Implementation_Gate]
-    advisor --> implementationGate
-    implementationGate --> patch[Patch_When_Allowed]
-    implementationGate --> diagnosis[Diagnosis_Or_Report_When_Read_Only]
-    patch --> verification[Verification]
-    diagnosis --> closeout[Run_Ledger_And_Context_GC]
-    verification --> closeout
-    closeout --> handoff[Final_Handoff]
+    request[Request] --> classify[Classify mode, risk, and depth]
+    classify --> route[Select lead-only path or specialists]
+    route --> atlas[Repo Atlas]
+    atlas --> brief[Component Brief]
+    brief --> contracts[Contract Graph when behavior is affected]
+    contracts --> evidence[Evidence Ledger]
+    evidence --> gate[Implementation Gate or read-only diagnosis]
+    gate --> outcome[Patch, report, next-probe plan, or handoff]
+    outcome --> verify[Verification and closeout]
 ```
 
-## 💡 Why The Workflow Exists
+The important design choice is sequencing. EngineeringTeam should not start with a broad claim or patch. It first builds enough repository context for a reviewer to understand why the change, diagnosis, or next probe is justified.
 
-The workflow is not ceremony for its own sake. It counters the most expensive failure mode in agent-assisted engineering: acting confidently with incomplete repository context. Each stage retires a different kind of uncertainty:
+## Why The Workflow Exists
 
-- Intake retires ambiguity about the requested outcome.
-- Mode selection retires ambiguity about whether edits are allowed.
-- Autonomy depth retires ambiguity about how much evidence and review are required.
-- Repo Atlas retires uncertainty about project shape and local rules.
-- Component Brief retires uncertainty about ownership and call path.
-- Contract Graph retires uncertainty about consumers and compatibility.
-- Evidence Ledger retires unsupported claims.
-- Implementation Gate retires accidental broad edits.
-- Verification retires unproven success.
-- Context GC retires noisy session context while preserving only reusable knowledge.
+The workflow counters the most expensive failure mode in agent-assisted engineering: acting confidently with incomplete repository context.
 
-For small, obvious edits or local explanations, EngineeringTeam can take a fast path. For risky changes or broad read-only investigations, the workflow creates a reviewable trail from user request to validated patch, diagnosis, or next-probe plan.
+- **Intake and routing** keep the agent honest about the requested outcome, edit posture, risk, and whether specialists are useful.
+- **Repo and component mapping** prevent the agent from treating an unfamiliar repository as a loose set of files.
+- **Contract and evidence artifacts** make behavior changes reviewable by tying claims to source paths, tests, logs, schemas, or docs.
+- **Implementation and verification gates** create a deliberate pause before writes and require proof after the change.
+- **Run ledgers and memory promotion** keep task-specific traces separate from reusable, evidence-backed repo knowledge.
 
-## 1️⃣ Stage 1: Intake And Risk
+For small, obvious local work, the skill supports a fast path so the process stays proportional. For risky changes or broad read-only investigations, the workflow creates a trail from user request to validated patch, diagnosis, or next-probe plan.
 
-The agent restates the task in engineering terms and classifies:
+## Public-Facing Outputs
 
-- Requested outcome.
-- Mode: read-only or implementation.
-- Known files, symptoms, or components.
-- Risk level.
-- Unknowns that must be resolved from the repo.
-- Expected deliverable.
+EngineeringTeam produces compact artifacts that reviewers can inspect without reading a full agent transcript:
 
-Read-only mode does not automatically mean L0. Mode controls whether edits are allowed. The L0-L5 level controls depth, uncertainty, and review.
+| Artifact | Public purpose | Canonical reference/template |
+|---|---|---|
+| Repo Atlas | Shows the agent understands repo shape, entry points, tests, generated-code rules, and local instructions. | [`references/repo-atlas.md`](../skills/engineering-team/references/repo-atlas.md) |
+| Component Brief | Shows the agent found the owner, files, symbols, call path, related tests, and side effects. | [`references/component-brief.md`](../skills/engineering-team/references/component-brief.md) |
+| Contract Graph | Shows producer-to-consumer behavior, data shape, failure mode, coverage, and compatibility risk. | [`references/contract-graph.md`](../skills/engineering-team/references/contract-graph.md) |
+| Evidence Ledger | Separates supported claims from assumptions. | [`references/evidence-ledger.md`](../skills/engineering-team/references/evidence-ledger.md) |
+| Verification Report | Records checks run, failures attributed, gaps, and residual risk. | [`references/verification-loop.md`](../skills/engineering-team/references/verification-loop.md) |
+| Run Ledger | Captures task-scoped route decisions, probes, evidence, verification, and handoff state when a run needs traceability. | [`references/run-ledger.md`](../skills/engineering-team/references/run-ledger.md) |
 
-The risk classification decides whether the task needs a full specialist route or a lightweight lead-only pass.
-
-## 1.1️⃣ L0 Fast Path Boundary
-
-Use L0 only for trivial local explanation, simple summary, or obvious one-file inspection with no cross-file, behavior, contract, performance, security, migration, release, or production claims.
-
-Do not classify these as L0 by default:
-
-- codebase audits
-- architecture surveys
-- root-cause investigations
-- debugging forensics
-- log forensics
-- performance investigations
-- security reviews
-- migration or compatibility analysis
-- release or production analysis
-- PR or diff reviews involving behavior, API, tests, generated code, or multiple files
-
-Those requests may still be read-only, but they should be classified as L2-L5 according to breadth and risk.
-
-## 1.5️⃣ Stage 1.5: Alignment Gate
-
-For ambiguous scope, behavior, terminology, acceptance criteria, or L3+ risk, the agent resolves user intent before routing too deeply:
-
-- Ask one question at a time.
-- Include a recommended answer.
-- Inspect the repository instead of asking when code, tests, or docs can answer.
-- Stop when acceptance criteria, non-goals, and verification signals are clear.
-
-## 2️⃣ Stage 2: Role Routing
-
-EngineeringTeam does not spawn a fixed team by default. It scores candidate roles and uses only the smallest set that covers distinct risks.
-
-Examples:
-
-- Unknown repo impact: Codebase Investigator.
-- Behavior change: Test Verification Engineer.
-- Security boundary: Security Analyst.
-- Public API or module boundary: System Design Architect.
-- Migration or compatibility: Migration Analyst.
-- Production behavior: Release Rollback Engineer.
-- Unclear evidence: Evidence Skeptic or Advisor Consultant.
-
-When a task is broad, noisy, or specialist-heavy, the Lead Engineer delegates bounded work to subagents using `templates/subagent-brief.md`. Each subagent returns a compact context capsule. The Lead Engineer uses capsules as evidence and owns the final decision.
-
-## 3️⃣ Stage 3: Repo Atlas
-
-The repo atlas is a shallow map of the system:
-
-- Main languages and frameworks.
-- Runtime and build model.
-- Entry points.
-- Test surfaces.
-- Domain context and relevant ADRs, when present.
-- Generated-code rules.
-- Config and schema sources.
-- External integrations.
-- Repo-specific instructions.
-
-The goal is orientation, not exhaustive documentation.
-
-Domain docs are a soft dependency. If a `CONTEXT.md`, `CONTEXT-MAP.md`, or ADRs exist, EngineeringTeam uses that vocabulary and respects durable decisions. If they are absent, the workflow continues with code-first evidence.
-
-## 4️⃣ Stage 4: Component Brief
-
-The component brief narrows the map to the relevant behavior:
-
-- Owning component.
-- Important files and symbols.
-- Main call path.
-- Related tests.
-- Similar existing patterns.
-- Inputs, outputs, and side effects.
-- Open questions.
-
-This is the minimum artifact before local edits or bounded component-level claims.
-
-## 5️⃣ Stage 5: Contract Graph
-
-Behavior changes and behavior-level investigations require contract awareness. EngineeringTeam traces producer-to-consumer edges:
-
-```mermaid
-flowchart LR
-    source[Source] --> adapter[Adapter]
-    adapter --> contract[Contract]
-    contract --> domain[Domain operation]
-    domain --> sideEffect[Side effect]
-    sideEffect --> output[Observable output]
-    output --> verification[Verification]
-```
-
-For each edge, the agent records data shape, ownership, error behavior, compatibility risk, coverage, and failure mode.
-
-## 6️⃣ Stage 6: Evidence Ledger
-
-Every major claim must point to evidence:
-
-- Source path.
-- Symbol reference.
-- Test result.
-- Log excerpt.
-- API contract.
-- Runtime observation.
-- Documented behavior.
-
-Unsupported claims remain assumptions.
-
-## 7️⃣ Stage 7: Implementation Gate
-
-The agent may edit only after the gate passes:
-
-- Scope is clear.
-- Files allowed to change are named.
-- Evidence supports the diagnosis or design.
-- Contract edges are known for behavior changes.
-- Tests or verification commands are defined.
-- Rollback path is understood for risky work.
-
-For read-only mode, this stage produces a diagnosis, analysis report, or next-probe plan instead of a patch.
-
-## 8️⃣ Stage 8: Verification, Run Ledger, And Handoff
-
-Verification starts narrow, then expands only when risk justifies it:
-
-1. Fast static checks.
-2. Targeted unit tests.
-3. Regression tests.
-4. Integration or system checks.
-5. Security, performance, migration, or manual checks when relevant.
-
-Use a Run Ledger when the task needs a reviewable trace of route decisions, agents used, probes, evidence, verification, handoff state, or residual risk. The Run Ledger is task-scoped evidence, not durable memory.
-
-At closeout, Context GC extracts memory candidates and applies memory-promotion rules. Only reusable, evidence-backed knowledge should enter `.engineering-team/memory/`.
-
-The final handoff reports what changed or what was diagnosed, what was verified or still needs probing, what remains risky, and what reusable repo knowledge should be preserved.
-
-```mermaid
-flowchart TD
-    check[Run focused check] --> result{Result}
-    result -->|Pass| expand[Expand only if risk justifies it]
-    result -->|Fail| classify[Classify failure]
-    classify --> impl[Wrong implementation]
-    classify --> expectation[Wrong expectation]
-    classify --> env[Environment/tooling issue]
-    classify --> understanding[Incomplete repo understanding]
-    impl --> patch[Patch intentionally]
-    expectation --> adjust[Test or acceptance update]
-    env --> report[Report limitation]
-    understanding --> map[Return to mapping]
-    patch --> check
-    adjust --> check
-    map --> check
-```
-
-For bug investigations, EngineeringTeam builds a deterministic feedback loop before fixing. For test-first work, it uses vertical tracer-bullet cycles: one public-interface behavior test, minimal implementation, then the next behavior.
+See `examples/buggy-python-service/expected-artifacts/` for filled examples from the demo project.

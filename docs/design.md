@@ -67,58 +67,9 @@ The design keeps harness-specific files shallow. The canonical behavior lives in
 
 ## 🧭 Workflow Design
 
-EngineeringTeam uses a narrowing workflow:
+EngineeringTeam uses a narrowing workflow: request → risk/depth → routing → repo/component/contract context → evidence gate → patch or report → verification and closeout. The operational sequence and gate criteria are intentionally centralized in [`skills/engineering-team/SKILL.md`](../skills/engineering-team/SKILL.md) and the focused files under [`skills/engineering-team/references/`](../skills/engineering-team/references/).
 
-```mermaid
-flowchart LR
-    intake[Intake + mode] --> depth[L0-L5 depth]
-    depth --> repo[Repo map]
-    repo --> component[Component map]
-    component --> feature[Feature map]
-    feature --> contracts[Contract graph]
-    contracts --> files[Focused files]
-    files --> plan[Change plan or diagnosis]
-    plan --> outcome[Patch or report]
-    outcome --> verification[Verification or next probes]
-    verification --> closeout[Run Ledger / Context GC]
-```
-
-The important design choice is sequencing. The agent should not start with a patch or a broad claim. It should first produce enough context to make the patch, diagnosis, or analysis reviewable.
-
-### 1️⃣ Intake, Mode, And Risk
-
-The agent restates the task as an engineering problem, identifies unknowns, selects mode, and classifies risk. Mode and depth are deliberately separate:
-
-- **Mode** controls edit posture: read-only or implementation.
-- **L0-L5 depth** controls how much evidence, routing, and review are required.
-
-Read-only mode does not imply L0. A read-only root-cause investigation, performance analysis, architecture review, or migration review can be L3-L5. L0 is reserved for trivial local explanations or obvious one-file inspections with no cross-file claims.
-
-### 2️⃣ Repo Atlas
-
-The repo atlas is a shallow, task-scoped map of the system. It records languages, entry points, test commands, generated-code conventions, project instructions, and high-risk areas. It prevents the agent from treating an unfamiliar repository as a blank text directory.
-
-### 3️⃣ Component Brief
-
-The component brief narrows from repository to owner. It identifies relevant files, symbols, call paths, nearby tests, similar patterns, inputs, outputs, and side effects. This is the minimum useful context before most implementation work or bounded component-level claims.
-
-### 4️⃣ Contract Graph
-
-For behavior changes and behavior-level investigations, EngineeringTeam traces producer-to-consumer edges. The graph captures data shape, ownership, error behavior, compatibility concerns, coverage, and failure modes. This makes it harder to accidentally change or misdiagnose public behavior while only checking one file.
-
-### 5️⃣ Evidence Ledger
-
-The evidence ledger separates claims from assumptions. A claim is useful only when backed by source paths, symbols, tests, logs, runtime observations, schemas, or docs. Unsupported ideas remain hypotheses until verified.
-
-### 6️⃣ Implementation Gate
-
-The implementation gate names the files allowed to change, evidence for the design, affected contracts, verification plan, and rollback path. It is a deliberate pause before writes. In read-only mode, this same pressure produces a diagnosis, report, or next-probe plan instead of a patch.
-
-### 7️⃣ Verification, Run Ledger, And Handoff
-
-Verification starts narrow and expands only when risk justifies it. The final handoff reports the changed files or diagnosis, commands run or probes still needed, residual risk, and reusable context that should be preserved.
-
-The Run Ledger is a task-scoped trace for route decisions, agents used, evidence, probes, verification, handoff state, and residual risk. It is not durable memory. During Context GC, reusable findings become memory candidates and pass through memory-promotion rules before entering `.engineering-team/memory/`.
+This design keeps public docs stable while the canonical agent procedure evolves. The public idea is simple: every non-trivial edit or broad read-only claim should be reviewable, source-backed, and proportional to risk. For the detailed procedure, use [`docs/workflow.md`](workflow.md) as the public map and the skill references as the source of truth.
 
 ## 🧑‍💻 Specialist Routing Design
 
