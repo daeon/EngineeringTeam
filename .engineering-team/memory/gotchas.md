@@ -12,7 +12,10 @@ Use this format:
 - Impact:
 - Mitigation:
 - Evidence/source paths:
+- Origin run:
 - Last verified:
+- Confidence: high | medium | low
+- Review trigger:
 ```
 
 ## Generated agent files are overwritten
