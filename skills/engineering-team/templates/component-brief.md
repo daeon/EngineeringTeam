@@ -4,36 +4,74 @@ Zoom in on the one component that owns the task. Every claim of ownership must
 be backed by a call path, test, or reference — not a filename guess. Keep it to
 the lines that change the plan.
 
+House style: use compact, evidence-first tables with confidence and next action
+columns for every unresolved claim.
+
 > Anti-pattern: assuming ownership from a file name, or listing files without
 > the call path that connects them.
 
 ## Relevant Component
-<!-- e.g. Checkout pricing path -->
+
+| Component | Evidence | Confidence | Responsibility | Next action |
+|---|---|---:|---|---|
+|  |  |  |  |  |
 
 ## Responsibility
-<!-- one sentence -->
+
+| Claim | Evidence | Confidence | Impact | Next action |
+|---|---|---:|---|---|
+|  |  |  |  |  |
 
 ## Important Files
 
+| File | Evidence | Confidence | Role | Next action |
+|---|---|---:|---|---|
+|  |  |  |  |  |
+
 ## Relevant Symbols
-<!-- symbol — file, e.g. compute_total_cents — src/pricing.py -->
+
+| Symbol | Evidence | Confidence | Role | Next action |
+|---|---|---:|---|---|
+|  | File:  |  |  |  |
 
 ## Main Call Path
-<!-- e.g. checkout(payload) → build LineItems → compute_total_cents(items, discount) -->
+
+| Edge | Evidence | Confidence | Contract | Failure mode / next action |
+|---|---|---:|---|---|
+|  |  |  |  |  |
 
 ## Related Tests
-<!-- test ids that exercise this path -->
+
+| Test | Evidence | Confidence | Coverage | Next action |
+|---|---|---:|---|---|
+|  |  |  |  |  |
 
 ## Similar Existing Patterns
-<!-- a pattern already in the repo to follow instead of inventing one -->
+
+| Pattern | Evidence | Confidence | Why follow it | Next action |
+|---|---|---:|---|---|
+|  |  |  |  |  |
 
 ## Inputs / Outputs
 
+| Boundary | Evidence | Confidence | Input / output contract | Risk / next action |
+|---|---|---:|---|---|
+|  |  |  |  |  |
+
 ## Side Effects
-<!-- IO, mutation, network, filesystem, or "None" -->
+
+| Side effect | Evidence | Confidence | Risk | Next action |
+|---|---|---:|---|---|
+| None / IO / mutation / network / filesystem |  |  |  |  |
 
 ## Open Questions
-<!-- what is still unverified -->
+
+| Question | Evidence | Confidence | Risk | Next action |
+|---|---|---:|---|---|
+|  | What is unverified:  | Assumption |  |  |
 
 ## Evidence
-<!-- path / symbol / test / command for each ownership claim above -->
+
+| Claim | Evidence | Confidence | Impact | Next action |
+|---|---|---:|---|---|
+|  | path / symbol / test / command |  |  |  |

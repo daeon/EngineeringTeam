@@ -2,19 +2,26 @@
 
 Use this during Context GC to separate reusable repo knowledge from task-scoped run details before updating `.engineering-team/memory/`.
 
+House style: every candidate must pair the durable claim with source evidence,
+confidence, review trigger, and an explicit promotion decision.
+
 ## Candidate Table
 
-| Candidate | Target memory file | Evidence | Origin run | Status | Confidence | Review trigger | Decision | Reason |
-|---|---|---|---|---|---|---|---|---|
-|  |  |  |  | current / needs-verification / stale | high / medium / low |  | promote / needs-verification / reject / defer |  |
+| Candidate | Evidence | Confidence | Target / status | Decision / next action |
+|---|---|---:|---|---|
+|  | Origin run:  | high / medium / low | Target memory file: ; Status: current / needs-verification / stale | promote / needs-verification / reject / defer; Review trigger: ; Reason:  |
 
 ## Promotion Summary
 
-- Promoted:
-- Marked needs-verification:
-- Rejected:
-- Deferred:
+| Outcome | Evidence | Confidence | Impact | Next action |
+|---|---|---:|---|---|
+| Promoted |  |  |  |  |
+| Marked needs-verification |  |  |  |  |
+| Rejected |  |  |  |  |
+| Deferred |  |  |  |  |
 
 ## Rejection Notes
 
-Record why rejected candidates should not enter durable memory. Common reasons: one-off task detail, transient log, failed hypothesis, weak inference, sensitive data, duplicate source truth, or unclear review trigger.
+| Candidate | Evidence | Confidence | Reason | Next action |
+|---|---|---:|---|---|
+|  |  |  | one-off task detail / transient log / failed hypothesis / weak inference / sensitive data / duplicate source truth / unclear review trigger |  |

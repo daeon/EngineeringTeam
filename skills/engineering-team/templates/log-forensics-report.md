@@ -2,26 +2,33 @@
 
 ## Scope and Data Handling
 
-- Sources:
-- Time window:
-- Redactions applied:
-- Known gaps:
+| Item | Evidence | Confidence | Risk / impact | Next action |
+|---|---|---:|---|---|
+| Sources |  |  |  |  |
+| Time window |  |  |  |  |
+| Redactions applied |  |  |  |  |
+| Known gaps |  |  |  |  |
 
 ## Timeline
 
-| Time | Source | Event | Correlation key | Evidence | Confidence |
-|---|---|---|---|---|---|
+| Time | Evidence | Confidence | Event / correlation key | Next action |
+|---|---|---:|---|---|
+|  | Source:  |  |  |  |
 
 ## Findings
 
-| Finding | Impact | Evidence | Alternative explanation | Confidence |
-|---|---|---|---|---|
+| Finding | Evidence | Confidence | Impact | Next action |
+|---|---|---:|---|---|
+|  | Alternative explanation:  |  |  |  |
 
 ## Ruled Out / Not Yet Proven
 
-| Claim | Status | Evidence needed |
-|---|---|---|
+| Claim | Evidence | Confidence | Risk / impact | Next action |
+|---|---|---:|---|---|
+|  | Evidence needed:  | Contradicted / Assumption |  |  |
 
 ## Next probes
 
-- 
+| Probe | Evidence | Confidence | Expected impact | Risk / stop condition |
+|---|---|---:|---|---|
+|  |  |  |  |  |

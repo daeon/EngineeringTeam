@@ -2,23 +2,28 @@
 
 ## Measurement Frame
 
-- Metric:
-- Baseline:
-- Workload:
-- Environment:
-- Variance / confidence notes:
+| Item | Evidence | Confidence | Risk / impact | Next action |
+|---|---|---:|---|---|
+| Metric |  |  |  |  |
+| Baseline |  |  |  |  |
+| Workload |  |  |  |  |
+| Environment |  |  |  |  |
+| Variance / confidence notes |  |  |  |  |
 
 ## Hot Path Map
 
-| Path / operation | Resource | Evidence | Consumer impact | Confidence |
-|---|---|---|---|---|
+| Path / operation | Evidence | Confidence | Resource / impact | Next action |
+|---|---|---:|---|---|
+|  |  |  | Resource: ; Consumer impact:  |  |
 
 ## Bottleneck Hypotheses
 
-| Rank | Hypothesis | Supporting measurement | Counter-evidence | Next measurement | Expected impact | Confidence |
-|---:|---|---|---|---|---|---|
+| Rank | Hypothesis | Evidence | Confidence | Expected impact / next action |
+|---:|---|---|---:|---|
+| 1 |  | Supporting measurement: ; Counter-evidence:  |  | Next measurement:  |
 
 ## Recommendations
 
-| Recommendation | Type: probe / implementation candidate | Preconditions | Risk | Verification |
-|---|---|---|---|---|
+| Recommendation | Evidence | Confidence | Risk | Verification / next action |
+|---|---|---:|---|---|
+| Type: probe / implementation candidate | Preconditions:  |  |  |  |

@@ -1,27 +1,36 @@
 # Codebase Analysis Report
 
+Use compact, evidence-first tables. Preferred column order is item/claim,
+evidence, confidence, impact or risk, then next action.
+
 ## Scope
 
-- Question:
-- Non-goals:
-- Repositories / components inspected:
+| Item | Evidence | Confidence | Risk / impact | Next action |
+|---|---|---:|---|---|
+| Question |  |  |  |  |
+| Non-goals |  |  |  |  |
+| Repositories / components inspected |  |  |  |  |
 
 ## Repo / Component Map
 
-| Area | Files / symbols | Responsibility | Evidence | Confidence |
-|---|---|---|---|---|
+| Area | Evidence | Confidence | Responsibility | Next action |
+|---|---|---:|---|---|
+|  | Files / symbols:  |  |  |  |
 
 ## Call Paths and Contracts
 
-| Entry point | Producer | Contract / data shape | Consumer | Failure mode | Evidence |
-|---|---|---|---|---|---|
+| Edge | Evidence | Confidence | Contract / data shape | Failure mode / next action |
+|---|---|---:|---|---|
+| Entry point → consumer | Producer: ; Consumer:  |  |  |  |
 
 ## Findings
 
-| Finding | Impact | Evidence | Confidence | Follow-up |
-|---|---|---|---|---|
+| Finding | Evidence | Confidence | Impact | Next action |
+|---|---|---:|---|---|
+|  |  |  |  |  |
 
 ## Unknowns and Assumptions
 
-| Item | Why unresolved | Next probe |
-|---|---|---|
+| Item | Evidence | Confidence | Risk | Next action |
+|---|---|---:|---|---|
+|  | Why unresolved:  | Assumption |  | Next probe:  |
