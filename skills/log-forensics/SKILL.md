@@ -5,26 +5,24 @@ description: "Use for read-only log analysis: parse log samples, reconstruct tim
 
 # Log Forensics
 
-Use this skill when the user provides logs or asks to analyze operational traces, incidents, alerts, metrics excerpts, or error streams.
+Use when the user provides logs or asks to analyze operational traces, incidents, alerts, metrics excerpts, or error streams.
 
 ## Default posture
 
-Read-only by default. Treat logs as potentially sensitive. Do not expose secrets, tokens, private user data, or raw high-volume logs in the final response. Redact sensitive values and summarize patterns.
+Read-only by default. Treat logs as sensitive: redact secrets, tokens, and private data; summarize high-volume logs instead of pasting them.
 
 ## Workflow
 
-1. Identify log sources, time windows, services, request IDs, hosts, versions, and sampling gaps.
+1. Identify sources, time windows, services, request IDs, hosts, versions, and gaps.
 2. Normalize events into a timeline.
-3. Classify signals: errors, warnings, retries, latency, saturation, deployment changes, dependency failures, and user-visible impact.
-4. Correlate events with code paths or operational boundaries when repository context is available.
+3. Classify errors, warnings, retries, latency, saturation, deploy changes, dependency failures, and user impact.
+4. Correlate events with code paths or operational boundaries when repo context exists.
 5. Record confidence and missing probes.
-6. Return a log forensics report using `../engineering-team/templates/log-forensics-report.md` and a next-probe plan when evidence is incomplete.
+6. Return `../engineering-team/templates/log-forensics-report.md`; add a next-probe plan when evidence is incomplete.
 
 ## Useful specialists
 
-- Log Forensics Analyst for timeline reconstruction and signal extraction.
-- Observability Architect for telemetry gaps, metrics/traces, and alert quality.
-- Evidence Skeptic for correlation-versus-causation checks.
+Use log forensics for timeline/signal extraction, observability review for telemetry gaps and alert quality, and Evidence Skeptic for correlation-versus-causation checks.
 
 ## Required output
 
