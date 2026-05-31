@@ -10,6 +10,10 @@ Use this skill when the user wants the current work handed to another agent, sub
 
 Common triggers: `handoff`, `hand over`, `transfer this task`, `continue in another agent`, `make a continuation brief`, `summarize this for a fresh session`, `delegate this to another agent`, or `pick this up later`.
 
+## Default posture
+
+Preserve and compress existing context; do not broaden scope, investigate unrelated areas, edit implementation files, or create durable memory unless the user explicitly requests that work. Prefer references to existing artifacts over copying long content.
+
 ## Goal
 
 Create a compact handoff document that lets the next agent continue without rereading the full transcript.
@@ -23,6 +27,14 @@ Preserve decisions, evidence, artifacts, paths, risks, blockers, and the next co
 - If the handoff should stay with the repo, use `.agent-state/handoffs/<short-task-slug>.md` and create the directory first.
 - Read the target file before writing if it already exists or if the command creates an empty file first.
 - If file writes are unavailable, output the handoff inline and clearly label it as unsaved.
+
+## Workflow
+
+1. Identify the target audience, destination path, and intended next focus.
+2. Collect only the context the next agent needs.
+3. Prefer links to existing artifacts, paths, commits, issues, commands, and verification output over transcript excerpts.
+4. Write or return the handoff using the template below.
+5. Finish with the completion response and one concise continuation prompt.
 
 ## Before writing
 
@@ -106,6 +118,10 @@ When handing off EngineeringTeam work, include:
 - context GC or memory updates that were made or intentionally skipped
 
 For subagent delegation, include the smallest safe context budget: `brief-only`, `component-context`, `artifact-context`, or `full-context`. Prefer a context capsule over transcript excerpts.
+
+## Required output
+
+A compact handoff document saved to the selected path or returned inline, plus a completion response that names the handoff location and gives one ready-to-paste continuation prompt. The handoff must include decisions, evidence, open questions, risks, relevant artifacts, and concrete next actions.
 
 ## Completion response
 

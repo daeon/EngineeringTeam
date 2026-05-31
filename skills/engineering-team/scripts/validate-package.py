@@ -150,31 +150,40 @@ TEMPLATE_CONTRACTS: dict[str, list[str]] = {
     ],
 }
 
-READ_ONLY_SKILL_CONTRACTS: dict[str, list[str]] = {
-    "codebase-analysis": [
-        "name: codebase-analysis",
-        "## Default posture",
-        "Read-only by default",
-        "## Required output",
-    ],
-    "debugging-forensics": [
-        "name: debugging-forensics",
-        "## Default posture",
-        "Read-only by default",
-        "## Required output",
-    ],
-    "log-forensics": [
-        "name: log-forensics",
-        "## Default posture",
-        "Read-only by default",
-        "## Required output",
-    ],
-    "performance-forensics": [
-        "name: performance-forensics",
-        "## Default posture",
-        "Read-only by default",
-        "## Required output",
-    ],
+SATELLITE_SKILL_REQUIRED_HEADINGS = [
+    "## Default posture",
+    "## Workflow",
+    "## Required output",
+]
+
+READ_ONLY_SATELLITE_SKILLS = {
+    "codebase-analysis",
+    "debugging-forensics",
+    "log-forensics",
+    "performance-forensics",
+}
+
+CANONICAL_CONCEPTS: dict[str, dict[str, set[str]]] = {
+    "Implementation Gate": {
+        "allowed_paths": {"references/implementation-gate.md"},
+        "heading_aliases": {"Implementation Gate", "Implementation gate"},
+    },
+    "Advisor Gate": {
+        "allowed_paths": {"references/advisor-gate.md"},
+        "heading_aliases": {"Advisor Gate", "Advisor gate"},
+    },
+    "Run Ledger": {
+        "allowed_paths": {"references/run-ledger.md", "templates/run-ledger.md"},
+        "heading_aliases": {"Run Ledger"},
+    },
+    "memory promotion": {
+        "allowed_paths": {"references/memory-promotion.md"},
+        "heading_aliases": {"Memory Promotion"},
+    },
+    "generated-code rules": {
+        "allowed_paths": {"references/repo-atlas.md", "templates/repo-atlas.md"},
+        "heading_aliases": {"Generated Code Rules", "Generated-code rules"},
+    },
 }
 
 MEMORY_CONTRACTS: dict[str, list[str]] = {
@@ -251,6 +260,98 @@ def load_json(path: Path) -> dict:
     return json.loads(path.read_text())
 
 
+def parse_frontmatter(text: str, label: str) -> str:
+    frontmatter = re.match(r"^---\n(.*?)\n---\n", text, re.S)
+    require(frontmatter is not None, f"{label} missing frontmatter")
+    return frontmatter.group(1)
+
+
+def linked_reference_sources(plugin_root: Path, skill_dir: Path) -> list[Path]:
+    return [
+        *(plugin_root / "skills").glob("*/SKILL.md"),
+        *skill_dir.joinpath("references").glob("*.md"),
+    ]
+
+
+def resolve_skill_doc_link(source_path: Path, link: str, skill_dir: Path) -> Path:
+    if link.startswith(("references/", "templates/")):
+        return skill_dir / link
+    return (source_path.parent / link).resolve()
+
+
+def validate_backticked_doc_links(plugin_root: Path, skill_dir: Path) -> None:
+    """Validate every backticked references/templates Markdown link in skill/reference docs."""
+
+    link_pattern = re.compile(r"`([^`\n]*(?:references|templates)/[^`\n]+\.md)`")
+    for source_path in sorted(linked_reference_sources(plugin_root, skill_dir)):
+        if not source_path.exists():
+            continue
+        text = source_path.read_text()
+        for link in sorted(set(link_pattern.findall(text))):
+            target = resolve_skill_doc_link(source_path, link, skill_dir)
+            require(
+                target.exists(),
+                f"{source_path.relative_to(plugin_root)} links missing skill doc: {link}",
+            )
+
+
+def validate_satellite_skill_contracts(plugin_root: Path) -> None:
+    for skill_path in sorted((plugin_root / "skills").glob("*/SKILL.md")):
+        skill_name = skill_path.parent.name
+        if skill_name == "engineering-team":
+            continue
+
+        text = skill_path.read_text()
+        frontmatter = parse_frontmatter(text, f"{skill_name}/SKILL.md")
+        require(
+            f"name: {skill_name}" in frontmatter,
+            f"{skill_name} frontmatter missing name: {skill_name}",
+        )
+        for heading in SATELLITE_SKILL_REQUIRED_HEADINGS:
+            require(heading in text, f"{skill_name} missing required heading: {heading}")
+        if skill_name in READ_ONLY_SATELLITE_SKILLS:
+            require(
+                "Read-only by default" in text,
+                f"{skill_name} missing required read-only posture: Read-only by default",
+            )
+
+
+def normalize_heading(text: str) -> str:
+    text = text.strip().lower().replace("-", " ")
+    return re.sub(r"\s+", " ", text)
+
+
+def validate_canonical_concept_owners(skill_dir: Path) -> None:
+    """Fail if canonical workflow concepts gain duplicate definition headings."""
+
+    heading_pattern = re.compile(r"^(#{1,6})\s+(.+?)\s*$")
+    sources = [
+        skill_dir / "SKILL.md",
+        *skill_dir.joinpath("references").glob("*.md"),
+        *skill_dir.joinpath("templates").glob("*.md"),
+    ]
+    alias_to_concept: dict[str, tuple[str, set[str]]] = {}
+    for concept, config in CANONICAL_CONCEPTS.items():
+        for alias in config["heading_aliases"]:
+            alias_to_concept[normalize_heading(alias)] = (concept, config["allowed_paths"])
+
+    for source_path in sorted(sources):
+        rel_path = source_path.relative_to(skill_dir).as_posix()
+        for line_no, line in enumerate(source_path.read_text().splitlines(), 1):
+            match = heading_pattern.match(line)
+            if match is None:
+                continue
+            heading = normalize_heading(match.group(2))
+            if heading not in alias_to_concept:
+                continue
+            concept, allowed_paths = alias_to_concept[heading]
+            require(
+                rel_path in allowed_paths,
+                f"duplicate-risk heading for canonical concept {concept!r} in {rel_path}:{line_no}; "
+                f"canonical owner is {', '.join(sorted(allowed_paths))}",
+            )
+
+
 def validate_no_session_start_hooks(plugin_root: Path, cursor_manifest: dict) -> None:
     """Keep code and docs aligned with the public no-startup-injection promise."""
 
@@ -325,15 +426,13 @@ def main() -> int:
 
     require(skill_path.exists(), f"missing {skill_path}")
     skill = skill_path.read_text()
-    frontmatter = re.match(r"^---\n(.*?)\n---\n", skill, re.S)
-    require(frontmatter is not None, "SKILL.md missing frontmatter")
-    require("name:" in frontmatter.group(1), "SKILL.md missing name")
-    require("description:" in frontmatter.group(1), "SKILL.md missing description")
+    frontmatter = parse_frontmatter(skill, "SKILL.md")
+    require("name:" in frontmatter, "SKILL.md missing name")
+    require("description:" in frontmatter, "SKILL.md missing description")
 
     skill_dir = skill_path.parent
 
-    for rel in sorted(set(re.findall(r"`(references/[^`]+\.md)`", skill))):
-        require((skill_dir / rel).exists(), f"SKILL.md links missing reference: {rel}")
+    validate_backticked_doc_links(plugin_root, skill_dir)
 
     for rel_path, required_headings in REFERENCE_CONTRACTS.items():
         full_path = skill_dir / rel_path
@@ -351,13 +450,8 @@ def main() -> int:
 
     validate_memory_contracts(plugin_root)
 
-    for skill_name, required_phrases in READ_ONLY_SKILL_CONTRACTS.items():
-        read_only_skill_path = plugin_root / "skills" / skill_name / "SKILL.md"
-        require(read_only_skill_path.exists(), f"missing read-only analysis skill: {skill_name}")
-        text = read_only_skill_path.read_text()
-        require(text.startswith("---\n"), f"{skill_name} missing frontmatter")
-        for phrase in required_phrases:
-            require(phrase in text, f"{skill_name} missing required phrase: {phrase}")
+    validate_satellite_skill_contracts(plugin_root)
+    validate_canonical_concept_owners(skill_dir)
 
     generated_agents_dir = skill_dir / "assets" / "agents"
     require(generated_agents_dir.exists(), f"missing generated agents dir: {generated_agents_dir}")
