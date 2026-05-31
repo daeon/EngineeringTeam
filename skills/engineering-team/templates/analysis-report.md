@@ -9,31 +9,59 @@ For descriptive "understand/map how this repo works" requests, use the
 Codebase Analysis Report (`templates/codebase-analysis-report.md`) via the
 `codebase-analysis` skill instead.
 
+House style: keep tables compact and evidence-first. Prefer columns ordered as
+`Item/Claim`, `Evidence`, `Confidence`, `Risk/Impact`, then `Next action`.
+Use `Proven`, `Plausible`, or `Assumption` for confidence unless a template
+requires a different scale.
+
 Every finding must reference a file path, line number, command output, or
 documented behavior. Label unverified claims as assumptions.
 
 > Anti-pattern: listing vague impressions with no evidence, or mixing in an
 > implementation plan that belongs in an L2+ Final Report.
 
+## Scope
+
+| Item | Evidence | Confidence | Risk / impact | Next action |
+|---|---|---:|---|---|
+| Question / review target |  |  |  |  |
+| Non-goals |  |  |  |  |
+| Files or components inspected |  |  |  |  |
+
 ## What works well
-<!-- Concrete, evidence-backed observations. Path + reason. -->
-<!-- e.g. "scripts/generate-agents.py --check catches drift in CI: confirmed by .github/workflows/validate.yml line 20." -->
+
+| Observation | Evidence | Confidence | Impact | Next action |
+|---|---|---:|---|---|
+|  |  |  |  | Preserve / reuse |
 
 ## Key findings
 
-| Finding | Severity | Evidence | Location |
-|---|---|---|---|
-| <!-- short description --> | <!-- high / medium / low --> | <!-- file:line, command output, doc quote --> | <!-- path or component --> |
+| Finding | Evidence | Confidence | Impact | Next action |
+|---|---|---:|---|---|
+|  |  | Proven / Plausible / Assumption | High / Medium / Low |  |
 
-<!-- Severity: high = correctness / security / trust; medium = maintainability / DX; low = style / optional -->
+<!-- Impact: High = correctness / security / trust; Medium = maintainability / DX; Low = style / optional. -->
 
 ## Improvement candidates
-<!-- Prioritized list. One line each: what, why it matters, rough effort. -->
-<!-- e.g. "1. Fix SECURITY.md contradiction with hooks.json — high trust impact, one-paragraph edit." -->
+
+| Candidate | Evidence | Confidence | Impact | Next action |
+|---|---|---:|---|---|
+|  |  |  |  |  |
 
 ## Verification performed
-<!-- Commands run and their results. Evidence that findings are real, not guesses. -->
-<!-- e.g. "python3 scripts/doctor.py → 12/12 OK; npm run validate → clean." -->
+
+| Check | Evidence | Confidence | Result / risk | Next action |
+|---|---|---:|---|---|
+|  | Command: `` |  | Pass / Fail / Not run |  |
+
+## Residual risk
+
+| Risk | Evidence | Confidence | Impact | Next action |
+|---|---|---:|---|---|
+|  |  |  |  |  |
 
 ## Follow-ups
-<!-- Open questions, deferred investigations, or work that would require L2+ autonomy. -->
+
+| Follow-up | Evidence | Confidence | Impact | Next action |
+|---|---|---:|---|---|
+|  |  |  |  |  |

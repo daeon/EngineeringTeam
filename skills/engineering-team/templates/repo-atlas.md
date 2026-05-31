@@ -4,48 +4,98 @@ Shallow map of the repository. Fill each section with one to three concrete
 lines backed by a path or command. Keep it concise — this is orientation, not
 documentation. Skip a section with "None" rather than padding it.
 
+House style: each section uses the same compact row shape: item, evidence,
+confidence, impact/risk, and next action.
+
 > Anti-pattern: copying the whole file tree, or writing prose with no paths,
 > commands, or evidence.
 
 ## System Type
-<!-- e.g. CLI tool / HTTP service / library / monorepo -->
+
+| Item | Evidence | Confidence | Impact | Next action |
+|---|---|---:|---|---|
+|  |  |  |  |  |
 
 ## Main Languages / Frameworks
 
+| Item | Evidence | Confidence | Impact | Next action |
+|---|---|---:|---|---|
+|  |  |  |  |  |
+
 ## Runtime / Build Model
-<!-- how it builds and runs; e.g. "import-only, no build step" -->
+
+| Item | Evidence | Confidence | Impact | Next action |
+|---|---|---:|---|---|
+|  |  |  |  |  |
 
 ## Main Components
-<!-- component → path, one line each -->
+
+| Component | Evidence | Confidence | Responsibility | Next action |
+|---|---|---:|---|---|
+|  |  |  |  |  |
 
 ## Entry Points
-<!-- e.g. checkout(payload) in src/api.py -->
+
+| Entry point | Evidence | Confidence | Responsibility | Next action |
+|---|---|---:|---|---|
+|  |  |  |  |  |
 
 ## Test Surfaces
-<!-- where tests live + how they map to components -->
+
+| Test surface | Evidence | Confidence | Coverage | Next action |
+|---|---|---:|---|---|
+|  |  |  |  |  |
 
 ## Domain Context
-<!-- key terms from CONTEXT.md if present; otherwise the working vocabulary -->
+
+| Term / rule | Evidence | Confidence | Impact | Next action |
+|---|---|---:|---|---|
+|  |  |  |  |  |
 
 ## Relevant ADRs
-<!-- docs/adr/* that touch this area, or "None" -->
+
+| ADR | Evidence | Confidence | Impact | Next action |
+|---|---|---:|---|---|
+| None / path |  |  |  |  |
 
 ## Generated Code Rules
-<!-- what is generated, from what, and whether to edit source or output -->
+
+| Generated output | Evidence | Confidence | Source / rule | Next action |
+|---|---|---:|---|---|
+|  |  |  |  | Edit source / output |
 
 ## Config / Schema Sources
 
+| Source | Evidence | Confidence | Responsibility | Next action |
+|---|---|---:|---|---|
+|  |  |  |  |  |
+
 ## External Integration Points
-<!-- DBs, queues, network calls, filesystem -->
+
+| Integration | Evidence | Confidence | Risk | Next action |
+|---|---|---:|---|---|
+| None / DB / queue / network / filesystem |  |  |  |  |
 
 ## Known High-Risk Areas
-<!-- trust boundaries, conversions, concurrency, etc. -->
+
+| Risk area | Evidence | Confidence | Impact | Next action |
+|---|---|---:|---|---|
+|  |  |  |  |  |
 
 ## Repo-Specific Instructions
-<!-- AGENTS.md / CLAUDE.md rules that constrain the change -->
+
+| Instruction | Evidence | Confidence | Impact | Next action |
+|---|---|---:|---|---|
+|  |  |  |  |  |
 
 ## Build / Test Commands
-<!-- exact, copy-pasteable commands -->
+
+| Command | Evidence | Confidence | Purpose | Next action |
+|---|---|---:|---|---|
+|  |  |  |  | Run / skip with reason |
 
 ## Last Verified
-<!-- when these commands were last run green -->
+
+| Item | Evidence | Confidence | Result | Next action |
+|---|---|---:|---|---|
+| Date / command |  |  |  |  |

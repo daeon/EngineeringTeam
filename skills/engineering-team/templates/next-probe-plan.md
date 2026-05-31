@@ -2,14 +2,19 @@
 
 ## Goal
 
-- Decision this probe will unlock:
+| Goal | Evidence | Confidence | Decision unlocked | Risk / next action |
+|---|---|---:|---|---|
+|  |  |  |  |  |
 
 ## Probes
 
-| Order | Probe | Command / source | Expected result if hypothesis true | Expected result if false | Safety notes |
-|---:|---|---|---|---|---|
+| Order | Probe | Evidence | Confidence | Expected result / stop condition |
+|---:|---|---|---:|---|
+| 1 | Command / source:  | Safety notes:  |  | If true: ; If false:  |
 
 ## Stop conditions
 
-- Evidence threshold for implementation handoff:
-- Evidence threshold for abandoning current hypothesis:
+| Condition | Evidence | Confidence | Impact | Next action |
+|---|---|---:|---|---|
+| Evidence threshold for implementation handoff |  |  |  |  |
+| Evidence threshold for abandoning current hypothesis |  |  |  |  |
