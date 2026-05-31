@@ -1,6 +1,6 @@
 ---
 name: engineering-team
-description: "Use for non-trivial software engineering and read-only investigation: route implementation, codebase analysis, debugging forensics, log forensics, performance forensics, handoff, evidence gates, verification, run ledgers, and reusable repo knowledge."
+description: "Use for non-trivial software engineering and read-only investigation: route implementation, codebase analysis, debugging forensics, log forensics, performance forensics, handoff, evidence gates, verification, run ledgers, brain-first lookup, gap analysis, and reusable repo knowledge."
 ---
 
 # EngineeringTeam
@@ -26,7 +26,7 @@ If a read-only investigation finds a likely fix, stop at a handoff-ready diagnos
 Move from broad to narrow before editing:
 
 ```text
-repo map → component map → feature map → contract graph → focused files → change plan → implementation → verification
+intake → brain-first lookup → repo map → component map → feature map → contract graph → focused files → change plan → implementation → verification → gap analysis → context GC
 ```
 
 Never edit until the owning component, affected contract, call path, risk level, and verification strategy are clear.
@@ -65,6 +65,7 @@ Before implementation, answer:
 4. Which contracts and consumers are affected?
 5. What evidence supports the diagnosis or design?
 6. What proves the change works?
+7. What gaps remain?
 
 If any answer is unclear, keep mapping.
 
@@ -74,6 +75,8 @@ If any answer is unclear, keep mapping.
 Task
   → classify risk and autonomy   references/intake-risk.md       ← produce Intake block first, before any tool calls
   → align on intent if needed    references/alignment-audit.md
+  → choose context budget        references/context-budget-modes.md
+  → consult repo memory          references/brain-first-lookup.md ← advisory, not source truth
   → select mode and specialists  references/analysis-routing.md / references/agent-routing.md
   → create Run Ledger if useful  references/run-ledger.md        ← task-scoped trace; not durable memory
   → build Repo Atlas             references/repo-atlas.md
@@ -84,23 +87,25 @@ Task
   → pass Implementation Gate     references/implementation-gate.md  ← output gate block before any file write
   → implement
   → verify                       references/verification-loop.md
+  → identify gaps                references/gap-analysis.md
   → GC context                   references/context-garbage-collection.md / references/memory-promotion.md
   → final report                 references/final-report.md        ← use the template, not a PR summary
 ```
 
-**L0 fast path:** Use only for trivial local explanation, simple summary, or obvious one-file inspection with no cross-file, behavior, contract, performance, security, migration, release, or production claims. Classify read-only investigations by depth; read-only does not automatically mean L0. L0 uses Classify risk → lightweight Repo Atlas → Analysis Report → Context GC. Skip agent routing, contract graph, evidence ledger, Advisor Gate, implementation gate, and verification loop. Use Advisor Consultant only at defined risk gates.
+**L0 fast path:** Use only for trivial local explanation, simple summary, or obvious one-file inspection with no cross-file, behavior, contract, performance, security, migration, release, or production claims. Classify read-only investigations by depth; read-only does not automatically mean L0. L0 uses Classify risk → optional brain-first lookup when a clearly relevant memory index exists → lightweight Repo Atlas → Analysis Report → Context GC. Skip agent routing, contract graph, evidence ledger, Advisor Gate, implementation gate, full gap analysis, and verification loop. Use Advisor Consultant only at defined risk gates.
 
 ## Run Ledger and project-scoped memory
 
 Use `references/run-ledger.md` for task-scoped traceability when a run needs reviewable evidence of route decisions, agents/skills used, probes, verification, handoff state, or residual risk. A Run Ledger may feed memory candidates, but it is not memory.
 
-When `.engineering-team/memory/index.md` exists, read it before EngineeringTeam work to discover advisory repo memory. During Context GC / session closeout, use `references/memory-promotion.md` and `templates/memory-candidates.md` before updating files under `.engineering-team/memory/`. Promote only reusable, evidence-backed knowledge. Current source code, tests, and generated outputs always win over memory. Do not store secrets, credentials, private user information, temporary logs, or speculation. Every durable memory entry should include evidence/source paths, origin run when available, confidence, and review trigger.
+When `.engineering-team/memory/index.md` exists, read it before EngineeringTeam work to discover advisory repo memory. During Context GC / session closeout, use `references/memory-promotion.md`, `templates/memory-entry.md`, and `templates/memory-candidates.md` before updating files under `.engineering-team/memory/`. Promote only reusable, evidence-backed knowledge. Current source code, tests, and generated outputs always win over memory. Do not store secrets, credentials, private user information, temporary logs, or speculation. Every durable memory entry should include evidence/source paths, origin run when available, confidence, and review trigger.
 
 ## Required artifacts
 
 | Artifact | When required | Reference |
 |---|---|---|
 | Intake block | All tasks | `references/intake-risk.md` |
+| Brain-First Lookup | L2+ or obvious relevant memory | `references/brain-first-lookup.md` |
 | Run Ledger | L3+, read-only forensics, handoff-heavy, or reviewer-visible trace needed | `references/run-ledger.md` |
 | Repo Atlas | L2+ | `references/repo-atlas.md` |
 | Component Brief | L2+ | `references/component-brief.md` |
@@ -110,8 +115,10 @@ When `.engineering-team/memory/index.md` exists, read it before EngineeringTeam 
 | Impact Map | L4+ multi-component change | `references/impact-map.md` |
 | Implementation Gate | L2+ | `references/implementation-gate.md` |
 | Verification Report | L2+ | `references/verification-loop.md` |
+| Gap Analysis | L2+, partial verification, handoff, stale memory, or material unknowns | `references/gap-analysis.md` / `templates/gap-analysis.md` |
 | Analysis Report | L0 only | `references/output-contracts.md` |
 | Memory Candidates | When Context GC identifies reusable knowledge | `templates/memory-candidates.md` / `references/memory-promotion.md` |
+| Memory Entry | Durable promoted repo memory | `templates/memory-entry.md` |
 | Final Report | L2+ | `references/final-report.md` |
 
 When work is broad, noisy, or specialist-heavy, delegate using `references/subagent-context-policy.md`; subagents must return context capsules, not transcripts.
@@ -122,6 +129,8 @@ When work is broad, noisy, or specialist-heavy, delegate using `references/subag
 |---|---|
 | classify task risk and autonomy | `references/intake-risk.md` |
 | resolve ambiguous user intent | `references/alignment-audit.md` |
+| choose context budget | `references/context-budget-modes.md` |
+| consult curated repo memory before broad search | `references/brain-first-lookup.md` |
 | choose analysis vs implementation route | `references/analysis-routing.md` |
 | choose and score specialists | `references/agent-routing.md` |
 | understand each specialist's role and boundary | `references/role-definitions.md` |
@@ -138,7 +147,8 @@ When work is broad, noisy, or specialist-heavy, delegate using `references/subag
 | run and interpret tests | `references/verification-loop.md` |
 | build a fast bug/regression repro loop | `references/diagnosis-loop.md` |
 | write behavior-first tests (tracer bullets) | `references/tdd-discipline.md` |
-| preserve durable knowledge | `references/context-garbage-collection.md` / `references/memory-promotion.md` |
+| expose missing proof, contradictions, or residual risk | `references/gap-analysis.md`, `templates/gap-analysis.md` |
+| preserve durable knowledge | `references/context-garbage-collection.md` / `references/memory-promotion.md` / `templates/memory-entry.md` |
 | write the session final report (L2+) | `references/final-report.md` |
 | produce a visual HTML review report | `references/visual-review-reports.md` |
 | capture domain and business context | `references/domain-context.md` |
@@ -148,17 +158,20 @@ When work is broad, noisy, or specialist-heavy, delegate using `references/subag
 
 ## Key failure modes
 
-- Editing before understanding the repo
-- Fixed-team spawning regardless of task
-- Many agents agreeing without independent evidence
-- Evidence Skeptic becoming decorative
-- Searching only exact user terms
-- Fixing symptoms instead of interaction boundaries
-- Missing generated-code conventions
-- Trusting stale docs over code
-- Reporting success without verification
-- Skipping the Intake block — it is always required as the routing receipt
-- Producing an implementation Final Report for a read-only L0 task
-- Treating read-only mode as automatic L0 instead of assigning L0-L5 depth by complexity and risk
-- Editing during read-only analysis instead of returning a diagnosis, report, or next-probe plan
-- Treating Run Ledger artifacts as durable memory instead of promoting only curated memory candidates
+- Editing before understanding the repo.
+- Skipping brain-first lookup and rediscovering already curated repo knowledge.
+- Trusting memory when current code, tests, generated outputs, or runtime evidence contradict it.
+- Fixed-team spawning regardless of task.
+- Many agents agreeing without independent evidence.
+- Evidence Skeptic becoming decorative.
+- Searching only exact user terms.
+- Fixing symptoms instead of interaction boundaries.
+- Missing generated-code conventions.
+- Trusting stale docs over code.
+- Reporting success without verification.
+- Hiding missing proof, stale memory, or contradictions instead of reporting gap analysis.
+- Skipping the Intake block — it is always required as the routing receipt.
+- Producing an implementation Final Report for a read-only L0 task.
+- Treating read-only mode as automatic L0 instead of assigning L0-L5 depth by complexity and risk.
+- Editing during read-only analysis instead of returning a diagnosis, report, or next-probe plan.
+- Treating Run Ledger artifacts as durable memory instead of promoting only curated memory candidates.
