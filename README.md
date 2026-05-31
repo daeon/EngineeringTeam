@@ -94,42 +94,11 @@ Use L0 only for trivial local explanation, simple summary, or obvious one-file i
 
 ## 📏 The team rule
 
-No non-trivial edit or broad read-only claim until the lead and selected specialists can answer:
-
-1. Where does this behavior enter the system?
-2. Where is it transformed?
-3. Where does it leave?
-4. Which contracts and consumers are affected?
-5. What evidence supports the diagnosis or design?
-6. What proves the change works, or what next probe would prove the diagnosis?
-
-If those are unanswered, the team keeps mapping, probing, or challenging assumptions instead of editing or finalizing the analysis.
-
-<details>
-<summary>Advanced: what the implementation gate checks</summary>
-
-The implementation gate requires the agent to name:
-
-- The files allowed to change.
-- The evidence supporting the diagnosis or design.
-- The affected contracts and consumers for behavior changes.
-- The verification commands or manual checks that prove success.
-- The rollback path for risky changes.
-
-If the gate fails, the agent keeps mapping, asks a targeted question, or returns an evidence-backed diagnosis instead of patching prematurely.
-
-</details>
+No non-trivial edit or broad read-only claim until the agent has mapped the relevant repo context, named the affected contract or uncertainty, tied its recommendation to evidence, and described verification or next probes. The canonical gate details live in [`skills/engineering-team/SKILL.md`](skills/engineering-team/SKILL.md) and [`skills/engineering-team/references/implementation-gate.md`](skills/engineering-team/references/implementation-gate.md); this README keeps the public promise short.
 
 ## 🛑 When your agent should not edit yet
 
-Hold off on editing — and let EngineeringTeam map first — when:
-
-- The root cause is not yet backed by evidence.
-- The owning component or call path is unknown.
-- The change crosses a contract, public API, or module boundary.
-- Source, tests, docs, or logs disagree.
-- The change touches migration, release, runtime, or other sensitive behavior.
-- There is no verification path yet.
+Hold off on editing when the root cause, owning component, call path, affected contract, evidence, or verification path is still unclear. Let EngineeringTeam keep mapping, probing, or challenging assumptions instead of patching prematurely.
 
 ## 🚀 Quick start
 
@@ -294,8 +263,8 @@ Full docs page: https://github.com/daeon/EngineeringTeam/tree/main/docs
 - `docs/design.md` — architecture, design principles, harness boundaries, and adoption model.
 - `docs/why-engineeringteam.md` — product value, target users, positioning.
 - `docs/getting-started.md` — install, first prompts, expected outputs.
-- `docs/workflow.md` — detailed workflow, dataflow, and gates.
-- `docs/specialists.md` — specialist role catalog and routing guidance.
+- `docs/workflow.md` — public workflow rationale and links to canonical skill/reference files.
+- `docs/specialists.md` — public specialist role catalog with links to canonical routing guidance.
 - `docs/harness-support.md` — per-harness packaging notes.
 - `docs/demo-script.md` — demo scripts and comparison.
 - `docs/prompt-cards.md` — copy-paste prompts by task type.
