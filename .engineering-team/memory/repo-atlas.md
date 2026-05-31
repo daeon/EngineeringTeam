@@ -10,7 +10,10 @@ Use this format:
 - Status: current | needs-verification | stale
 - Summary:
 - Evidence/source paths:
+- Origin run:
 - Last verified:
+- Confidence: high | medium | low
+- Review trigger:
 ```
 
 ## System type and shape
