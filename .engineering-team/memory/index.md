@@ -8,6 +8,7 @@ Project-scoped memory is advisory context for EngineeringTeam work in this repos
 - Treat memory as a starting point; verify against the repo before relying on it.
 - Do not store secrets, credentials, private user information, temporary logs, or speculation.
 - Every durable memory entry should include evidence/source paths.
+- Do not store raw Run Ledger content in memory; promote only curated memory candidates.
 
 ## Memory Files
 
@@ -27,5 +28,8 @@ Populated with evidence-backed entries (last verified 2026-05-29). Re-verify aga
 - Status: current | needs-verification | stale
 - Summary:
 - Evidence/source paths:
+- Origin run:
 - Last verified:
+- Confidence: high | medium | low
+- Review trigger:
 ```
