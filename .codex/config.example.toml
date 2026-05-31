@@ -5,7 +5,7 @@
 project_doc_max_bytes = 65536
 
 [agents]
-# Keep fan-out bounded. The skill prefers the smallest useful specialist set.
+# Keep fan-out bounded. The skill prefers the smallest useful expert panel.
 max_threads = 6
 max_depth = 1
 # job_max_runtime_seconds = 1800

@@ -1,9 +1,10 @@
 # Example: buggy-python-service
 
 A deliberately small service with one realistic bug hiding behind a **contract
-boundary**. It exists to show the difference between a raw agent that patches
-the first symptom it sees and the EngineeringTeam workflow that traces the
-contract, gathers evidence, fixes the real boundary, and verifies.
+boundary**. It exists to show the difference between a lone agent that patches
+the first symptom it sees and the EngineeringTeam workflow that selects the
+right expert lenses, traces the contract, gathers evidence, fixes the real
+boundary, and verifies.
 
 ## The service
 
@@ -43,11 +44,11 @@ The second command reproduces the bug.
 
 ## Two paths
 
-- `prompts/raw-agent.md` — the prompt a hurried user gives a raw agent. The
+- `prompts/raw-agent.md` — the prompt a hurried user gives a lone agent. The
   likely outcome is a symptom patch: loosen the `[0, 1]` guard or clamp the
   total, which hides the defect and breaks the domain contract.
-- `prompts/engineering-team.md` — the EngineeringTeam prompt. The agent maps
-  the repo, traces the discount contract from `checkout` to
+- `prompts/engineering-team.md` — the EngineeringTeam prompt. The lead routes
+  the right expert lenses, maps the repo, traces the discount contract from `checkout` to
   `compute_total_cents`, identifies the unit mismatch at the boundary, fixes it
   in the adapter (`discount_percent / 100`), and adds a regression test.
 

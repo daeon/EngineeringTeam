@@ -1,18 +1,18 @@
 ---
 name: engineering-team
-description: "Use for non-trivial software engineering and read-only investigation: route implementation, codebase analysis, debugging forensics, log forensics, performance forensics, handoff, evidence gates, verification, run ledgers, and reusable repo knowledge."
+description: "Use for non-trivial software engineering and read-only investigation: act as lead engineer, select the right expert panel, route implementation, codebase analysis, debugging forensics, log forensics, performance forensics, handoff, evidence gates, verification, run ledgers, and reusable repo knowledge."
 ---
 
 # EngineeringTeam
 
-Use this skill for non-trivial software engineering. Do not rely on it as a giant memory file — load references only when needed.
+Use this skill for non-trivial software engineering. Treat it as the lead-engineer workflow for selecting the right expert panel, building shared repo understanding, and gating changes with evidence. Do not rely on it as a giant memory file — load references only when needed.
 
 Invocation: mention `engineering-team` in the prompt, choose it from `/skills`, or let a harness select it based on task type.
 
 
 ## Two operating modes
 
-EngineeringTeam is the main router for two broad modes:
+EngineeringTeam is the lead engineer and main router for two broad modes:
 
 | Mode | Use when | Route | Edit posture |
 |---|---|---|---|
@@ -74,7 +74,7 @@ If any answer is unclear, keep mapping.
 Task
   → classify risk and autonomy   references/intake-risk.md       ← produce Intake block first, before any tool calls
   → align on intent if needed    references/alignment-audit.md
-  → select mode and specialists  references/analysis-routing.md / references/agent-routing.md
+  → select mode and expert panel  references/analysis-routing.md / references/agent-routing.md
   → create Run Ledger if useful  references/run-ledger.md        ← task-scoped trace; not durable memory
   → build Repo Atlas             references/repo-atlas.md
   → build Component Brief        references/component-brief.md

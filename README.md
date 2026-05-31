@@ -2,7 +2,7 @@
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="docs/assets/engineering-team-hero-dark.svg">
     <source media="(prefers-color-scheme: light)" srcset="docs/assets/engineering-team-hero-light.svg">
-    <img alt="EngineeringTeam workflow: map, trace, route, gate, verify, and hand off" src="docs/assets/engineering-team-hero-light.svg" width="88%">
+    <img alt="EngineeringTeam assembles the right expert panel to understand the problem, route risks, gate changes, verify results, and hand off" src="docs/assets/engineering-team-hero-light.svg" width="88%">
   </picture>
 </p>
 
@@ -15,36 +15,40 @@
 ![Evidence-gated](https://img.shields.io/badge/edits-evidence--gated-purple)
 ![No hooks](https://img.shields.io/badge/session--start%20hooks-none-brightgreen)
 
-**Make your AI coding agent behave like a senior engineering team.**
+**Give your AI coding agent an expert software engineering team.**
 
-EngineeringTeam is a repo-first workflow layer for AI coding agents. It supports implementation, read-only analysis, and handoff workflows: the agent maps the repo, traces contracts, gathers evidence, routes specialists selectively, gates implementation when edits are requested, verifies changes, and hands off reviewable artifacts before claiming success.
+EngineeringTeam is a repo-first workflow layer that makes one coding agent operate like a coordinated panel of software engineering experts. For each task, a lead engineer frames the problem, selects the smallest useful set of specialists, gets them oriented on the repo and affected contracts, gates the decision with evidence, and only then makes the targeted implementation or hands back a diagnosis.
 
-> Stop vibe-coding legacy repos. Make the agent prove it understands the code before it edits.
+> Stop asking one agent to guess. Give it the right expert panel, shared repo understanding, and an evidence gate before it edits.
 
 ## ⚡ In thirty seconds
 
-Most coding agents are fast, but speed is not judgment. On a real codebase the hard part is not typing code — it is finding the owning component, understanding the call path, preserving contracts, choosing the smallest safe change, and proving the change works.
+Most coding agents are fast, but speed is not judgment. Real engineering work needs the right mix of skills: someone to map ownership, someone to test the contract, someone to challenge weak evidence, and domain specialists for security, performance, migration, architecture, or release risk when those risks are real.
 
-EngineeringTeam turns that discipline into a reusable skill that works across the agent you already use. It does not add a runtime service, network calls, or session-start magic. You invoke `engineering-team` when a task deserves a rigorous workflow, and the agent produces compact, human-reviewable artifacts as it goes. Use it for PR-ready implementation work or for read-only investigations where the right answer is a diagnosis, map, hypothesis matrix, log report, or performance probe plan rather than a diff.
+EngineeringTeam turns that team habit into a reusable skill that works across the agent you already use. It does not add a runtime service, network calls, or session-start magic. You invoke `engineering-team` when a task deserves expert coordination: it chooses the right panel, makes the panel understand the problem from source evidence, and produces compact, human-reviewable artifacts as it goes.
+
+That panel can deliver a PR-ready implementation, a read-only diagnosis, a repo map, a hypothesis matrix, a log report, a performance probe plan, or a handoff for another session. The point is not “change code” versus “understand code.” The point is: assemble the right experts, establish shared understanding, then make the smallest safe move.
 
 Read-only mode means **no edits**; it does not mean low rigor. Trivial local explanations can use L0, while broad codebase analysis, root-cause work, performance analysis, protected-boundary review, migration review, release planning, and multi-component PR review still use L2-L5 depth according to complexity and risk.
 
 Use `handoff` when you want the current task transferred to another agent or a fresh session. It compacts the work into a continuation document with decisions, evidence, open questions, artifact links, suggested skills, and next actions.
 
-Specialist agents are **selective, not mandatory**. The workflow routes only the ones a task actually needs.
+Specialist agents are **selective, not mandatory**. EngineeringTeam does not spawn a fixed committee; it forms the smallest expert panel that covers the task's distinct risks.
 
 ## 🧠 How it works
 
 ```mermaid
 flowchart LR
-    request[User request] --> router{EngineeringTeam router}
+    request[User request] --> lead{Lead engineer intake}
 
-    router -->|Fix / feature / refactor| impl[Implementation mode]
-    router -->|Understand / debug / logs / perf| analysis[Read-only analysis mode]
-    router -->|Continue elsewhere| handoff[Handoff mode]
+    lead --> mode{Outcome needed?}
+    mode -->|Fix / feature / refactor| impl[Implementation mode]
+    mode -->|Understand / debug / logs / perf| analysis[Read-only analysis mode]
+    mode -->|Continue elsewhere| handoff[Handoff mode]
 
-    impl --> depth[Assign L0-L5 depth]
-    analysis --> depth
+    impl --> panel[Select expert panel]
+    analysis --> panel
+    panel --> depth[Assign L0-L5 depth]
 
     depth --> atlas[Repo Atlas]
     atlas --> brief[Component Brief]
@@ -64,33 +68,33 @@ flowchart LR
 
 | I need to... | Use | Typical output |
 |---|---|---|
-| Fix, implement, refactor, or prepare a PR | `engineering-team` | Repo Atlas → Component Brief → Contract Graph → Evidence Ledger → Implementation Gate → Verification Report → Final Report |
-| Understand an unfamiliar repository | `codebase-analysis` | Component map, call paths, contracts, findings, confidence, unknowns |
-| Investigate a bug without patching yet | `debugging-forensics` | Hypothesis matrix, supporting/counter evidence, falsifying probes, fix readiness |
-| Analyze logs or noisy failure output | `log-forensics` | Timeline, signals, findings, redactions, ruled-out claims, next probes |
-| Investigate latency, throughput, memory, or locking | `performance-forensics` | Measurement frame, hot-path map, bottleneck hypotheses, probe-first recommendations |
+| Fix, implement, refactor, or prepare a PR | `engineering-team` | Lead + implementation + verification experts; Repo Atlas → Component Brief → Contract Graph → Evidence Ledger → Implementation Gate → Verification Report → Final Report |
+| Understand an unfamiliar repository | `engineering-team` routes to `codebase-analysis` | Lead + codebase investigator; component map, call paths, contracts, findings, confidence, unknowns |
+| Investigate a bug without patching yet | `engineering-team` routes to `debugging-forensics` | Lead + debugging/evidence/test panel; hypothesis matrix, supporting/counter evidence, falsifying probes, fix readiness |
+| Analyze logs or noisy failure output | `engineering-team` routes to `log-forensics` | Lead + log forensics lens; timeline, signals, findings, redactions, ruled-out claims, next probes |
+| Investigate latency, throughput, memory, or locking | `engineering-team` routes to `performance-forensics` | Lead + optimization/verification experts; measurement frame, hot-path map, bottleneck hypotheses, probe-first recommendations |
 | Transfer work to another agent or fresh session | `handoff` | Continuation document with decisions, evidence, risks, suggested skills, and next actions |
 
-The main `engineering-team` skill remains the router. It keeps the existing repo-first implementation workflow for change requests and routes analysis requests to focused read-only skills: `codebase-analysis`, `debugging-forensics`, `log-forensics`, and `performance-forensics`. If an investigation uncovers a likely fix, the agent should hand off an evidence-backed diagnosis and verification strategy before editing unless you explicitly ask it to implement.
+The main `engineering-team` skill is the lead engineer. It decides whether the task needs implementation, read-only analysis, or handoff, then assembles the right panel around the risk: codebase investigation, debugging forensics, log forensics, performance, security, architecture, migration, release, verification, evidence skepticism, or advisory review. If an investigation uncovers a likely fix, the agent should hand off an evidence-backed diagnosis and verification strategy before editing unless you explicitly ask it to implement.
 
 ### L0 fast path boundary
 
 Use L0 only for trivial local explanation, simple summary, or obvious one-file inspection with no cross-file, behavior, contract, performance, migration, release, production, or protected-boundary claims. Read-only investigations are classified by depth, not by edit posture.
 
-## 🧪 Raw agent vs EngineeringTeam
+## 🧪 One agent vs an expert engineering team
 
-| Raw agent often does this | EngineeringTeam forces this |
+| A lone coding agent often does this | EngineeringTeam makes it work like a team |
 |---|---|
-| Edits the nearest plausible file | Finds the owning component and call path first |
-| Explains after the patch | Produces evidence before the patch |
-| Treats tests as optional cleanup | Defines verification before implementation |
-| Changes behavior without tracing consumers | Builds a contract graph for behavior changes |
-| Dumps long reasoning or loses context | Emits compact, reviewable artifacts |
-| Leaves the next session cold | Creates a handoff document another agent can continue from |
+| Guesses which file to edit | Lead engineer routes a codebase investigator to find ownership and the call path |
+| Explains after the patch | Evidence skeptic forces claims to be backed before the patch |
+| Treats tests as optional cleanup | Verification engineer defines proof before implementation |
+| Changes behavior without tracing consumers | System/design lens builds a contract graph for behavior changes |
+| Misses domain-specific risk | Security, performance, migration, release, or architecture experts join only when relevant |
+| Dumps long reasoning or loses context | The team returns compact, reviewable artifacts and handoff capsules |
 
-## 📏 The rule
+## 📏 The team rule
 
-No non-trivial edit or broad read-only claim until the agent can answer:
+No non-trivial edit or broad read-only claim until the lead and selected specialists can answer:
 
 1. Where does this behavior enter the system?
 2. Where is it transformed?
@@ -99,7 +103,7 @@ No non-trivial edit or broad read-only claim until the agent can answer:
 5. What evidence supports the diagnosis or design?
 6. What proves the change works, or what next probe would prove the diagnosis?
 
-If those are unanswered, the agent keeps mapping instead of editing or finalizing the analysis.
+If those are unanswered, the team keeps mapping, probing, or challenging assumptions instead of editing or finalizing the analysis.
 
 <details>
 <summary>Advanced: what the implementation gate checks</summary>
@@ -139,13 +143,13 @@ npm run validate
 Then, in your coding agent:
 
 ```text
-Use engineering-team to investigate this bug. Map the repo first, find the owning component, trace the affected contract graph, and propose the smallest safe fix with verification.
+Use engineering-team to investigate this bug. Pick the right expert panel, make the panel map the repo and affected contracts first, then propose the smallest safe fix with verification.
 ```
 
 For read-only analysis:
 
 ```text
-Use engineering-team in read-only analysis mode to understand this repository. Route to codebase-analysis, map the main components and contracts, and return an evidence-backed report without editing files. Assign L2-L4 depth based on breadth; do not classify broad analysis as L0.
+Use engineering-team in read-only analysis mode to understand this repository. Assemble the right analysis panel, map the main components and contracts, and return an evidence-backed report without editing files. Assign L2-L4 depth based on breadth; do not classify broad analysis as L0.
 ```
 
 To transfer work to another agent or session:
@@ -154,11 +158,11 @@ To transfer work to another agent or session:
 Use handoff to summarize this task for a fresh agent. Focus the next session on finishing verification and preparing the PR.
 ```
 
-## 🧑‍💻 Specialist routing
+## 🧑‍💻 Expert panel routing
 
 ```mermaid
 flowchart TD
-    risk[Intake risk] --> route{Distinct specialist risk?}
+    risk[Intake risk] --> route{Which experts are needed?}
 
     route -->|Unknown ownership| investigator[Codebase Investigator]
     route -->|Protected boundary| security[Security Analyst]
@@ -176,14 +180,14 @@ flowchart TD
     lead --> decision[Evidence-backed decision]
 ```
 
-Subagents receive bounded briefs and return compact context capsules, not transcripts. The lead agent stays responsible for the final decision.
+Specialists receive bounded briefs and return compact context capsules, not transcripts. The lead engineer stays responsible for the final decision and only brings in experts that cover distinct risks.
 
 ## 🎬 Demo
 
 See the worked, runnable example and the talking points:
 
 - `examples/buggy-python-service/` — a small service with a real bug, the raw-agent prompt, the EngineeringTeam prompt, and filled-in expected artifacts.
-- `docs/demo-script.md` — 60-second and 5-minute demo scripts, plus a raw-agent vs EngineeringTeam comparison.
+- `docs/demo-script.md` — 60-second and 5-minute demo scripts, plus a lone-agent vs expert-team comparison.
 - `docs/prompt-cards.md` — copy-paste prompts for implementation, read-only codebase analysis, debugging forensics, log forensics, performance forensics, protected-boundary review, migration, release, architecture, test strategy, and handoff.
 
 ## 🔌 Supported harnesses
@@ -201,7 +205,7 @@ All harnesses point at the same canonical skill bundle under `skills/`, with `sk
 
 ## 🗂️ Artifact gallery
 
-EngineeringTeam makes the agent produce compact, reviewable artifacts before and after implementation or investigation:
+EngineeringTeam makes the expert panel produce compact, reviewable artifacts before and after implementation or investigation:
 
 | Artifact | What it proves | Example |
 |---|---|---|
@@ -218,7 +222,7 @@ EngineeringTeam makes the agent produce compact, reviewable artifacts before and
 | Performance Forensics Report | Performance work starts with a measurement frame, hot-path map, bottleneck hypotheses, and probes | `performance-forensics` skill output |
 | Handoff Document | Another agent or session can continue with decisions, evidence, open questions, risks, suggested skills, and next actions | `handoff` skill output |
 
-These make the agent's reasoning inspectable: a reviewer can see whether it understood the code path, not just whether the diff looks plausible.
+These make the team's reasoning inspectable: a reviewer can see which experts were needed, what they understood about the code path, and why the resulting diff or diagnosis is trustworthy.
 
 ## 📦 Install
 
@@ -272,7 +276,7 @@ File-copy installs (Codex, GitHub) are idempotent: existing files are skipped un
 
 ## Keeping main context clean
 
-EngineeringTeam uses the main agent as the Lead Engineer. Broad search, noisy test output, and specialist review can be delegated to subagents. Subagents receive bounded briefs and return compact context capsules, not transcripts. This keeps the main session focused on evidence, decisions, implementation gates, and final handoff.
+EngineeringTeam uses the main agent as the Lead Engineer. Broad search, noisy test output, and specialist review can be delegated to subagents. Specialists receive bounded briefs and return compact context capsules, not transcripts. This keeps the main session focused on expert routing, evidence, decisions, implementation gates, and final handoff.
 
 ## ✅ Validation
 

@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="360" viewBox="0 0 1200 360" role="img" aria-labelledby="title desc">
   <title id="title">EngineeringTeam workflow hero</title>
-  <desc id="desc">A repo-first agent workflow that maps the repo, traces contracts, routes specialists, gates implementation, verifies changes, and hands off reviewable artifacts.</desc>
+  <desc id="desc">A repo-first expert-panel workflow that picks the right software engineering specialists, builds shared understanding, gates implementation, verifies changes, and hands off reviewable artifacts.</desc>
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0%" stop-color="#0f172a"/>
@@ -19,7 +19,7 @@
   <circle cx="140" cy="300" r="120" fill="#7c3aed" opacity="0.22"/>
 
   <text x="600" y="70" text-anchor="middle" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="38" font-weight="800" fill="#f8fafc">EngineeringTeam</text>
-  <text x="600" y="108" text-anchor="middle" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="18" fill="#cbd5e1">Make your AI coding agent map, route, gate, verify, and hand off like a senior engineering team.</text>
+  <text x="600" y="108" text-anchor="middle" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="18" fill="#cbd5e1">Give your AI coding agent the right expert panel for every software engineering task.</text>
 
   <g filter="url(#shadow)">
     <rect x="64" y="165" width="138" height="86" rx="18" fill="#111827" stroke="#60a5fa"/>
@@ -27,16 +27,16 @@
     <text x="133" y="224" text-anchor="middle" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="18" font-weight="800" fill="#f8fafc">Request</text>
 
     <rect x="258" y="165" width="138" height="86" rx="18" fill="#111827" stroke="#818cf8"/>
-    <text x="327" y="199" text-anchor="middle" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="14" font-weight="700" fill="#a5b4fc">MAP</text>
-    <text x="327" y="224" text-anchor="middle" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="18" font-weight="800" fill="#f8fafc">Repo Atlas</text>
+    <text x="327" y="199" text-anchor="middle" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="14" font-weight="700" fill="#a5b4fc">LEAD</text>
+    <text x="327" y="224" text-anchor="middle" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="18" font-weight="800" fill="#f8fafc">Intake</text>
 
     <rect x="452" y="165" width="138" height="86" rx="18" fill="#111827" stroke="#c084fc"/>
-    <text x="521" y="199" text-anchor="middle" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="14" font-weight="700" fill="#d8b4fe">TRACE</text>
-    <text x="521" y="224" text-anchor="middle" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="18" font-weight="800" fill="#f8fafc">Contracts</text>
+    <text x="521" y="199" text-anchor="middle" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="14" font-weight="700" fill="#d8b4fe">PANEL</text>
+    <text x="521" y="224" text-anchor="middle" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="18" font-weight="800" fill="#f8fafc">Experts</text>
 
     <rect x="646" y="165" width="138" height="86" rx="18" fill="#111827" stroke="#fb923c"/>
-    <text x="715" y="199" text-anchor="middle" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="14" font-weight="700" fill="#fdba74">ROUTE</text>
-    <text x="715" y="224" text-anchor="middle" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="18" font-weight="800" fill="#f8fafc">Specialists</text>
+    <text x="715" y="199" text-anchor="middle" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="14" font-weight="700" fill="#fdba74">MAP</text>
+    <text x="715" y="224" text-anchor="middle" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="18" font-weight="800" fill="#f8fafc">Repo & Risk</text>
 
     <rect x="840" y="165" width="138" height="86" rx="18" fill="#111827" stroke="#4ade80"/>
     <text x="909" y="199" text-anchor="middle" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="14" font-weight="700" fill="#86efac">GATE</text>
@@ -44,7 +44,7 @@
 
     <rect x="1034" y="165" width="138" height="86" rx="18" fill="#111827" stroke="#38bdf8"/>
     <text x="1103" y="199" text-anchor="middle" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="14" font-weight="700" fill="#7dd3fc">PROVE</text>
-    <text x="1103" y="224" text-anchor="middle" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="18" font-weight="800" fill="#f8fafc">Handoff</text>
+    <text x="1103" y="224" text-anchor="middle" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="18" font-weight="800" fill="#f8fafc">Patch/Handoff</text>
   </g>
 
   <g stroke="#94a3b8" stroke-width="3" fill="none" marker-end="url(#arrow)">
@@ -56,7 +56,7 @@
   </g>
 
   <path d="M 716 253 C 716 305 910 305 910 253" fill="none" stroke="#fb923c" stroke-width="3" stroke-dasharray="8 8"/>
-  <text x="813" y="314" text-anchor="middle" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="15" font-weight="700" fill="#fed7aa">specialists only when risk demands them</text>
+  <text x="813" y="314" text-anchor="middle" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="15" font-weight="700" fill="#fed7aa">smallest expert panel that covers the risk</text>
 
-  <text x="600" y="342" text-anchor="middle" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="14" fill="#cbd5e1">Repo-first • Evidence-gated • Multi-harness • No runtime service • No session-start hooks</text>
+  <text x="600" y="342" text-anchor="middle" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="14" fill="#cbd5e1">Expert-routed • Repo-first • Evidence-gated • Multi-harness • No runtime service</text>
 </svg>
