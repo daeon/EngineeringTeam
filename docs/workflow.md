@@ -1,13 +1,18 @@
 # EngineeringTeam Workflow
 
-EngineeringTeam is a staged workflow. Each stage narrows uncertainty before the agent is allowed to change code.
+EngineeringTeam is a staged workflow. Each stage narrows uncertainty before the agent is allowed to change code or make broad read-only claims.
 
 ## 🗺️ Dataflow
 
 ```mermaid
 flowchart TB
     request[Request] --> intake[Intake_And_Risk]
-    intake --> alignment[Alignment_Gate]
+    intake --> mode{Mode}
+    mode -->|Implementation| implementationPath[Implementation_Posture]
+    mode -->|Read-only| analysisPath[Read_Only_Posture]
+    implementationPath --> depth[Assign_L0_to_L5_Depth]
+    analysisPath --> depth
+    depth --> alignment[Alignment_Gate]
     alignment --> routing[Role_Routing]
     routing --> repoAtlas[Repo_Atlas]
     repoAtlas --> componentBrief[Component_Brief]
@@ -17,37 +22,64 @@ flowchart TB
     advisorGate -->|Yes| advisor[Advisor_Decision]
     advisorGate -->|No| implementationGate[Implementation_Gate]
     advisor --> implementationGate
-    implementationGate --> patch[Patch]
+    implementationGate --> patch[Patch_When_Allowed]
+    implementationGate --> diagnosis[Diagnosis_Or_Report_When_Read_Only]
     patch --> verification[Verification]
-    verification --> handoff[Final_Handoff]
+    diagnosis --> closeout[Run_Ledger_And_Context_GC]
+    verification --> closeout
+    closeout --> handoff[Final_Handoff]
 ```
-
 
 ## 💡 Why The Workflow Exists
 
 The workflow is not ceremony for its own sake. It counters the most expensive failure mode in agent-assisted engineering: acting confidently with incomplete repository context. Each stage retires a different kind of uncertainty:
 
 - Intake retires ambiguity about the requested outcome.
+- Mode selection retires ambiguity about whether edits are allowed.
+- Autonomy depth retires ambiguity about how much evidence and review are required.
 - Repo Atlas retires uncertainty about project shape and local rules.
 - Component Brief retires uncertainty about ownership and call path.
 - Contract Graph retires uncertainty about consumers and compatibility.
 - Evidence Ledger retires unsupported claims.
 - Implementation Gate retires accidental broad edits.
 - Verification retires unproven success.
+- Context GC retires noisy session context while preserving only reusable knowledge.
 
-For small, obvious edits, EngineeringTeam can take a fast path. For risky changes, the workflow creates a reviewable trail from user request to validated patch.
+For small, obvious edits or local explanations, EngineeringTeam can take a fast path. For risky changes or broad read-only investigations, the workflow creates a reviewable trail from user request to validated patch, diagnosis, or next-probe plan.
 
 ## 1️⃣ Stage 1: Intake And Risk
 
 The agent restates the task in engineering terms and classifies:
 
 - Requested outcome.
+- Mode: read-only or implementation.
 - Known files, symptoms, or components.
 - Risk level.
 - Unknowns that must be resolved from the repo.
 - Expected deliverable.
 
+Read-only mode does not automatically mean L0. Mode controls whether edits are allowed. The L0-L5 level controls depth, uncertainty, and review.
+
 The risk classification decides whether the task needs a full specialist route or a lightweight lead-only pass.
+
+## 1.1️⃣ L0 Fast Path Boundary
+
+Use L0 only for trivial local explanation, simple summary, or obvious one-file inspection with no cross-file, behavior, contract, performance, security, migration, release, or production claims.
+
+Do not classify these as L0 by default:
+
+- codebase audits
+- architecture surveys
+- root-cause investigations
+- debugging forensics
+- log forensics
+- performance investigations
+- security reviews
+- migration or compatibility analysis
+- release or production analysis
+- PR or diff reviews involving behavior, API, tests, generated code, or multiple files
+
+Those requests may still be read-only, but they should be classified as L2-L5 according to breadth and risk.
 
 ## 1.5️⃣ Stage 1.5: Alignment Gate
 
@@ -104,11 +136,11 @@ The component brief narrows the map to the relevant behavior:
 - Inputs, outputs, and side effects.
 - Open questions.
 
-This is the minimum artifact before local edits.
+This is the minimum artifact before local edits or bounded component-level claims.
 
 ## 5️⃣ Stage 5: Contract Graph
 
-Behavior changes require contract awareness. EngineeringTeam traces producer-to-consumer edges:
+Behavior changes and behavior-level investigations require contract awareness. EngineeringTeam traces producer-to-consumer edges:
 
 ```mermaid
 flowchart LR
@@ -147,7 +179,9 @@ The agent may edit only after the gate passes:
 - Tests or verification commands are defined.
 - Rollback path is understood for risky work.
 
-## 8️⃣ Stage 8: Verification And Handoff
+For read-only mode, this stage produces a diagnosis, analysis report, or next-probe plan instead of a patch.
+
+## 8️⃣ Stage 8: Verification, Run Ledger, And Handoff
 
 Verification starts narrow, then expands only when risk justifies it:
 
@@ -157,7 +191,11 @@ Verification starts narrow, then expands only when risk justifies it:
 4. Integration or system checks.
 5. Security, performance, migration, or manual checks when relevant.
 
-The final handoff reports what changed, what was verified, what remains risky, and what reusable repo knowledge should be preserved.
+Use a Run Ledger when the task needs a reviewable trace of route decisions, agents used, probes, evidence, verification, handoff state, or residual risk. The Run Ledger is task-scoped evidence, not durable memory.
+
+At closeout, Context GC extracts memory candidates and applies memory-promotion rules. Only reusable, evidence-backed knowledge should enter `.engineering-team/memory/`.
+
+The final handoff reports what changed or what was diagnosed, what was verified or still needs probing, what remains risky, and what reusable repo knowledge should be preserved.
 
 ```mermaid
 flowchart TD
