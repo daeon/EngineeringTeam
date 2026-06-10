@@ -2,7 +2,7 @@ name: migration-analyst
 description: "Reviews migrations across versions, products, APIs, schemas, configuration formats, and legacy systems, focusing on semantic compatibility and edge cases."
 claude:
   tools: "Read, Grep, Glob, Bash"
-  model: "sonnet"
+  model: "inherit"
   color: "cyan"
 codex:
   model: null

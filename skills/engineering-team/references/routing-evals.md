@@ -2,6 +2,8 @@
 
 Use these fixtures to check whether EngineeringTeam routes advisors and specialists proportionately.
 
+These are manual reference cases, not an automated test suite: nothing in CI executes them. Use them as a self-check when tuning routing guidance, or as prompts for a manual spot-check of routing behavior.
+
 Expected outputs are routing expectations, not implementation answers.
 
 | Case | Prompt shape | Expected risk mode | Expected routing |

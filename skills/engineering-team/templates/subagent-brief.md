@@ -1,14 +1,24 @@
 # Subagent Brief
 
+Use the quick form for routine read-only delegations. Use the full form when the mission is L3+, has many inputs or exclusions, or grants edit or command permissions.
+
+## Quick form
+
+```md
+- Role: <agent_name>
+- Mission: <one bounded question>
+- Context budget: brief-only | component-context
+- Boundaries: read-only; no raw dumps; stay in scope; report scope-expansion triggers
+- Return: context capsule, max <N> words
+```
+
 ## Role
 
 `<agent_name>`
 
 ## Mission
 
-| Mission | Evidence | Confidence | Risk / impact | Next action |
-|---|---|---:|---|---|
-| One bounded question the subagent must answer |  |  |  |  |
+One bounded question the subagent must answer, and what a complete answer looks like.
 
 ## Context budget
 
@@ -16,22 +26,18 @@
 
 ## Allowed tools
 
-| Tool boundary | Evidence | Confidence | Risk | Next action |
-|---|---|---:|---|---|
-| Read/search only |  |  |  |  |
-| Command execution allowed / not allowed |  |  |  |  |
-| File edits allowed / not allowed |  |  |  |  |
+- Read/search: allowed
+- Command execution: allowed | not allowed
+- File edits: allowed | not allowed
 
 ## Inputs
 
-| Input | Evidence | Confidence | Impact | Next action |
-|---|---|---:|---|---|
-| User task |  |  |  |  |
-| Current risk mode |  |  |  |  |
-| Relevant paths |  |  |  |  |
-| Relevant artifacts |  |  |  |  |
-| Known constraints |  |  |  |  |
-| Exclusions |  |  |  |  |
+- User task:
+- Current risk mode:
+- Relevant paths:
+- Relevant artifacts:
+- Known constraints:
+- Exclusions:
 
 ## Output limit
 
@@ -39,16 +45,16 @@ Return max `<N>` words plus required tables.
 
 ## Required output
 
+A context capsule (`templates/context-capsule.md`) whose findings are evidence-backed:
+
 | Finding | Evidence | Confidence | Impact | Next action |
 |---|---|---:|---|---|
 |  |  |  |  |  |
 
 ## Do not
 
-| Constraint | Evidence | Confidence | Risk | Next action |
-|---|---|---:|---|---|
-| Do not edit files unless explicitly assigned as Implementation Engineer after the implementation gate. |  | Proven | Unreviewed edits | Respect boundary |
-| Do not include raw file dumps. |  | Proven | Context bloat | Summarize with citations |
-| Do not summarize unrelated repo areas. |  | Proven | Scope creep | Stay bounded |
-| Do not claim ownership without evidence from paths, symbols, callers, tests, or docs. |  | Proven | Wrong seam | Cite evidence |
-| Do not expand scope without reporting the trigger. |  | Proven | Hidden risk | Report trigger first |
+- Do not edit files unless explicitly assigned as Implementation Engineer after the implementation gate.
+- Do not include raw file dumps; summarize with citations.
+- Do not summarize unrelated repo areas.
+- Do not claim ownership without evidence from paths, symbols, callers, tests, or docs.
+- Do not expand scope without reporting the trigger first.

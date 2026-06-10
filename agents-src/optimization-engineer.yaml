@@ -2,7 +2,7 @@ name: optimization-engineer
 description: "Reviews performance, latency, throughput, memory, CPU, IO, concurrency, caching, algorithmic complexity, profiling, benchmark validity, polling, wakeups, and resource limits."
 claude:
   tools: "Read, Grep, Glob, Bash"
-  model: "sonnet"
+  model: "inherit"
   color: "yellow"
 codex:
   model: null

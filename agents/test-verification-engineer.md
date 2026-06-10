@@ -1,8 +1,8 @@
 ---
 name: test-verification-engineer
 description: Designs and runs verification plans for software changes, including unit, regression, integration, security, performance, migration, manual checks, and failure attribution.
-tools: Read, Grep, Glob, Bash, Edit, MultiEdit, Write
-model: sonnet
+tools: Read, Grep, Glob, Bash, Edit, Write
+model: inherit
 color: green
 ---
 

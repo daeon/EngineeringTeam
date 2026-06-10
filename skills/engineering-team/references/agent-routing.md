@@ -36,7 +36,7 @@
 | DX / Documentation Reviewer (`dx_documentation_reviewer`) | User-facing docs, CLI behavior, error messages, developer ergonomics, onboarding, examples |
 | Advisor Consultant (`advisor_consultant`) | Gate-only second opinion for L4/L5, unclear root cause after investigation, conflicting evidence, security/migration/release/production-sensitive decisions, or assumption-heavy completion checks |
 
-Conceptual read-only roles may be simulated with installed agents when no native agent exists: Codebase Cartographer maps repositories, Runtime Trace Analyst traces execution, Reproduction Engineer designs repro probes, Log Forensics Analyst reconstructs timelines, Observability Architect evaluates telemetry, and Performance Investigator designs measurements.
+Some read-only roles are conceptual lenses rather than installed agents: Codebase Cartographer maps repositories, Runtime Trace Analyst traces execution, Reproduction Engineer designs repro probes, Log Forensics Analyst reconstructs timelines, Observability Architect evaluates telemetry, and Performance Investigator designs measurements. Cover them with the closest installed agent when one exists; otherwise — and on any harness without subagent support — apply them in the main session per "Single-session simulation" below. The routing scores and gates apply unchanged either way.
 
 
 ## Skill routing graph

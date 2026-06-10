@@ -39,4 +39,4 @@ not a commitment.
 
 - Smoother local marketplace install flows for Claude Code and Cursor.
 - Clear, copy-paste install for each harness from one script (`scripts/install.py`).
-- Launch materials kept current in `docs/launch-post.md` and `docs/prompt-cards.md`.
+- Launch materials kept current in `docs/internal/launch-post.md` and `docs/prompt-cards.md`.

@@ -2,7 +2,7 @@
 name: system-design-architect
 description: Reviews software architecture, system boundaries, abstractions, interfaces, dependency direction, scalability, maintainability, and long-term design risks.
 tools: Read, Grep, Glob, Bash
-model: sonnet
+model: inherit
 color: green
 ---
 
