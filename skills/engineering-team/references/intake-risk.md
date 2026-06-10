@@ -77,7 +77,7 @@ Read-only mode changes the edit posture, not the required rigor.
 
 ## L0 fast path
 
-When autonomy level is L0, proceed to a lightweight Repo Atlas, then produce an Analysis Report (`templates/analysis-report.md`). Skip agent routing, contract graph, evidence ledger, advisor gate, implementation gate, and verification loop. Context GC still applies.
+L0-L1 tasks use the fast path defined in `SKILL.md`: a one-line intake, minimal orientation, the answer or small edit with the narrowest relevant check, and a statement of what was checked. Use an Analysis Report (`templates/analysis-report.md`) only when the answer needs structure. Skip agent routing, contract graph, evidence ledger, advisor gate, implementation gate, and verification loop.
 
 L0 tasks are limited to simple summaries, local explanations, or obvious one-file inspections with no planned change and no cross-file, behavior, contract, performance, security, migration, release, or production claims.
 
@@ -110,7 +110,7 @@ Produce artifacts at the depth the level requires. Do not skip artifacts entirel
 
 ## Required output: Intake artifact
 
-Produce this block — even for L0 tasks — it is the routing receipt:
+Produce this block for L2+ tasks — it is the routing receipt. On the L0-L1 fast path, compress it to one line (task, mode, level, why trivial):
 
 ```md
 ## Intake

@@ -55,7 +55,9 @@ The second command reproduces the bug.
 ## Expected artifacts
 
 `expected-artifacts/` holds filled-in versions of what the EngineeringTeam
-workflow should produce for this bug:
+workflow should produce for this bug. They are hand-written reference ideals,
+not captured agent output — use them to judge the shape and rigor of a real
+run, not to diff against it line by line:
 
 - `repo-atlas.md`
 - `component-brief.md`

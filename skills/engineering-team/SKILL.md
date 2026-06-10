@@ -1,6 +1,6 @@
 ---
 name: engineering-team
-description: "Use for non-trivial software engineering and read-only investigation: act as lead engineer, select the right expert panel, route implementation, codebase analysis, debugging forensics, log forensics, performance forensics, handoff, evidence gates, verification, run ledgers, and reusable repo knowledge."
+description: "Use for software work with real risk or breadth: multi-file or behavior/contract changes, unknown root causes, security/performance/migration/release concerns, PR-level review, or whole-repo investigation. Acts as lead engineer: selects a minimal expert panel, builds evidence, gates edits, verifies. Skip for typo-level or obvious single-file edits."
 ---
 
 # EngineeringTeam
@@ -9,14 +9,25 @@ Lead-engineer workflow for non-trivial software engineering. Keep this file as t
 
 Invocation: mention `engineering-team`, choose it from `/skills`, or let the harness select it.
 
-## Operating modes
+## Decide the route (in order)
 
-| Mode | Use when | Route | Edit posture |
-|---|---|---|---|
-| Implementation | Fix, change, implement, refactor, add tests, or prepare PR-ready work | Follow the implementation workflow below | Edit only after the Implementation Gate |
-| Read-only analysis | Understand, audit, debug, inspect logs, or profile without requested changes | Load `references/analysis-routing.md`; route to `codebase-analysis`, `debugging-forensics`, `log-forensics`, or `performance-forensics` | No edits; still classify L0-L5 risk |
+1. **Trivial?** Single known file, no behavior, contract, cross-file, security, performance, migration, release, or production claim → take the fast path below. Load no reference files.
+2. **Outcome?** Change code → Implementation mode. Understand, audit, debug, inspect logs, or profile without requested changes → Read-only analysis: load `references/analysis-routing.md` and route to `codebase-analysis`, `debugging-forensics`, `log-forensics`, or `performance-forensics`. Transfer the task elsewhere → `handoff` skill.
+3. **Depth?** Classify L0-L5 and risk mode with `references/intake-risk.md`. Read-only work is classified by depth, not edit posture.
+4. **Load only what that depth requires** — the artifact table below maps depth to references. Do not preload the rest.
 
-If read-only work reveals a likely fix, stop with a handoff-ready diagnosis unless the user explicitly asks for implementation.
+In Implementation mode, edit only after the gate in `references/implementation-gate.md` passes. In read-only mode, never edit; if the work reveals a likely fix, stop with a handoff-ready diagnosis unless the user explicitly asks for implementation.
+
+## Fast path (L0-L1)
+
+For trivial work, the entire process is:
+
+1. State a one-line intake: task, mode, level, and why it is trivial.
+2. Orient minimally (the file and its nearest neighbors or tests).
+3. Answer, or make the small edit and run the narrowest relevant check.
+4. State what you checked. Stop.
+
+No panel, no reference loads, no templates. If step 2 surfaces a cross-file, behavior, or contract claim, reclassify at L2+ and continue below.
 
 ## Non-negotiable rule
 
@@ -58,7 +69,7 @@ Task
   → final report                 references/final-report.md
 ```
 
-**L0 fast path:** only for trivial local explanation, simple summary, or obvious one-file inspection with no cross-file, behavior, contract, performance, security, migration, release, or production claim. Use classify risk → lightweight Repo Atlas → Analysis Report → Context GC; skip panel routing, contract graph, evidence ledger, Advisor Gate, Implementation Gate, and verification loop unless needed.
+L0-L1 work uses the fast path above instead of this workflow.
 
 ## Run Ledger and memory
 
@@ -70,7 +81,7 @@ When `.engineering-team/memory/index.md` exists, read it before EngineeringTeam 
 
 | Artifact | When required | Reference |
 |---|---|---|
-| Intake block | All tasks | `references/intake-risk.md` |
+| Intake block | L2+ (one-line form on the fast path) | `references/intake-risk.md` |
 | Run Ledger | L3+, forensics, handoff-heavy, reviewer trace | `references/run-ledger.md` |
 | Repo Atlas | L2+ | `references/repo-atlas.md` |
 | Component Brief | L2+ | `references/component-brief.md` |
@@ -80,7 +91,7 @@ When `.engineering-team/memory/index.md` exists, read it before EngineeringTeam 
 | Impact Map | L4+ multi-component | `references/impact-map.md` |
 | Implementation Gate | L2+ | `references/implementation-gate.md` |
 | Verification Report | L2+ | `references/verification-loop.md` |
-| Analysis Report | L0 only | `references/output-contracts.md` |
+| Analysis Report | L0-L1 read-only answers that need structure | `references/output-contracts.md` |
 | Memory Candidates | Reusable closeout knowledge | `templates/memory-candidates.md` / `references/memory-promotion.md` |
 | Final Report | L2+ | `references/final-report.md` |
 

@@ -17,6 +17,11 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 AGENT_SOURCE_DIR = REPO_ROOT / "agents-src"
 
 
+# The Codex TOMLs are written to two places on purpose: `.codex/agents/` is what
+# `scripts/install.py --target codex` copies from, while the copy under
+# `skills/engineering-team/assets/agents/` ships inside the skill bundle so
+# harnesses that only receive `skills/` can still install the custom agents.
+# Both are regenerated together; do not hand-prune one of them.
 GENERATED_DIRS = [
     Path("agents"),
     Path(".codex") / "agents",
@@ -188,7 +193,7 @@ def render_markdown(agent: dict) -> str:
             f"name: {agent['name']}",
             f"description: {agent['description']}",
             f"tools: {claude.get('tools', 'Read, Grep, Glob, Bash')}",
-            f"model: {claude.get('model', 'sonnet')}",
+            f"model: {claude.get('model', 'inherit')}",
             f"color: {claude.get('color', 'blue')}",
             "---",
             "",

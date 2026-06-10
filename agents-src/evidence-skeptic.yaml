@@ -2,7 +2,7 @@ name: evidence-skeptic
 description: "Challenges software engineering claims by requiring evidence, falsifying hypotheses, checking contract graphs and test validity, identifying unsupported assumptions, and blocking premature implementation."
 claude:
   tools: "Read, Grep, Glob, Bash"
-  model: "sonnet"
+  model: "inherit"
   color: "magenta"
 codex:
   model: null

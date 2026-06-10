@@ -2,7 +2,7 @@
 name: security-analyst
 description: Reviews software changes for realistic security risks including trust boundaries, auth, authorization, input validation, injection, secrets, unsafe shell/filesystem/network behavior, data exposure, privilege boundaries, and dependency risk.
 tools: Read, Grep, Glob, Bash
-model: sonnet
+model: inherit
 color: red
 ---
 

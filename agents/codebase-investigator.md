@@ -2,7 +2,7 @@
 name: codebase-investigator
 description: Investigates repositories to create repo atlases, component briefs, symbol maps, test maps, configs, runtime paths, generated-code rules, and evidence before code changes.
 tools: Read, Grep, Glob, Bash
-model: sonnet
+model: inherit
 color: cyan
 ---
 
