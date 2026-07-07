@@ -9,6 +9,7 @@ Do not copy procedural workflow steps from this document into agent prompts. The
 | Need | Canonical file |
 |---|---|
 | Main router, mode selection, and workflow order | [`skills/engineering-team/SKILL.md`](../skills/engineering-team/SKILL.md) |
+| Optional unknowns-first pre-intake | [`skills/engineering-team/references/unknowns-first/router.md`](../skills/engineering-team/references/unknowns-first/router.md) |
 | Intake, mode, risk, and autonomy depth | [`skills/engineering-team/references/intake-risk.md`](../skills/engineering-team/references/intake-risk.md) |
 | Read-only analysis routing | [`skills/engineering-team/references/analysis-routing.md`](../skills/engineering-team/references/analysis-routing.md) |
 | Specialist routing | [`skills/engineering-team/references/agent-routing.md`](../skills/engineering-team/references/agent-routing.md) |
@@ -22,7 +23,10 @@ When the workflow changes, update the skill/reference files first. Public docs s
 
 ```mermaid
 flowchart TB
-    request[Request] --> classify[Classify mode, risk, and depth]
+    request --> maybe_unknowns{Ambiguity risky?}
+    maybe_unknowns -->|Optional| unknowns[Unknowns-first pre-intake]
+    maybe_unknowns -->|No| classify
+    unknowns --> classify
     classify --> route[Select lead-only path or specialists]
     route --> atlas[Repo Atlas]
     atlas --> brief[Component Brief]
@@ -47,6 +51,8 @@ The workflow counters the most expensive failure mode in agent-assisted engineer
 
 For small, obvious local work, the skill supports a fast path so the process stays proportional. For risky changes or broad read-only investigations, the workflow creates a trail from user request to validated patch, diagnosis, or next-probe plan.
 
+For ambiguous work, the optional unknowns-first layer can run before intake to expose hidden assumptions, cheap probes, user-only decisions, risky defaults, and invalidating discoveries. It does not replace intake or routing; it feeds the existing artifacts.
+
 ## Public-Facing Outputs
 
 EngineeringTeam produces compact artifacts that reviewers can inspect without reading a full agent transcript:
@@ -59,5 +65,6 @@ EngineeringTeam produces compact artifacts that reviewers can inspect without re
 | Evidence Ledger | Separates supported claims from assumptions. | [`references/evidence-ledger.md`](../skills/engineering-team/references/evidence-ledger.md) |
 | Verification Report | Records checks run, failures attributed, gaps, and residual risk. | [`references/verification-loop.md`](../skills/engineering-team/references/verification-loop.md) |
 | Run Ledger | Captures task-scoped route decisions, probes, evidence, verification, and handoff state when a run needs traceability. | [`references/run-ledger.md`](../skills/engineering-team/references/run-ledger.md) |
+| Unknowns-First Route | Records whether ambiguity handling was used, which phase ran, and where the output was mapped. | [`references/unknowns-first/router.md`](../skills/engineering-team/references/unknowns-first/router.md) |
 
 See `examples/buggy-python-service/expected-artifacts/` for filled examples from the demo project.

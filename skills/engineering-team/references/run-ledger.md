@@ -4,6 +4,8 @@ Use this reference when a task needs a compact, reviewable trace of how Engineer
 
 The Run Ledger is task-scoped evidence, not durable memory. It records what happened during one investigation or implementation so reviewers and future agents can understand the route, claims, probes, decisions, verification, and remaining risk.
 
+When unknowns-first phases run, record only the useful outputs here: route decision, blind spots, assumptions, probes, material deviations, skipped checks, and residual risk. Do not paste phase templates wholesale.
+
 ## When to create it
 
 Create a Run Ledger proportionally:
@@ -35,6 +37,7 @@ Keep them separate:
 Use `templates/run-ledger.md` for full runs. At minimum, record:
 
 - task and mode / route decision
+- optional unknowns-first phase used and why
 - agents or skills used
 - files, commands, logs, or artifacts inspected
 - claims with evidence and confidence

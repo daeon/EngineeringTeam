@@ -7,6 +7,7 @@ Classify every task before routing or implementing.
 ## Canonical gate ownership
 
 - `references/intake-risk.md` owns task type, mode, autonomy level, and risk mode.
+- `references/unknowns-first/router.md` may surface ambiguity before intake, but it does not own final autonomy, routing, or artifact depth.
 - `references/evidence-ledger.md` owns evidence quality and claim classification.
 - `references/advisor-gate.md` owns independent high-risk decision review.
 - `references/implementation-gate.md` owns edit authorization and file-change boundaries.
@@ -20,6 +21,8 @@ Capture:
 - risk level
 - unknowns that must be resolved from the repo
 - expected deliverable
+
+If the request is ambiguous, risky, unfamiliar, architecture-sensitive, security-sensitive, production-impacting, or assumption-heavy, consider the optional unknowns-first router before finalizing this intake. Skip it for tiny obvious edits and cases where repo evidence already gives a clear path.
 
 ## Step 2: Classify task type
 
@@ -68,6 +71,8 @@ Escalate level when a task touches or investigates public contracts, permissions
 | `release/production` | Runtime, rollout, rollback, observability, live system, or production behavior | Release + advisor; human approval before sensitive side effects |
 | `uncertain-root-cause` | Investigation has not converged on evidence-backed root cause | Investigator + skeptic + advisor before implementation; feedback loop before hypotheses |
 | `conflicting-evidence` | Source, tests, docs, logs, or runtime observations disagree | Investigator + skeptic + advisor before implementation |
+
+Use `references/unknowns-first/risk-score.md` only as intake support when it helps decide whether to run an unknowns-first phase. Do not replace this table with a separate scoring system.
 
 ## Read-only depth guide
 

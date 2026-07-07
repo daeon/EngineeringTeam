@@ -4,6 +4,9 @@
 
 Public-launch polish.
 
+- Added optional unknowns-first pre-intake references for ambiguous, risky, unfamiliar, architecture-sensitive, security-sensitive, production-impacting, or assumption-heavy EngineeringTeam work.
+- Documented unknowns-first routing, artifact mapping, and fused workflow examples while keeping `engineering-team` as the primary router.
+- Extended package validation for unknowns-first reference files, required headings, reference links, router uniqueness, and startup/hook regression checks.
 - Removed session-start bootstrap behavior: deleted `hooks/`, removed the Cursor manifest hook entry, and retired `skills/using-engineering-team/` so the package matches the documented no-session-start-magic posture.
 - Hardened validation to fail if session-start hooks or bootstrap skills reappear while the public security posture says they are absent.
 - Hardened generated-agent drift checks to detect stale extra generated files after source-agent renames or removals.

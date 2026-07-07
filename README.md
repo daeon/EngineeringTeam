@@ -27,6 +27,8 @@ Most coding agents are fast, but speed is not judgment. Real engineering work ne
 
 EngineeringTeam turns that team habit into a reusable skill that works across the agent you already use. It does not add a runtime service, network calls, or session-start magic. You invoke `engineering-team` when a task deserves expert coordination: it chooses the right panel, makes the panel understand the problem from source evidence, and produces compact, human-reviewable artifacts as it goes.
 
+When ambiguity itself is the first risk, EngineeringTeam can run an optional unknowns-first pre-intake pass before normal classification. That pass is for non-trivial ambiguous, risky, unfamiliar, architecture-sensitive, security-sensitive, production-impacting, or assumption-heavy work. It stays lightweight and feeds the existing Intake, Alignment, Evidence, Gate, Run Ledger, and Final Report artifacts.
+
 That panel can deliver a PR-ready implementation, a read-only diagnosis, a repo map, a hypothesis matrix, a log report, a performance probe plan, or a handoff for another session. The point is not “change code” versus “understand code.” The point is: assemble the right experts, establish shared understanding, then make the smallest safe move.
 
 Read-only mode means **no edits**; it does not mean low rigor. Trivial local explanations can use L0, while broad codebase analysis, root-cause work, performance analysis, protected-boundary review, migration review, release planning, and multi-component PR review still use L2-L5 depth according to complexity and risk.
@@ -39,7 +41,10 @@ Specialist agents are **selective, not mandatory**. EngineeringTeam does not spa
 
 ```mermaid
 flowchart LR
-    request[User request] --> lead{Lead engineer intake}
+    request[User request] --> ambiguity{Ambiguity risky?}
+    ambiguity -->|Optional| unknowns[Unknowns-first pre-intake]
+    ambiguity -->|No| lead{Lead engineer intake}
+    unknowns --> lead
 
     lead --> mode{Outcome needed?}
     mode -->|Fix / feature / refactor| impl[Implementation mode]
@@ -80,6 +85,8 @@ The main `engineering-team` skill is the lead engineer. It decides whether the t
 ### L0 fast path boundary
 
 Use L0 only for trivial local explanation, simple summary, or obvious one-file inspection with no cross-file, behavior, contract, performance, migration, release, production, or protected-boundary claims. Read-only investigations are classified by depth, not by edit posture.
+
+Unknowns-first is skipped for tiny obvious work. It is a pre-intake aid, not a second router; `engineering-team` still owns routing and `references/intake-risk.md` still owns final autonomy and risk mode.
 
 ## 🧪 One agent vs an expert engineering team
 
@@ -190,6 +197,7 @@ EngineeringTeam makes the expert panel produce compact, reviewable artifacts bef
 | Log Forensics Report | Logs become a timeline with signals, findings, redactions, ruled-out claims, and next probes | `log-forensics` skill output |
 | Performance Forensics Report | Performance work starts with a measurement frame, hot-path map, bottleneck hypotheses, and probes | `performance-forensics` skill output |
 | Handoff Document | Another agent or session can continue with decisions, evidence, open questions, risks, suggested skills, and next actions | `handoff` skill output |
+| Unknowns-First Route | Ambiguous or risky tasks expose assumptions before intake, then map findings into existing artifacts | `references/unknowns-first/router.md` |
 
 These make the team's reasoning inspectable: a reviewer can see which experts were needed, what they understood about the code path, and why the resulting diff or diagnosis is trustworthy.
 
@@ -257,6 +265,10 @@ python3 scripts/doctor.py
 `npm run validate` runs the same checks as CI: JSON manifests, TOML agents, generated-agent drift including stale generated files, version consistency, OpenCode JS syntax, package structure, no session-start hook regression, memory contracts, and the worked example test suite. The same command runs in GitHub Actions via `.github/workflows/validate.yml`.
 
 ## 📚 Documentation
+
+- `docs/routing-matrix.md` — when to use the fast path, normal EngineeringTeam routing, or optional unknowns-first.
+- `docs/unknowns-first-integration.md` — how the gapfinder-style layer maps into EngineeringTeam artifacts.
+- `docs/examples/unknowns-first-fused-workflow.md` — compact example of unknowns-first fused into normal gates.
 
 Full docs page: https://github.com/daeon/EngineeringTeam/tree/main/docs
 

@@ -81,6 +81,8 @@ Use the templates above as the single source of truth — do not redefine the re
 
 | Artifact | Canonical reference |
 |---|---|
+| Unknowns-first route | `references/unknowns-first/router.md` |
+| Unknowns-first phase outputs | Map into the existing artifacts below; do not create a parallel report family. |
 | Repo Atlas | `references/repo-atlas.md` |
 | Component Brief | `references/component-brief.md` |
 | Contract Graph | `references/contract-graph.md` |

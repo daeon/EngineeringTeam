@@ -12,9 +12,10 @@ Invocation: mention `engineering-team`, choose it from `/skills`, or let the har
 ## Decide the route (in order)
 
 1. **Trivial?** Single known file, no behavior, contract, cross-file, security, performance, migration, release, or production claim → take the fast path below. Load no reference files.
-2. **Outcome?** Change code → Implementation mode. Understand, audit, debug, inspect logs, or profile without requested changes → Read-only analysis: load `references/analysis-routing.md` and route to `codebase-analysis`, `debugging-forensics`, `log-forensics`, or `performance-forensics`. Transfer the task elsewhere → `handoff` skill.
-3. **Depth?** Classify L0-L5 and risk mode with `references/intake-risk.md`. Read-only work is classified by depth, not edit posture.
-4. **Load only what that depth requires** — the artifact table below maps depth to references. Do not preload the rest.
+2. **Unknowns-first needed?** For non-trivial ambiguous, risky, unfamiliar, architecture-sensitive, security-sensitive, production-impacting, or assumption-heavy work, load `references/unknowns-first/router.md` and only the smallest useful phase it selects. Skip this layer for tiny obvious edits.
+3. **Outcome?** Change code → Implementation mode. Understand, audit, debug, inspect logs, or profile without requested changes → Read-only analysis: load `references/analysis-routing.md` and route to `codebase-analysis`, `debugging-forensics`, `log-forensics`, or `performance-forensics`. Transfer the task elsewhere → `handoff` skill.
+4. **Depth?** Classify L0-L5 and risk mode with `references/intake-risk.md`. Read-only work is classified by depth, not edit posture. Unknowns-first can inform the intake, but `references/intake-risk.md` owns the final autonomy and risk decision.
+5. **Load only what that depth requires** — the artifact table below maps depth to references. Do not preload the rest.
 
 In Implementation mode, edit only after the gate in `references/implementation-gate.md` passes. In read-only mode, never edit; if the work reveals a likely fix, stop with a handoff-ready diagnosis unless the user explicitly asks for implementation.
 
@@ -53,6 +54,7 @@ Before implementation, know: entry point, transformation point, output boundary,
 
 ```text
 Task
+  → optional unknowns-first   references/unknowns-first/router.md
   → classify risk and autonomy   references/intake-risk.md       ← Intake block first
   → align on intent if needed    references/alignment-audit.md
   → select mode/panel            references/analysis-routing.md / references/agent-routing.md
@@ -82,6 +84,7 @@ When `.engineering-team/memory/index.md` exists, read it before EngineeringTeam 
 | Artifact | When required | Reference |
 |---|---|---|
 | Intake block | L2+ (one-line form on the fast path) | `references/intake-risk.md` |
+| Unknowns-first route | Optional for ambiguous/risky/assumption-heavy work | `references/unknowns-first/router.md` |
 | Run Ledger | L3+, forensics, handoff-heavy, reviewer trace | `references/run-ledger.md` |
 | Repo Atlas | L2+ | `references/repo-atlas.md` |
 | Component Brief | L2+ | `references/component-brief.md` |
@@ -100,6 +103,7 @@ When `.engineering-team/memory/index.md` exists, read it before EngineeringTeam 
 | Need | Load |
 |---|---|
 | classify risk/autonomy | `references/intake-risk.md` |
+| expose ambiguity before intake | `references/unknowns-first/router.md`, then one selected unknowns-first phase reference |
 | resolve ambiguous intent | `references/alignment-audit.md` |
 | choose read-only route | `references/analysis-routing.md` |
 | choose/score specialists | `references/agent-routing.md`, `references/role-definitions.md`, `references/routing-examples.md`, `references/routing-evals.md` |

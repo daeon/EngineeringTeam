@@ -39,5 +39,6 @@ Keep the final report concise. Include concrete file paths, commands, tests, and
 ## Guidelines
 
 - Replace `## Advisor Decision Receipt` with the receipt artifact from `references/advisor-gate.md` when the advisor ran; omit the section entirely when the advisor was not invoked.
+- Summarize unknowns-first outputs only when they materially changed the plan: key assumptions resolved, defaults chosen, alternatives rejected, residual risks, and rollback. Keep the canonical section names above.
 - For architecture reviews, migration impact maps, performance investigations, or cross-component contract analysis, consider a self-contained temporary HTML visual report when diagrams would make evidence easier to inspect. See `references/visual-review-reports.md`.
 - If the user asks for terse output, reduce filler and keep exact technical terms, commands, paths, errors, and risks intact.

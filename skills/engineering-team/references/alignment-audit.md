@@ -11,6 +11,7 @@ Close the communication gap before the workflow spends its evidence budget. The 
 Run for:
 
 - ambiguous scope, behavior, acceptance criteria, terminology, or non-goals
+- optional unknowns-first output that identifies user-only decisions or architecture-changing uncertainty
 - L3+ behavior changes
 - design decisions with meaningful trade-offs
 - requests that include vague terms like "better", "clean up", "support", "modernize", or "make robust"
@@ -33,6 +34,8 @@ Ask one question at a time. Each question must include:
 - the consequence of accepting the recommendation
 
 Before asking, check whether the repository can answer the question. Prefer code, tests, then docs. If code answers it, report the evidence instead of asking.
+
+When `references/unknowns-first/architecture-interview.md` was used, fold its recommended defaults and open user-only decisions into this audit instead of producing a second alignment artifact.
 
 Walk upstream decisions first:
 

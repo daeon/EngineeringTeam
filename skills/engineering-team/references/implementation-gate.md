@@ -7,12 +7,14 @@
 Before editing, verify:
 
 - [ ] problem scope is clear
+- [ ] optional unknowns-first findings have been mapped into intake, evidence, alignment, or run-ledger artifacts when used
 - [ ] Repo Atlas exists (or unnecessary due to tiny scope)
 - [ ] Component Brief exists
 - [ ] Contract Graph exists for L3+ work
 - [ ] Evidence Ledger contains the key claims
 - [ ] affected files are identified
 - [ ] root-cause or design evidence exists
+- [ ] risky defaults, alternatives, and invalidating discoveries are explicit when the plan depends on assumptions
 - [ ] architecture/security/performance/migration/release constraints are known when relevant
 - [ ] Evidence Skeptic reviewed the plan for non-trivial work
 - [ ] Advisor Consultant reviewed the plan when the advisor gate requires it (see `references/advisor-gate.md`)

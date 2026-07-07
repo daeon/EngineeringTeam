@@ -99,6 +99,67 @@ REFERENCE_CONTRACTS: dict[str, list[str]] = {
     ],
 }
 
+UNKNOWNS_FIRST_REFERENCE_CONTRACTS: dict[str, list[str]] = {
+    "references/unknowns-first/router.md": [
+        "# Unknowns-First Router",
+        "## Trigger rules",
+        "## Skip rules",
+        "## Smallest useful phase",
+        "## Artifact mapping",
+        "## Output",
+    ],
+    "references/unknowns-first/blindspot-pass.md": [
+        "# Blindspot Pass",
+        "## Known knowns",
+        "## Known unknowns",
+        "## Unknown knowns",
+        "## Unknown unknowns",
+        "## Hidden assumptions",
+        "## Cheap probes",
+    ],
+    "references/unknowns-first/architecture-interview.md": [
+        "# Architecture Interview",
+        "## One-question protocol",
+        "## Decision ladder",
+        "## Recommended defaults",
+        "## Output",
+    ],
+    "references/unknowns-first/prototype-reference-probe.md": [
+        "# Prototype Reference Probe",
+        "## When to prototype",
+        "## Probe rules",
+        "## Reference comparison",
+        "## Output mapping",
+    ],
+    "references/unknowns-first/risk-first-plan.md": [
+        "# Risk-First Plan",
+        "## Decisions table",
+        "## Risk ordering",
+        "## Invalidating discoveries",
+        "## Output mapping",
+    ],
+    "references/unknowns-first/implementation-notes-log.md": [
+        "# Implementation Notes Log",
+        "## Material deviations",
+        "## Conservative choices",
+        "## Tests skipped",
+        "## Human judgment needed",
+        "## Output mapping",
+    ],
+    "references/unknowns-first/change-explainer-quiz.md": [
+        "# Change Explainer Quiz",
+        "## Reviewer-ready explainer",
+        "## Optional quiz",
+        "## Output mapping",
+    ],
+    "references/unknowns-first/risk-score.md": [
+        "# Risk Score",
+        "## Scoring rubric",
+        "## Score interpretation",
+        "## Output",
+    ],
+}
+
 TEMPLATE_CONTRACTS: dict[str, list[str]] = {
     "templates/subagent-brief.md": [
         "# Subagent Brief",
@@ -258,6 +319,14 @@ NO_SESSION_START_PHRASES = [
     "session-start magic",
 ]
 
+FORBIDDEN_UNKNOWNS_FIRST_PATTERNS = [
+    r"(?i)session-start",
+    r"(?i)\bhooks?\b",
+    r"(?i)\bautoload\b",
+    r"(?i)\bstartup\b",
+    r"(?i)\bbootstrap\b",
+]
+
 
 def require(condition: bool, message: str) -> None:
     if not condition:
@@ -279,6 +348,7 @@ def linked_reference_sources(plugin_root: Path, skill_dir: Path) -> list[Path]:
     return [
         *(plugin_root / "skills").glob("*/SKILL.md"),
         *skill_dir.joinpath("references").glob("*.md"),
+        *skill_dir.joinpath("references", "unknowns-first").glob("*.md"),
     ]
 
 
@@ -386,6 +456,42 @@ def validate_no_session_start_hooks(plugin_root: Path, cursor_manifest: dict) ->
         require(phrase in combined_docs, f"missing no-session-start documentation phrase: {phrase}")
 
 
+def validate_unknowns_first_references(skill_dir: Path) -> None:
+    unknowns_dir = skill_dir / "references" / "unknowns-first"
+    require(unknowns_dir.exists(), "missing references/unknowns-first directory")
+
+    expected_paths = set(UNKNOWNS_FIRST_REFERENCE_CONTRACTS)
+    actual_paths = {
+        path.relative_to(skill_dir).as_posix()
+        for path in unknowns_dir.glob("*.md")
+    }
+    require(
+        expected_paths == actual_paths,
+        "unknowns-first references must match expected files: "
+        f"expected {sorted(expected_paths)}, found {sorted(actual_paths)}",
+    )
+
+    router_headings: list[str] = []
+    for rel_path, required_headings in UNKNOWNS_FIRST_REFERENCE_CONTRACTS.items():
+        full_path = skill_dir / rel_path
+        require(full_path.exists(), f"missing unknowns-first reference: {rel_path}")
+        text = full_path.read_text()
+        for heading in required_headings:
+            require(heading in text, f"{rel_path} missing required heading: {heading}")
+        if re.search(r"^#\s+.*router.*$", text, re.I | re.M):
+            router_headings.append(rel_path)
+        for pattern in FORBIDDEN_UNKNOWNS_FIRST_PATTERNS:
+            require(
+                re.search(pattern, text) is None,
+                f"{rel_path} contains unsafe startup/hook/session reference: {pattern}",
+            )
+
+    require(
+        router_headings == ["references/unknowns-first/router.md"],
+        "unknowns-first must have exactly one top-level router concept in references/unknowns-first/router.md",
+    )
+
+
 def validate_memory_contracts(plugin_root: Path) -> None:
     memory_dir = plugin_root / ".engineering-team" / "memory"
     require(memory_dir.exists(), "missing .engineering-team/memory directory")
@@ -442,6 +548,7 @@ def main() -> int:
     skill_dir = skill_path.parent
 
     validate_backticked_doc_links(plugin_root, skill_dir)
+    validate_unknowns_first_references(skill_dir)
 
     for rel_path, required_headings in REFERENCE_CONTRACTS.items():
         full_path = skill_dir / rel_path

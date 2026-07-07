@@ -10,6 +10,20 @@ for trivial local explanations or obvious one-file inspections. Broad read-only
 analysis, debugging forensics, performance investigations, security reviews,
 migrations, releases, and multi-component reviews should still use L2-L5 depth.
 
+For ambiguous or assumption-heavy work, ask EngineeringTeam to run the optional
+unknowns-first pre-intake layer and map the results into normal artifacts. Skip
+that layer for tiny obvious edits.
+
+## Ambiguous implementation
+
+```text
+Use engineering-team for this ambiguous implementation. Before intake, run the
+smallest useful unknowns-first phase to expose hidden assumptions, user-only
+decisions, cheap probes, risky defaults, and invalidating discoveries. Then map
+the results into the normal Intake, Alignment Audit, Evidence Ledger,
+Implementation Gate, Verification Report, and Final Report. Do not create a
+parallel workflow.
+```
 
 ## Read-only codebase analysis
 
