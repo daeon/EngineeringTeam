@@ -1,8 +1,8 @@
 name: implementation-engineer
 description: "Proposes and implements the smallest safe code change after investigation, architecture/security/performance constraints, verification planning, and evidence review."
 claude:
-  tools: "Read, Grep, Glob, Bash, Edit, MultiEdit, Write"
-  model: "sonnet"
+  tools: "Read, Grep, Glob, Bash, Edit, Write"
+  model: "inherit"
   color: "yellow"
 codex:
   model: null

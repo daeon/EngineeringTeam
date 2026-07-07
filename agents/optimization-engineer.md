@@ -2,7 +2,7 @@
 name: optimization-engineer
 description: Reviews performance, latency, throughput, memory, CPU, IO, concurrency, caching, algorithmic complexity, profiling, benchmark validity, polling, wakeups, and resource limits.
 tools: Read, Grep, Glob, Bash
-model: sonnet
+model: inherit
 color: yellow
 ---
 

@@ -65,18 +65,9 @@ Use handoff to summarize this task for a fresh agent. Focus the next session on 
 
 ## Expected First Outputs
 
-EngineeringTeam should not jump straight into editing. For non-trivial work, expect:
+EngineeringTeam should not jump straight into editing. For non-trivial work, expect a short intake/routing note followed by compact artifacts such as a Repo Atlas, Component Brief, Contract Graph, Evidence Ledger, Implementation Gate, and Verification Report when they are relevant. The exact operational checklist is maintained in [`skills/engineering-team/SKILL.md`](../skills/engineering-team/SKILL.md) and linked from [`docs/workflow.md`](workflow.md).
 
-1. Intake and risk classification, including mode and L0-L5 depth.
-2. Agent or role routing when risk warrants it.
-3. Repo orientation.
-4. Component brief.
-5. Contract graph for behavior changes or behavior-level investigations.
-6. Evidence ledger.
-7. Implementation gate when edits are requested.
-8. Verification plan, diagnosis, or next-probe plan.
-
-Small tasks may use a lighter version of the same flow. L0 should be limited to trivial local explanation, simple summary, or obvious one-file inspection with no broad claims.
+Small tasks may use a lighter path. L0 is reserved for trivial local explanation, simple summary, or obvious one-file inspection with no broad claims.
 
 ## Run Ledgers And Memory
 
@@ -106,14 +97,4 @@ max_depth = 1
 
 ## How To Tell It Is Working
 
-EngineeringTeam is working when the agent can answer these questions before editing or before making broad read-only claims:
-
-- Where does this behavior enter the system?
-- Where is it transformed?
-- Where does it leave the system?
-- Which contracts and consumers are affected?
-- What evidence supports the diagnosis or design?
-- What will prove the change works or what probe should run next?
-- What should not be changed?
-
-If those answers are missing, ask the agent to continue the EngineeringTeam mapping phase before implementation or before finalizing the analysis.
+EngineeringTeam is working when the agent pauses before a non-trivial edit or broad read-only conclusion, names what it knows from the repository, identifies what remains uncertain, and ties the final change or diagnosis to evidence and verification. If it skips that map/gate/verify rhythm, ask it to continue the EngineeringTeam workflow and cite the relevant source paths before proceeding.

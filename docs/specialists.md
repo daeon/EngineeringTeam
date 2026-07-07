@@ -6,7 +6,7 @@ EngineeringTeam includes specialist roles so the agent can route work through th
 
 Use the smallest useful team. More agents do not automatically create better work. Add a specialist only when it covers a distinct risk area or resolves an uncertainty the lead cannot safely answer alone.
 
-Each specialist receives a bounded brief (see `templates/subagent-brief.md`) and returns a compact context capsule (see `templates/context-capsule.md`). The Lead Engineer reads capsules, not full transcripts, and owns the final decision.
+Operational routing rules live in [`skills/engineering-team/references/agent-routing.md`](../skills/engineering-team/references/agent-routing.md), role details live in [`skills/engineering-team/references/role-definitions.md`](../skills/engineering-team/references/role-definitions.md), and context-sharing rules live in [`skills/engineering-team/references/subagent-context-policy.md`](../skills/engineering-team/references/subagent-context-policy.md). The summary below is a public catalog, not the canonical procedure.
 
 ## Roles
 

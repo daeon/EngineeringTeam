@@ -2,7 +2,7 @@
 name: release-rollback-engineer
 description: Reviews deployment, rollout, observability, feature flags, operational safety, migration safety, production behavior, and rollback paths for software changes.
 tools: Read, Grep, Glob, Bash
-model: sonnet
+model: inherit
 color: yellow
 ---
 

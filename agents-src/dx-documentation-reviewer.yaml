@@ -1,8 +1,8 @@
 name: dx-documentation-reviewer
 description: "Reviews developer experience, documentation, CLI behavior, error messages, onboarding, examples, and public-facing guidance for software changes."
 claude:
-  tools: "Read, Grep, Glob, Bash, Edit, MultiEdit, Write"
-  model: "sonnet"
+  tools: "Read, Grep, Glob, Bash, Edit, Write"
+  model: "inherit"
   color: "blue"
 codex:
   model: null

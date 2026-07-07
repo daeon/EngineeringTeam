@@ -41,5 +41,5 @@ developer-tools
 
 ## Post-release
 
-- [ ] Publish `docs/launch-post.md` (adjust as needed).
+- [ ] Publish `docs/internal/launch-post.md` (adjust as needed).
 - [ ] Confirm badges in `README.md` resolve.
