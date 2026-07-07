@@ -4,6 +4,13 @@
 
 Classify every task before routing or implementing.
 
+## Canonical gate ownership
+
+- `references/intake-risk.md` owns task type, mode, autonomy level, and risk mode.
+- `references/evidence-ledger.md` owns evidence quality and claim classification.
+- `references/advisor-gate.md` owns independent high-risk decision review.
+- `references/implementation-gate.md` owns edit authorization and file-change boundaries.
+
 ## Step 1: Restate in engineering terms
 
 Capture:

@@ -2,6 +2,10 @@
 
 Trace behavior as contracts, not just files.
 
+## Canonical contract anchors
+
+This file owns boundary and edge modeling: producer, contract/data shape, consumer, side effect, failure mode, coverage, and risk. Mapping references that discuss cross-component blast radius should reuse these edge terms rather than inventing parallel schemas.
+
 ## Preferred shape
 
 ```text

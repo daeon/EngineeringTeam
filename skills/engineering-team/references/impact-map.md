@@ -1,6 +1,6 @@
 # Impact Map
 
-For L4+ multi-component changes, map the blast radius before editing. The Impact Map turns "this touches several components" into an explicit, reviewable list of affected owners, contracts, consumers, and verification per edge.
+For L4+ multi-component changes, map the blast radius before editing. The Impact Map turns "this touches several components" into an explicit, reviewable list of affected owners, contracts, consumers, and verification per edge. `references/contract-graph.md` owns the canonical edge vocabulary used here.
 
 Build it after the Contract Graph and before the Implementation Gate. It is the cross-component view that the gate and specialist review reference for L4+ work.
 

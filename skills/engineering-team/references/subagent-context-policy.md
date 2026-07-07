@@ -2,6 +2,10 @@
 
 Use subagents to protect the main session from broad, noisy, or specialist-heavy work.
 
+## Canonical delegation anchors
+
+This file owns the reusable subagent rules for main/subagent ownership, delegation triggers, context budgets, and context capsules. Other routing references should link here instead of restating those rules.
+
 ## Main agent owns
 
 - user intent

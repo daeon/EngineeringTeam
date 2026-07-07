@@ -2,6 +2,10 @@
 
 When verification fails, classify before patching.
 
+## Canonical failure triage
+
+This file owns the reusable failure classes, attribution loop, and rules for responding to failed verification. Other verification references should link here instead of restating the full class list or loop.
+
 For bug investigations, build or refresh the feedback loop from `diagnosis-loop.md` before changing code. A failure is actionable only when it reproduces the user-described symptom or proves a directly relevant contract risk.
 
 ## Failure classes

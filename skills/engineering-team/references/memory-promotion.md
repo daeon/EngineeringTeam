@@ -4,6 +4,10 @@ Use this reference during Context GC to decide whether Run Ledger findings becom
 
 Memory is curated advisory context. It is not a session archive, transcript, scratchpad, or raw evidence store.
 
+## Canonical memory anchors
+
+This file owns the reusable promotion/rejection rules, target memory files, required metadata, and Context GC decision vocabulary. Context closeout references should link here instead of duplicating the full policy.
+
 ## Promotion rules
 
 Promote a candidate only when all are true:
