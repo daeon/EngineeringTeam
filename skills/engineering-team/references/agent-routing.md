@@ -36,7 +36,7 @@
 | DX / Documentation Reviewer (`dx_documentation_reviewer`) | User-facing docs, CLI behavior, error messages, developer ergonomics, onboarding, examples |
 | Advisor Consultant (`advisor_consultant`) | Gate-only second opinion for L4/L5, unclear root cause after investigation, conflicting evidence, security/migration/release/production-sensitive decisions, or assumption-heavy completion checks |
 
-Some read-only roles are conceptual lenses rather than installed agents: Codebase Cartographer maps repositories, Runtime Trace Analyst traces execution, Reproduction Engineer designs repro probes, Log Forensics Analyst reconstructs timelines, Observability Architect evaluates telemetry, and Performance Investigator designs measurements. Cover them with the closest installed agent when one exists; otherwise — and on any harness without subagent support — apply them in the main session per "Single-session simulation" below. The routing scores and gates apply unchanged either way.
+Some read-only roles are conceptual lenses rather than installed agents: Codebase Cartographer maps repositories, Runtime Trace Analyst traces execution, Reproduction Engineer designs repro probes, Log Forensics Analyst reconstructs timelines, Observability Architect evaluates telemetry, and Performance Investigator designs measurements. Cover them with the closest installed agent when one exists; otherwise, on a harness without subagent support, apply them in the main session per "Fallback simulation" below. The routing scores and gates apply unchanged either way.
 
 
 ## Skill routing graph
@@ -53,6 +53,16 @@ For selecting between implementation and read-only investigation skills, load `r
 - Initially cap at 5 teammates unless the task is clearly complex.
 - If more than 5 agents score 2-3, spawn the top 5 first and defer the rest with explicit triggers.
 
+## Mandatory subagent routing
+
+For every L2+ EngineeringTeam task on a harness with subagent support, spawn the selected specialists as subagents or custom agents. The main session remains Lead Engineer and owns synthesis, gates, implementation boundaries, and the final report.
+
+Fast-path L0-L1 work may stay lead-only. For L2+ work, do not downgrade selected specialists into private main-session reasoning when the harness can spawn them. Use `templates/subagent-brief.md` for every assignment and require `templates/context-capsule.md` output.
+
+Spawn the selected specialists before implementation and before broad read-only claims. Evidence Skeptic must run before the implementation gate for L3+ work. Advisor Consultant remains a gate-only subagent and is spawned only when the advisor gate requires it.
+
+Fallback is only for harnesses without subagent support, missing custom-agent definitions, tool failures, or safety constraints that prevent spawning. Record the fallback reason in the routing output, then use labeled role simulation with the same evidence and verification gates.
+
 ## Routing output
 
 ```md
@@ -65,11 +75,16 @@ For selecting between implementation and read-only investigation skills, load `r
 
 | Agent | Why deferred | Spawn trigger |
 |---|---|---|
+
+## Fallbacks
+
+| Role | Reason subagent was not spawned | Compensating check |
+|---|---|---|
 ```
 
-## Single-session simulation
+## Fallback simulation
 
-When subagents are unavailable or not warranted, simulate specialist roles in the main session. Label each reasoning step with the active role so the work is auditable:
+When subagents are unavailable, simulate specialist roles in the main session. Label each reasoning step with the active role so the work is auditable:
 
 ```text
 [Investigator] Searched for all callers of X — found 3 files: ...
@@ -78,14 +93,14 @@ When subagents are unavailable or not warranted, simulate specialist roles in th
 [Verifier] Ran targeted tests: 2 pass, 0 fail.
 ```
 
-Rules for single-session simulation:
+Rules for fallback simulation:
 - At minimum simulate Lead, Investigator, and Skeptic for L3+ work.
 - The Skeptic step must run before implementation — not after.
 - Do not skip a role because you believe its conclusion is obvious.
 
 ## Team creation and fallback
 
-If the harness supports subagents and a proactive trigger is met, delegate bounded work using `templates/subagent-brief.md`. If subagents are unavailable, unsafe, or not worth the overhead, simulate the roles in the main session while preserving the same evidence and implementation gates.
+If the harness supports subagents, delegate bounded work using `templates/subagent-brief.md` for every selected specialist. If subagents are unavailable, unsafe, or fail to spawn, simulate the roles in the main session while preserving the same evidence and implementation gates.
 
 `references/subagent-context-policy.md` owns the canonical ownership split, delegation triggers, non-delegation cases, context budgets, and capsule discipline. Apply those rules here rather than copying them into routing decisions.
 
@@ -120,7 +135,7 @@ Spawn additional specialists when evidence justifies them:
 
 ## Proactive subagent triggers
 
-Use `references/subagent-context-policy.md` for the canonical delegation trigger list. In routing output, record only the trigger(s) that apply to this task and the specific question each subagent will answer.
+Use `references/subagent-context-policy.md` for the canonical delegation trigger list. In routing output, record the trigger(s) that selected each subagent and the specific question each subagent will answer.
 
 ## Delegation envelope
 

@@ -32,7 +32,7 @@ Prefer temporary artifacts under `.agent-state/` unless the repo already has a c
 
 ## Agent-Team Policy
 
-Spawn specialist agents only when a proactive trigger is met, the work is bounded, and the output can be returned as a compact context capsule. Keep fan-out small. If subagents are unavailable or not worth the overhead, simulate the role in the main session.
+For L2+ EngineeringTeam work on a harness with subagent support, spawn the selected specialist agents using bounded briefs and compact context capsules. Keep fan-out small and risk-based; do not spawn a fixed committee. If subagents are unavailable or fail to spawn, simulate the role in the main session and record the fallback reason.
 
 Recommended specialists, when installed:
 

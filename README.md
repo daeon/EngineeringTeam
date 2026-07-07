@@ -35,7 +35,7 @@ Read-only mode means **no edits**; it does not mean low rigor. Trivial local exp
 
 Use `handoff` when you want the current task transferred to another agent or a fresh session. It compacts the work into a continuation document with decisions, evidence, open questions, artifact links, suggested skills, and next actions.
 
-Specialist agents are **selective, not mandatory**. EngineeringTeam does not spawn a fixed committee; it forms the smallest expert panel that covers the task's distinct risks.
+Specialist routing is mandatory for non-trivial work when the harness supports subagents. EngineeringTeam does not spawn a fixed committee; it forms the smallest expert panel that covers the task's distinct risks, then routes those selected specialists through bounded subagents.
 
 ## 🧠 How it works
 
@@ -253,7 +253,7 @@ File-copy installs (Codex, GitHub) are idempotent: existing files are skipped un
 
 ## Keeping main context clean
 
-EngineeringTeam uses the main agent as the Lead Engineer. Broad search, noisy test output, and specialist review can be delegated to subagents. Specialists receive bounded briefs and return compact context capsules, not transcripts. This keeps the main session focused on expert routing, evidence, decisions, implementation gates, and final handoff.
+EngineeringTeam uses the main agent as the Lead Engineer. For L2+ work on harnesses with subagent support, selected specialists are delegated to subagents. Specialists receive bounded briefs and return compact context capsules, not transcripts. This keeps the main session focused on expert routing, evidence, decisions, implementation gates, and final handoff.
 
 ## ✅ Validation
 

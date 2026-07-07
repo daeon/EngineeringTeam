@@ -65,5 +65,5 @@ flowchart TD
 - Keep evidence gates: every important claim cites files, commands, logs, metrics, or clearly labeled assumptions.
 - Do not run destructive commands or change files during read-only analysis.
 - Prefer smallest useful probes: commands should answer a specific hypothesis and avoid absorbing large raw logs into context.
-- Use specialist agents only when the question is bounded and the result can return as a compact context capsule.
+- For L2+ work on harnesses with subagent support, route selected specialist agents when the question is bounded and the result can return as a compact context capsule.
 - Use `templates/next-probe-plan.md` whenever evidence is insufficient for a confident conclusion.

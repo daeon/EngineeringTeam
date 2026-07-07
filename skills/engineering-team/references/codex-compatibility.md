@@ -14,10 +14,9 @@ Codex reads `AGENTS.md` before work. Keep repo-level `AGENTS.md` short and use i
 
 ## Subagents
 
-Codex only spawns subagents when explicitly asked. The skill therefore supports two modes:
+When Codex exposes subagent tools and the EngineeringTeam skill is active, EngineeringTeam must route through subagents for every L2+ task. The lead stays in the main session, then spawns the selected Codex custom agents from `references/agent-routing.md` using bounded briefs and compact context capsules.
 
-1. Single-session mode: simulate specialist roles in the main session.
-2. Team mode: when explicitly requested, spawn bounded Codex subagents or custom agents.
+Fallback is limited to harnesses without subagent support, missing custom-agent definitions, or tool failures that prevent spawning. In fallback, label the simulated specialist roles in the main session and report why spawning was unavailable.
 
 Custom agent TOML files live under `.codex/agents/` (and a copy bundled in the skill at `skills/engineering-team/assets/agents/`). All are generated from `agents-src/*.yaml`; do not hand-edit them.
 

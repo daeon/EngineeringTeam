@@ -47,7 +47,7 @@ REFERENCE_CONTRACTS: dict[str, list[str]] = {
         "## Main agent owns",
         "## Subagents own",
         "## Delegate when",
-        "## Do not delegate when",
+        "## Fallback when",
         "## Context budgets",
     ],
     "references/repo-atlas.md": [

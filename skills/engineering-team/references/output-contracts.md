@@ -28,7 +28,12 @@ Agent-level report formats. For phase artifact templates, see the dedicated refe
 
 ## Deferred agents
 
-| Agent | Why not spawned yet | Spawn trigger |
+| Agent | Why deferred | Spawn trigger |
+|---|---|---|
+
+## Fallbacks
+
+| Role | Reason subagent was not spawned | Compensating check |
 |---|---|---|
 ```
 

@@ -115,11 +115,12 @@ When `.engineering-team/memory/index.md` exists, read it before EngineeringTeam 
 | close out | `references/context-garbage-collection.md`, `references/memory-promotion.md`, `references/final-report.md` |
 | special context | `references/visual-review-reports.md`, `references/domain-context.md`, `references/codex-compatibility.md`, `references/subagent-context-policy.md`, `handoff` skill (`skills/handoff/SKILL.md`) |
 
-When work is broad, noisy, or specialist-heavy, delegate with `references/subagent-context-policy.md`; subagents return context capsules, not transcripts.
+For L2+ work on a harness with subagent support, delegate the selected specialist panel with `references/subagent-context-policy.md`; subagents return context capsules, not transcripts. Use fallback simulation only when subagents are unavailable or fail to spawn.
 
 ## Key failure modes
 
 - Editing before repo/component/contract understanding.
+- Skipping subagent routing for L2+ work on a harness that supports it.
 - Spawning a fixed team instead of routing by risk and evidence.
 - Letting Evidence Skeptic become decorative.
 - Searching only exact user terms or trusting stale docs over code.

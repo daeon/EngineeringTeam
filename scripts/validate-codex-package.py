@@ -108,6 +108,26 @@ else:
     routing_text = agent_routing.read_text()
     if "Default Advisor Consultant to `brief-only`" not in routing_text:
         errors.append("references/agent-routing.md missing context budget policy")
+    if "## Mandatory subagent routing" not in routing_text:
+        errors.append("references/agent-routing.md missing mandatory subagent routing policy")
+    if "Fallback is only for harnesses without subagent support" not in routing_text:
+        errors.append("references/agent-routing.md missing limited fallback policy")
+
+codex_compat = root / "skills" / "engineering-team" / "references" / "codex-compatibility.md"
+if not codex_compat.exists():
+    errors.append("missing references/codex-compatibility.md")
+else:
+    compat_text = codex_compat.read_text()
+    if "must route through subagents" not in compat_text:
+        errors.append("references/codex-compatibility.md missing mandatory Codex subagent routing")
+    forbidden_codex_phrases = [
+        "only spawns subagents when explicitly asked",
+        "Single-session mode",
+        "when explicitly requested",
+    ]
+    for phrase in forbidden_codex_phrases:
+        if phrase in compat_text:
+            errors.append(f"references/codex-compatibility.md contains stale optional-routing phrase: {phrase}")
 
 if not (root / "AGENTS.md").exists():
     errors.append("missing AGENTS.md")

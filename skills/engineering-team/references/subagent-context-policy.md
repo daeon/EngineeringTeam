@@ -39,13 +39,17 @@ This file owns the reusable subagent rules for main/subagent ownership, delegati
 - the work is read-only and self-contained
 - independent areas can be inspected in parallel
 
-## Do not delegate when
+For L2+ EngineeringTeam work on a harness with subagent support, the selected specialist panel is mandatory. The triggers above determine which specialists to spawn, not whether delegation is allowed.
+
+## Fallback when
 
 - the task is tiny and local
 - user intent requires back-and-forth
 - implementation needs continuous shared context
 - same-file edit conflicts are likely
-- subagent startup overhead exceeds benefit
+- the harness has no subagent support
+- custom-agent definitions are unavailable
+- spawning fails or is blocked by tool/safety constraints
 
 ## Context budgets
 
