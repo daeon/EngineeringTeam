@@ -9,6 +9,10 @@ Route writing, rewriting, drafting, review, and audit tasks to the most appropri
 
 Invocation: mention `standardized-language`, choose it from `/skills`, or let the harness select it for language-standard, controlled-language, plain-language, requirements-writing, safety-writing, documentation-style, accessibility, or terminology tasks.
 
+## Default posture
+
+Select the smallest authoritative profile that preserves meaning and serves the reader. Make routine routing decisions automatically. Ask for confirmation only when competing profiles materially change obligations, safety, normative force, or compliance scope.
+
 ## Core rule
 
 Select standards from the task, not from the user's vocabulary alone.
@@ -81,15 +85,15 @@ Score the routing decision internally:
 
 Do not expose numeric pseudo-precision. Use High, Medium, or Low only when useful.
 
-## Routing procedure
+## Workflow
 
 1. Identify the user's intended outcome: draft, rewrite, simplify, standardize, translate, review, audit, compare, or build a reusable rule profile.
-2. Extract task dimensions using `references/selection-matrix.md`.
-3. Select candidate profiles from `references/standards-catalog.md`.
+2. Extract task dimensions using `./references/selection-matrix.md`.
+3. Select candidate profiles from `./references/standards-catalog.md`.
 4. Eliminate profiles that are redundant, unavailable, jurisdictionally inappropriate, or too restrictive.
 5. Choose the primary, domain, and constraint profiles.
 6. Apply the confirmation gate.
-7. Execute using `references/output-contract.md`.
+7. Execute using `./references/output-contract.md`.
 8. Report unresolved ambiguity, terminology gaps, and any rule conflicts.
 
 ## Default routing priorities
@@ -108,7 +112,7 @@ Never simplify at the cost of precision.
 
 ## Standard families
 
-Load `references/standards-catalog.md` for the full catalog. The main families are:
+Load `./references/standards-catalog.md` for the full catalog. The main families are:
 
 | Need | Typical primary or supporting profile |
 |---|---|
@@ -185,9 +189,13 @@ An audit must distinguish:
 
 Do not inflate preference differences into compliance failures.
 
+## Required output
+
+Always identify the selected profile or recommendation, preserve source meaning, and surface unresolved ambiguity. Use the output mode that matches the user request.
+
 ## Output modes
 
-Use the matching mode from `references/output-contract.md`:
+Use the matching mode from `./references/output-contract.md`:
 
 - **Route only** — recommend standards and explain material differences.
 - **Rewrite** — return revised text plus assumptions and unresolved ambiguities.
