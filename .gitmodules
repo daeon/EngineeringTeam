@@ -1,0 +1,4 @@
+[submodule "skills/d3-viz"]
+	path = skills/d3-viz
+	url = https://github.com/chrisvoncsefalvay/claude-d3js-skill.git
+	branch = main
