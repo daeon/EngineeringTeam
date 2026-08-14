@@ -12,7 +12,7 @@ Project-scoped memory is advisory context for EngineeringTeam work in this repos
 
 ## Memory Files
 
-Populated with evidence-backed entries (last verified 2026-05-29). Re-verify against current source before relying on any entry.
+Populated with evidence-backed entries (last verified 2026-08-13). Re-verify against current source before relying on any entry.
 
 - `repo-atlas.md` — reusable repository map, entry points, build/test commands, and generated-code rules.
 - `component-briefs.md` — durable component ownership notes, important files/symbols, and common call paths.

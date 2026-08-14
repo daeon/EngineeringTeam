@@ -1,6 +1,6 @@
 {
   "name": "engineering-team",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Expert-routed software engineering workflow for coding agents: a lead engineer selects the right panel, builds repo understanding, gates decisions with evidence, verifies changes, and preserves reusable knowledge.",
   "type": "module",
   "main": ".opencode/plugins/engineering-team.js",

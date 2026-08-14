@@ -1,150 +1,74 @@
 # Agent Routing
 
-## Score agents (0–3)
-
-- 0 = not useful; 1 = possibly useful; 2 = useful; 3 = essential
-
-| Task signal | Lead | Investigator | Implementer | Verifier | Skeptic | Advisor | Architect | Security | Optimization | Migration | Release | DX |
-|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| small typo/local obvious edit | 3 | 0 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| failing/flaky test | 3 | 3 | 1 | 3 | 3 | 0-1 if unresolved | 0-1 | 0-1 | 1-2 if timing/concurrency | 0 | 0 | 0 |
-| bug/root cause | 3 | 3 | 2 | 2 | 3 | 2-3 if unclear/conflicting | 1-2 if boundary implicated | 1-3 if trust/input/auth | 1-3 if hot path | 1-3 if legacy | 1 if prod | 0 |
-| feature implementation | 3 | 2 | 3 | 2 | 2 | 1-2 if assumption-heavy | 2 if API/boundary | 2-3 if exposed/user input | 1-2 if hot path | 1-2 if compatibility | 1-2 if rollout | 1-2 if UX/docs |
-| broad refactor | 3 | 2 | 3 | 2 | 3 | 2 if cross-component | 3 | 1-2 | 1-2 | 1-2 | 1 | 0 |
-| architecture/API design | 3 | 2 | 1-2 | 1-2 | 3 | 2-3 if consequential | 3 | 1-2 | 1-2 | 1-2 | 1-2 | 1-2 |
-| security-sensitive change | 3 | 2 | 2 | 2 | 3 | 2-3 if L5/uncertain | 1-2 | 3 | 1 | 1 | 1-2 | 0 |
-| performance investigation | 3 | 2 | 1-2 | 2 | 3 | 1-2 if production-sensitive | 1-2 | 0-1 | 3 | 0-1 | 1 | 0 |
-| read-only codebase analysis | 3 | 3 | 0 | 0-1 | 1-2 | 0-1 if consequential | 2-3 | 0-1 | 0-1 | 0-1 | 0 | 1 |
-| read-only debugging forensics | 3 | 3 | 0 | 1-2 for repro commands | 3 | 1-2 if unclear/conflicting | 1-2 if boundary implicated | 1-2 if trust/input/auth | 1-2 if timing/hot path | 1 if legacy | 1 if prod | 0 |
-| read-only log forensics | 3 | 2 | 0 | 0-1 | 3 | 1-2 if incident-sensitive | 0-1 | 1 if sensitive data | 1-2 if latency/saturation | 0-1 | 2-3 for observability/rollback | 0 |
-| migration/compatibility | 3 | 2 | 2 | 2 | 3 | 2-3 if irreversible/ambiguous | 1-2 | 1-2 if semantics/security | 1 if scale | 3 | 1-2 | 0 |
-
-## Agent descriptions
-
-| Agent | Spawn when score is 2-3 |
-|---|---|
-| Lead Engineer (`lead_engineer`) | Always; usually the main session acts as lead |
-| Codebase Investigator (`codebase_investigator`) | Unknown repository impact, bug, feature, refactor, migration, test discovery |
-| Implementation Engineer (`implementation_engineer`) | Code change likely after evidence gate |
-| Test / Verification Engineer (`test_verification_engineer`) | Behavior change, bug, flaky test, regression, CI issue, quality risk |
-| Evidence Skeptic (`evidence_skeptic`) | Any non-trivial task, unclear root cause, high-risk change, conflicting evidence |
-| System Design Architect (`system_design_architect`) | Architecture, broad refactor, public API, module boundary, long-term maintainability |
-| Security Analyst (`security_analyst`) | Trust boundary, auth, permissions, secrets, user input, shell, filesystem, network, dependency risk |
-| Optimization Engineer (`optimization_engineer`) | Latency, throughput, memory, CPU, IO, concurrency, scalability, caching, polling, benchmark validity |
-| Migration Analyst (`migration_analyst`) | Legacy behavior, compatibility, schema/config/API translation, import/export, upgrade path |
-| Release / Rollback Engineer (`release_rollback_engineer`) | Production risk, deployment, rollout, feature flag, rollback, observability |
-| DX / Documentation Reviewer (`dx_documentation_reviewer`) | User-facing docs, CLI behavior, error messages, developer ergonomics, onboarding, examples |
-| Advisor Consultant (`advisor_consultant`) | Gate-only second opinion for L4/L5, unclear root cause after investigation, conflicting evidence, security/migration/release/production-sensitive decisions, or assumption-heavy completion checks |
-
-Some read-only roles are conceptual lenses rather than installed agents: Codebase Cartographer maps repositories, Runtime Trace Analyst traces execution, Reproduction Engineer designs repro probes, Log Forensics Analyst reconstructs timelines, Observability Architect evaluates telemetry, and Performance Investigator designs measurements. Cover them with the closest installed agent when one exists; otherwise, on a harness without subagent support, apply them in the main session per "Fallback simulation" below. The routing scores and gates apply unchanged either way.
-
-
-## Skill routing graph
-
-For selecting between implementation and read-only investigation skills, load `references/analysis-routing.md`. It contains the high-level routing graph from `engineering-team` to `codebase-analysis`, `debugging-forensics`, `log-forensics`, `performance-forensics`, implementation workflow, and `handoff`, plus the conceptual specialist roles useful for each path.
-
-## Selection rules
-
-- Always include Lead Engineer as coordinator.
-- Spawn all agents scored 3.
-- Spawn agents scored 2 only when they cover a distinct risk area.
-- Include Evidence Skeptic for non-trivial L3+ work.
-- Include Advisor Consultant only when a risk gate requires independent decision review.
-- Initially cap at 5 teammates unless the task is clearly complex.
-- If more than 5 agents score 2-3, spawn the top 5 first and defer the rest with explicit triggers.
+The main session is the Lead Engineer. It owns user intent, route selection, risk classification, synthesis, edit authorization, and the final report. Never spawn a second lead.
 
 ## Mandatory subagent routing
 
-For every L2+ EngineeringTeam task on a harness with subagent support, spawn the selected specialists as subagents or custom agents. The main session remains Lead Engineer and owns synthesis, gates, implementation boundaries, and the final report.
+For every non-trivial L2+ EngineeringTeam task on a harness with subagent support, delegate the selected specialist questions before broad read-only claims or implementation. L0-L1 work and the explicit typo/formatting-only L2 fast-path exception may remain main-session-only.
 
-Fast-path L0-L1 work may stay lead-only. For L2+ work, do not downgrade selected specialists into private main-session reasoning when the harness can spawn them. Use `templates/subagent-brief.md` for every assignment and require `templates/context-capsule.md` output.
+Fallback is only for harnesses without subagent support, missing specialist definitions, tool failures, or safety constraints that prevent spawning. Record the reason and apply the same evidence and gate checks in the main session.
 
-Spawn the selected specialists before implementation and before broad read-only claims. Evidence Skeptic must run before the implementation gate for L3+ work. Advisor Consultant remains a gate-only subagent and is spawned only when the advisor gate requires it.
+## Select by unanswered question
 
-Fallback is only for harnesses without subagent support, missing custom-agent definitions, tool failures, or safety constraints that prevent spawning. Record the fallback reason in the routing output, then use labeled role simulation with the same evidence and verification gates.
+Start with at most three specialists. Each must own one bounded question whose answer can change the decision.
 
-## Routing output
-
-```md
-## Agent routing
-
-| Agent | Score | Reason | Initial question |
-|---|---:|---|---|
-
-## Deferred agents
-
-| Agent | Why deferred | Spawn trigger |
+| Signal | Specialist | Initial question |
 |---|---|---|
+| Unknown ownership, call path, tests, or generated-code source | Codebase Investigator | Where is the behavior owned and how does execution reach it? |
+| Behavior change, regression, flaky test, or weak proof | Test Verification Engineer | What check exercises the affected contract and how could it mislead us? |
+| Unsupported or conflicting claim; L3+ implementation | Evidence Skeptic | Which key claim is unproven or contradicted? |
+| Public API, module boundary, broad refactor, long-term shape | System Design Architect | Which boundary or dependency direction is at risk? |
+| Auth, permissions, secrets, user input, shell/filesystem/network | Security Analyst | What trust boundary or abuse path changes? |
+| Latency, throughput, memory, IO, locks, caching, benchmark validity | Optimization Engineer | What measurement identifies the actual bottleneck? |
+| Schema, config, version, API, import/export, legacy behavior | Migration Analyst | Which source/target semantics can diverge? |
+| Production rollout, observability, feature flags, rollback | Release Rollback Engineer | How can this ship, fail partially, and be reversed safely? |
+| CLI, docs, examples, onboarding, error behavior | DX Documentation Reviewer | What user/developer contract needs to remain understandable? |
+| Consequential ambiguity or whole-plan Go/No-Go | Advisor Consultant | Is the proposed decision wise, proportionate, and reversible? |
 
-## Fallbacks
+Implementation Engineer is a post-gate writer, not an investigation default. Spawn it only after the Implementation Gate assigns explicit source files. Test Verification Engineer and DX Documentation Reviewer may write only their assigned test or documentation lanes after the gate.
 
-| Role | Reason subagent was not spawned | Compensating check |
-|---|---|---|
-```
+## Adaptive expansion
 
-## Fallback simulation
+Add another specialist only when a returned capsule exposes a distinct trigger. Do not spawn a fixed committee, duplicate a question, or fan out merely because a role is available.
 
-When subagents are unavailable, simulate specialist roles in the main session. Label each reasoning step with the active role so the work is auditable:
+- L2 local work usually needs Investigator **or** Verifier.
+- L3 behavior/root-cause work adds Evidence Skeptic.
+- Domain triggers add Security, Optimization, Migration, Release, Architect, or DX.
+- L4-L5 work invokes Advisor Consultant only when `references/advisor-gate.md` requires independent decision review.
 
-```text
-[Investigator] Searched for all callers of X — found 3 files: ...
-[Skeptic] Claim "X is unused" is unproven: grep shows Y still imports it.
-[Lead] Revised plan: patch X but preserve Y's import path.
-[Verifier] Ran targeted tests: 2 pass, 0 fail.
-```
-
-Rules for fallback simulation:
-- At minimum simulate Lead, Investigator, and Skeptic for L3+ work.
-- The Skeptic step must run before implementation — not after.
-- Do not skip a role because you believe its conclusion is obvious.
-
-## Team creation and fallback
-
-If the harness supports subagents, delegate bounded work using `templates/subagent-brief.md` for every selected specialist. If subagents are unavailable, unsafe, or fail to spawn, simulate the roles in the main session while preserving the same evidence and implementation gates.
-
-`references/subagent-context-policy.md` owns the canonical ownership split, delegation triggers, non-delegation cases, context budgets, and capsule discipline. Apply those rules here rather than copying them into routing decisions.
+Advisor output is evidence, not authority. Resolve contradictions with a targeted probe, additional source evidence, or a conditional stop.
 
 ## Context budget policy
 
-Use the canonical context-budget table in `references/subagent-context-policy.md` (`brief-only`, `component-context`, `artifact-context`, `full-context`) and select the smallest useful budget for every teammate.
+Use the smallest useful budget defined in `references/subagent-context-policy.md`:
 
-Default Advisor Consultant to `brief-only` with `fork_context: false`. Use `fork_context: true` and `full-context` only when the lead cannot safely summarize; state the reason explicitly.
+| Budget | Default use |
+|---|---|
+| `brief-only` | Advisor, skeptic, narrow review |
+| `component-context` | Focused investigation |
+| `artifact-context` | Multi-step review or verification |
+| `full-context` | Rare case where a compact brief is unsafe; state why |
 
-## Deliberation protocol
-
-Before implementation, every selected teammate answers:
-
-1. What do you believe is true?
-2. What evidence supports it?
-3. What could make you wrong?
-4. What is the smallest safe next action?
-5. What should not be changed?
-
-The Lead Engineer synthesizes one plan. Resolve contradictions with evidence or targeted follow-up checks. Do not concatenate opinions; do not average contradictory conclusions.
-
-## Adaptive spawning
-
-Spawn additional specialists when evidence justifies them:
-
-- Auth middleware touched → Security Analyst
-- Public interface changed → System Design Architect
-- Polling, caching, locking, batching, buffering, memory ownership touched → Optimization Engineer
-- Legacy/config/schema conversion touched → Migration Analyst
-- Runtime/prod behavior changed → Release / Rollback Engineer
-- CLI/docs/error behavior changed → DX / Documentation Reviewer
+Default Advisor Consultant to `brief-only`. Give each specialist only the paths, artifacts, evidence, constraints, and question needed for its mission.
 
 ## Proactive subagent triggers
 
-Use `references/subagent-context-policy.md` for the canonical delegation trigger list. In routing output, record the trigger(s) that selected each subagent and the specific question each subagent will answer.
+Delegate when ownership is unknown, more than five files may be relevant, terms span components, generated code may be involved, a public contract may change, output/logs may be long, independent areas can run in parallel, or a distinct risk lens is required.
+
+Keep work in the main session when the task is trivial, user interaction must remain continuous, the edit depends on dense shared context, or same-file conflicts would dominate. Non-trivial L2+ work still requires a recorded fallback reason when delegation cannot run.
 
 ## Delegation envelope
 
-Every subagent assignment uses `templates/subagent-brief.md`. Include role, mission, context budget, allowed tools, inputs, output limit, required output, and explicit "do not" boundaries.
+Use `templates/subagent-brief.md`. Include role, mission, context budget, allowed tools, inputs, output limit, required artifact, scope-expansion trigger, and explicit prohibited actions.
+
+Before implementation, every selected specialist answers:
+
+1. What appears true?
+2. What evidence supports it?
+3. What could falsify it?
+4. What is the smallest safe next action?
+5. What must not change?
 
 ## Context capsule rule
 
-Every subagent returns a context capsule using `templates/context-capsule.md`. The Lead Engineer reads capsules, not full transcripts, unless a capsule is insufficient or contradictory.
-
-## Main agent ownership
-
-The Lead Engineer owns the final decision. `references/subagent-context-policy.md` is canonical for the ownership split; subagent findings are evidence, not authority. Reconcile contradictions using the Evidence Ledger and, when needed, Advisor Gate.
+Require `templates/context-capsule.md`. Specialists return findings, evidence, contradictions, confidence, risks, scope-expansion triggers, and one recommended next action—not transcripts, raw dumps, or complete logs. The main session reconciles capsules through the Evidence Ledger and owns the final decision.

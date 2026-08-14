@@ -1,6 +1,6 @@
 {
   "name": "engineering-team",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Expert-routed EngineeringTeam plugin for Codex and other coding agents: select the right panel, build repo understanding, gate decisions with evidence, verify changes, and preserve reusable context.",
   "author": {
     "name": "Damon Chitsaz",

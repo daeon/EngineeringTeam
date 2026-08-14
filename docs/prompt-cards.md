@@ -2,8 +2,8 @@
 
 Copy-paste prompts by task type. Most prompts invoke `engineering-team` and ask
 for the repo-first workflow: map before editing, route specialists only when
-useful, require evidence, and verify. Use `handoff` when transferring active work
-to another agent or fresh session.
+useful, require evidence, and verify. Use `engineering-team` in handoff mode when
+transferring active work to another agent or fresh session.
 
 Read-only mode means no edits; it does **not** automatically mean L0. Use L0 only
 for trivial local explanations or obvious one-file inspections. Broad read-only
@@ -29,7 +29,7 @@ parallel workflow.
 
 ```text
 Use engineering-team in read-only analysis mode to understand this codebase.
-Route to codebase-analysis, build a repo/component map, identify entry points,
+Select the read-only codebase route, build a repo/component map, identify entry points,
 contracts, generated-code rules, and risk areas, and return an evidence-backed
 codebase analysis report. Do not edit files. Treat this as L2-L4 depending on
 breadth; do not classify it as L0 unless it is only a trivial local explanation.
@@ -39,7 +39,7 @@ breadth; do not classify it as L0 unless it is only a trivial local explanation.
 
 ```text
 Use engineering-team in read-only analysis mode to debug this issue without
-patching yet. Route to debugging-forensics, map the failing path, build a
+patching yet. Select the read-only debugging route, map the failing path, build a
 hypothesis matrix with supporting and counter-evidence, and produce the next
 probe plan needed to confirm or reject the likely root cause. Treat this as L3+
 unless the issue is already localized and obvious.
@@ -49,7 +49,7 @@ unless the issue is already localized and obvious.
 
 ```text
 Use engineering-team in read-only analysis mode to analyze these logs. Route to
-log-forensics, redact sensitive values, reconstruct the timeline, identify
+the read-only log route, redact sensitive values, reconstruct the timeline, identify
 correlated signals and likely failure modes, and return a log forensics report
 with next probes. Do not dump raw logs back to me. Treat this as L3+ when it
 supports root-cause or production-behavior claims.
@@ -78,7 +78,7 @@ the diff spans behavior, public APIs, generated code, tests, or multiple files.
 
 ```text
 Use engineering-team in read-only analysis mode to investigate this performance
-regression. Route to performance-forensics, define the target metric and
+regression. Select the read-only performance route, define the target metric and
 baseline, map the suspected hot path, rank bottleneck hypotheses from evidence,
 and produce the next measurement plan. Do not optimize or edit files yet. Treat
 this as L3+ because read-only performance work still needs evidence and probes.
@@ -153,7 +153,7 @@ memory.
 ## Handoff to another agent
 
 ```text
-Use handoff to prepare this task for another agent or fresh session. Create a
+Use engineering-team in handoff mode to prepare this task for another agent or fresh session. Create a
 compact continuation document with current state, decisions made, relevant
 artifacts, files and symbols worth keeping in context, evidence confidence, open
 questions, risks, suggested skills or agents, next actions, and work that should

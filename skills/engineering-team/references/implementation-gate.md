@@ -1,6 +1,6 @@
 # Implementation Gate
 
-**You must output the `## Implementation gate` block below before writing any file.** If any checklist item fails, resolve it first — do not skip and edit anyway.
+**You must output the `## Implementation gate` block below before changing source, tests, documentation, configuration, or generated files.** Pre-gate workflow artifacts such as an Intake, Repo Atlas, ledger, or plan may be written only where repository instructions permit; they are evidence, not implementation authority. If any checklist item fails, resolve it first — do not skip and edit anyway.
 
 ## Gate checklist
 

@@ -20,12 +20,12 @@ Use this format:
 
 ## Full package validation (CI gate)
 
-- Status: current
+- Status: needs-verification
 - Purpose: The narrowest meaningful whole-repo check; mirrors GitHub Actions.
 - Command: `npm run validate`
 - Expected result: Runs `validate-package.py` + `validate-codex-package.py` + `generate-agents.py --check` + `bump-version.py --check` + `node --check .opencode/plugins/engineering-team.js` + `npm run test:examples`; ends with `OK: multi-harness plugin package structure is valid` and the example unittests passing.
 - Evidence/source paths: `package.json` (scripts.validate), `.github/workflows/validate.yml`
-- Last verified: 2026-05-29
+- Last verified: 2026-05-29; direct invocation was blocked by the Work-mode network gate on 2026-08-13, while every constituent check passed independently.
 
 ## Local health superset
 
@@ -34,7 +34,7 @@ Use this format:
 - Command: `python3 scripts/doctor.py`
 - Expected result: Runs the validators and example tests; reports all checks OK.
 - Evidence/source paths: `scripts/doctor.py`
-- Last verified: 2026-05-29
+- Last verified: 2026-08-13 (15 checks, 0 failures, 0 warnings)
 
 ## Worked example tests
 
@@ -43,7 +43,7 @@ Use this format:
 - Command: `cd examples/buggy-python-service && python3 -m unittest discover -s tests -v`
 - Expected result: 5 tests pass; the documented contract bug (unit mismatch between `src/api.py` and `src/pricing.py`) is reproducible separately.
 - Evidence/source paths: `package.json` (scripts.test:examples), `examples/buggy-python-service/`
-- Last verified: 2026-05-29
+- Last verified: 2026-08-13 (5 tests passed)
 
 ## Regenerate agents after editing YAML
 
@@ -52,7 +52,7 @@ Use this format:
 - Command: `npm run generate:agents` (then `npm run check:agents` to confirm no drift)
 - Expected result: Generated files updated; `--check` reports no drift.
 - Evidence/source paths: `scripts/generate-agents.py`, `package.json`
-- Last verified: 2026-05-29
+- Last verified: 2026-08-13 (`generate-agents.py --check` passed for 11 specialists)
 
 ## Environment constraint
 

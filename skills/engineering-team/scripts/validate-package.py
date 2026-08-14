@@ -22,11 +22,35 @@ REFERENCE_CONTRACTS: dict[str, list[str]] = {
         "## Delegation envelope",
         "## Context capsule rule",
     ],
-    "references/analysis-routing.md": [
-        "# Read-Only Analysis Routing",
-        "## Mode selection",
-        "## Routing graph",
-        "## Read-only analysis rules",
+    "references/route-codebase-analysis.md": [
+        "# Codebase Analysis Route",
+        "## Authority",
+        "## Workflow",
+        "## Output",
+    ],
+    "references/route-debugging.md": [
+        "# Debugging Route",
+        "## Authority",
+        "## Workflow",
+        "## Output",
+    ],
+    "references/route-log-analysis.md": [
+        "# Log Analysis Route",
+        "## Authority",
+        "## Workflow",
+        "## Output",
+    ],
+    "references/route-performance.md": [
+        "# Performance Route",
+        "## Authority",
+        "## Workflow",
+        "## Output",
+    ],
+    "references/route-handoff.md": [
+        "# Handoff Route",
+        "## Authority",
+        "## Workflow",
+        "## Output",
     ],
     "references/run-ledger.md": [
         "# Run Ledger",
@@ -220,19 +244,6 @@ TEMPLATE_CONTRACTS: dict[str, list[str]] = {
     ],
 }
 
-SATELLITE_SKILL_REQUIRED_HEADINGS = [
-    "## Default posture",
-    "## Workflow",
-    "## Required output",
-]
-
-READ_ONLY_SATELLITE_SKILLS = {
-    "codebase-analysis",
-    "debugging-forensics",
-    "log-forensics",
-    "performance-forensics",
-}
-
 CANONICAL_CONCEPTS: dict[str, dict[str, set[str]]] = {
     "Implementation Gate": {
         "allowed_paths": {"references/implementation-gate.md"},
@@ -346,9 +357,8 @@ def parse_frontmatter(text: str, label: str) -> str:
 
 def linked_reference_sources(plugin_root: Path, skill_dir: Path) -> list[Path]:
     return [
-        *(plugin_root / "skills").glob("*/SKILL.md"),
-        *skill_dir.joinpath("references").glob("*.md"),
-        *skill_dir.joinpath("references", "unknowns-first").glob("*.md"),
+        skill_dir / "SKILL.md",
+        *skill_dir.joinpath("references").rglob("*.md"),
     ]
 
 
@@ -374,25 +384,33 @@ def validate_backticked_doc_links(plugin_root: Path, skill_dir: Path) -> None:
             )
 
 
-def validate_satellite_skill_contracts(plugin_root: Path) -> None:
-    for skill_path in sorted((plugin_root / "skills").glob("*/SKILL.md")):
-        skill_name = skill_path.parent.name
-        if skill_name == "engineering-team":
-            continue
+def validate_single_skill_contract(plugin_root: Path, canonical_skill: Path) -> None:
+    skills_dir = plugin_root / "skills"
+    skill_paths = sorted(skills_dir.rglob("SKILL.md"))
+    require(
+        skill_paths == [canonical_skill],
+        "EngineeringTeam must expose exactly one discoverable skill: "
+        f"expected {[str(canonical_skill.relative_to(plugin_root))]}, "
+        f"found {[str(path.relative_to(plugin_root)) for path in skill_paths]}",
+    )
+    top_level_entries = sorted(path.name for path in skills_dir.iterdir())
+    require(
+        top_level_entries == ["engineering-team"],
+        "skills/ must contain only the engineering-team bundle; "
+        f"found {top_level_entries}",
+    )
 
-        text = skill_path.read_text()
-        frontmatter = parse_frontmatter(text, f"{skill_name}/SKILL.md")
-        require(
-            f"name: {skill_name}" in frontmatter,
-            f"{skill_name} frontmatter missing name: {skill_name}",
-        )
-        for heading in SATELLITE_SKILL_REQUIRED_HEADINGS:
-            require(heading in text, f"{skill_name} missing required heading: {heading}")
-        if skill_name in READ_ONLY_SATELLITE_SKILLS:
-            require(
-                "Read-only by default" in text,
-                f"{skill_name} missing required read-only posture: Read-only by default",
-            )
+
+def validate_no_spawnable_lead(plugin_root: Path) -> None:
+    forbidden = [
+        plugin_root / "agents-src" / "lead-engineer.yaml",
+        plugin_root / "agents" / "lead-engineer.md",
+        plugin_root / ".codex" / "agents" / "lead_engineer.toml",
+        plugin_root / ".github" / "agents" / "lead-engineer.md",
+        plugin_root / "skills" / "engineering-team" / "assets" / "agents" / "lead_engineer.toml",
+    ]
+    present = [str(path.relative_to(plugin_root)) for path in forbidden if path.exists()]
+    require(not present, f"main-session Lead must not remain spawnable: {present}")
 
 
 def normalize_heading(text: str) -> str:
@@ -547,6 +565,9 @@ def main() -> int:
 
     skill_dir = skill_path.parent
 
+    validate_single_skill_contract(plugin_root, skill_path)
+    validate_no_spawnable_lead(plugin_root)
+
     validate_backticked_doc_links(plugin_root, skill_dir)
     validate_unknowns_first_references(skill_dir)
 
@@ -566,7 +587,6 @@ def main() -> int:
 
     validate_memory_contracts(plugin_root)
 
-    validate_satellite_skill_contracts(plugin_root)
     validate_canonical_concept_owners(skill_dir)
 
     generated_agents_dir = skill_dir / "assets" / "agents"

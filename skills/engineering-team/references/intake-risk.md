@@ -61,6 +61,8 @@ Escalate level when a task touches or investigates public contracts, permissions
 
 ## Step 4: Choose risk mode
 
+Choose one primary risk mode for routing. Record any other triggered modes as secondary risk modes under Known constraints, and add their specialist/gate requirements; risk modes compose rather than erase one another.
+
 | Risk mode | Meaning | Default routing |
 |---|---|---|
 | `low-risk-local` | Obvious local edit, local explanation, or trivial one-file inspection | Lead only; no advisor |
@@ -87,9 +89,11 @@ Read-only mode changes the edit posture, not the required rigor.
 | Analyze architecture, broad design, multi-component impact, PR/diff behavior across areas | L4 |
 | Analyze security, migration, release, production, irreversible, or high-uncertainty risk | L5 |
 
-## L0 fast path
+## Low-risk fast path
 
-L0-L1 tasks use the fast path defined in `SKILL.md`: a one-line intake, minimal orientation, the answer or small edit with the narrowest relevant check, and a statement of what was checked. Use an Analysis Report (`templates/analysis-report.md`) only when the answer needs structure. Skip agent routing, contract graph, evidence ledger, advisor gate, implementation gate, and verification loop.
+L0-L1 tasks use the fast path defined in `SKILL.md`: a one-line intake, minimal orientation, a non-writing answer or plan, and a statement of what was checked. Use an Analysis Report (`templates/analysis-report.md`) only when the answer needs structure. Skip agent routing, contract graph, evidence ledger, advisor gate, implementation gate, and verification loop.
+
+A typo/formatting-only edit is a trivial L2 fast-path exception to specialist routing. Inspect the target and nearest pattern, record a minimal Component Brief, then output a compact Implementation Gate naming the single allowed file and narrow check before editing.
 
 L0 tasks are limited to simple summaries, local explanations, or obvious one-file inspections with no planned change and no cross-file, behavior, contract, performance, security, migration, release, or production claims.
 
@@ -106,7 +110,7 @@ Do not classify these as L0 by default:
 - release or production analysis
 - PR or diff reviews involving behavior, API, tests, generated code, or multiple files
 
-For descriptive "understand / map how this repo works" requests, route through `references/analysis-routing.md` to the `codebase-analysis` skill, then assign L1-L4 depth based on breadth and claims. Use a Codebase Analysis Report (`templates/codebase-analysis-report.md`) instead of a generic Analysis Report when the request is more than trivial local explanation.
+For descriptive "understand / map how this repo works" requests, load `references/route-codebase-analysis.md`, then assign L1-L4 depth based on breadth and claims. Use a Codebase Analysis Report (`templates/codebase-analysis-report.md`) instead of a generic Analysis Report when the request is more than trivial local explanation.
 
 ## Artifact depth by autonomy level
 
@@ -136,5 +140,6 @@ Produce this block for L2+ tasks — it is the routing receipt. On the L0-L1 fas
 - Risk mode:
 - Initial assumptions:
 - Known constraints:
+- Secondary risk modes:
 - First areas to inspect:
 ```

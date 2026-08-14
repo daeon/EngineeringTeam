@@ -78,7 +78,7 @@ L0 has two deliverables; pick by intent:
 | L0 intent | Deliverable | Canonical template |
 |---|---|---|
 | Evaluative: audit, feedback, "what could be improved", risk/PR review | Analysis Report | `templates/analysis-report.md` |
-| Descriptive: "understand / map how this repo works" | Codebase Analysis Report | `templates/codebase-analysis-report.md` (via the `codebase-analysis` skill) |
+| Descriptive: "understand / map how this repo works" | Codebase Analysis Report | `templates/codebase-analysis-report.md` via `references/route-codebase-analysis.md` |
 
 Use the templates above as the single source of truth — do not redefine the report shape here. Severity for Analysis Report findings: `high` (correctness, security, trust), `medium` (maintainability, DX), `low` (style, optional). Every finding must reference a file path, line number, command output, or documented behavior. Unverified claims must be labeled as assumptions.
 

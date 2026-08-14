@@ -39,7 +39,7 @@ This file owns the reusable subagent rules for main/subagent ownership, delegati
 - the work is read-only and self-contained
 - independent areas can be inspected in parallel
 
-For L2+ EngineeringTeam work on a harness with subagent support, the selected specialist panel is mandatory. The triggers above determine which specialists to spawn, not whether delegation is allowed.
+For non-trivial L2+ EngineeringTeam work on a harness with subagent support, the selected specialist panel is mandatory. The triggers above determine which specialists to spawn, not whether delegation is allowed. A typo/formatting-only L2 edit may remain in the main session under the compact gate defined by `SKILL.md`.
 
 ## Fallback when
 

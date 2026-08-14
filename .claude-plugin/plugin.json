@@ -1,6 +1,6 @@
 {
   "name": "engineering-team",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Expert-routed software engineering workflow: a lead engineer selects the smallest useful expert panel, maps repo contracts and risk, gates decisions with evidence, verifies changes, and preserves reusable repo knowledge.",
   "author": {
     "name": "Damon Chitsaz",

@@ -26,16 +26,16 @@ Use this format:
 ## Canonical skill bundle
 
 - Status: current
-- Summary: All harnesses point at `skills/`. `skills/engineering-team/SKILL.md` (~145 lines) is the router with two modes (implementation, read-only analysis) and a lazy-load table. Depth lives in `skills/engineering-team/references/` (24 files) and `skills/engineering-team/templates/` (13 files). Five satellite skills: `codebase-analysis`, `debugging-forensics`, `log-forensics`, `performance-forensics`, `handoff`.
-- Evidence/source paths: `skills/engineering-team/SKILL.md`, `skills/engineering-team/references/`, `skills/engineering-team/templates/`, `skills/*/SKILL.md`
-- Last verified: 2026-05-29
+- Summary: All harnesses point at `skills/`, which contains exactly one discoverable skill: `skills/engineering-team/SKILL.md`. It selects implementation, read-only analysis, or handoff authority and directly links focused codebase, debugging, log, performance, and handoff route references. Deeper procedures and artifact templates remain lazily loaded inside the bundle.
+- Evidence/source paths: `skills/engineering-team/SKILL.md`, `skills/engineering-team/references/route-*.md`, `skills/engineering-team/templates/`, `skills/engineering-team/scripts/validate-package.py`
+- Last verified: 2026-08-13
 
 ## Generated-code rules (do not hand-edit)
 
 - Status: current
-- Summary: Specialist agents have a single source of truth in `agents-src/*.yaml` (12 files), schema-validated before rendering. `scripts/generate-agents.py` renders them to `agents/*.md` (Claude/Cursor), `.codex/agents/*.toml` (Codex; names use `_`), `.github/agents/*.md` (Copilot), plus one bundled Codex copy under `skills/engineering-team/assets/agents/` (2 TOML locations total). Every output carries a `GENERATED FILE - DO NOT EDIT` banner. `CLAUDE.md` is likewise generated from `AGENTS.md` via `scripts/sync-docs.py`. Edit the source, then `npm run generate:agents` / `npm run sync:docs`. CI fails on drift via `--check`; the generator is unit-tested in `tests/`.
+- Summary: Eleven spawnable specialist agents have a single source of truth in `agents-src/*.yaml`, schema-validated before rendering. The main session owns Lead responsibility and no Lead agent definition is generated. `scripts/generate-agents.py` renders each specialist to `agents/*.md`, `.codex/agents/*.toml`, `.github/agents/*.md`, and a bundled Codex copy under `skills/engineering-team/assets/agents/`. Every output carries a `GENERATED FILE - DO NOT EDIT` banner. `CLAUDE.md` is generated from `AGENTS.md` via `scripts/sync-docs.py`.
 - Evidence/source paths: `agents-src/*.yaml`, `scripts/generate-agents.py`, `scripts/sync-docs.py`, `tests/test_generate_agents.py`, `agents/`, `.codex/agents/`, `.github/agents/`, `CONTRIBUTING.md`
-- Last verified: 2026-05-29
+- Last verified: 2026-08-13
 
 ## Build / test / install commands
 
