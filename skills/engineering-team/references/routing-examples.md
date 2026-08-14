@@ -2,8 +2,9 @@
 
 ## Flaky test
 
+Main session: Lead Engineer
+
 Spawn:
-- Lead Engineer
 - Codebase Investigator
 - Test / Verification Engineer
 - Evidence Skeptic
@@ -15,14 +16,17 @@ Defer:
 
 ## New auth middleware
 
-Spawn:
-- Lead Engineer
+Main session: Lead Engineer
+
+Spawn before the gate:
 - System Design Architect
 - Codebase Investigator
-- Implementation Engineer
 - Test / Verification Engineer
 - Security Analyst
 - Evidence Skeptic
+
+Spawn after the gate:
+- Implementation Engineer with explicit source-file ownership
 
 Defer:
 - Optimization Engineer unless middleware is on hot path
@@ -30,8 +34,9 @@ Defer:
 
 ## Slow endpoint
 
+Main session: Lead Engineer
+
 Spawn:
-- Lead Engineer
 - Codebase Investigator
 - Optimization Engineer
 - Test / Verification Engineer
@@ -43,8 +48,9 @@ Add later:
 
 ## Legacy migration bug
 
+Main session: Lead Engineer
+
 Spawn:
-- Lead Engineer
 - Codebase Investigator
 - Migration Analyst
 - Test / Verification Engineer
@@ -57,8 +63,4 @@ Add later:
 
 ## Tiny typo
 
-Spawn:
-- Lead Engineer only
-
-Do not create a team.
-
+Main session: Lead Engineer. Do not spawn a team.

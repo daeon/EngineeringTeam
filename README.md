@@ -33,7 +33,7 @@ That panel can deliver a PR-ready implementation, a read-only diagnosis, a repo 
 
 Read-only mode means **no edits**; it does not mean low rigor. Trivial local explanations can use L0, while broad codebase analysis, root-cause work, performance analysis, protected-boundary review, migration review, release planning, and multi-component PR review still use L2-L5 depth according to complexity and risk.
 
-Use `handoff` when you want the current task transferred to another agent or a fresh session. It compacts the work into a continuation document with decisions, evidence, open questions, artifact links, suggested skills, and next actions.
+Use `engineering-team` in handoff mode when you want the current task transferred to another agent or a fresh session. It compacts the work into a continuation document with decisions, evidence, open questions, artifact links, suggested skills, and next actions.
 
 Specialist routing is mandatory for non-trivial work when the harness supports subagents. EngineeringTeam does not spawn a fixed committee; it forms the smallest expert panel that covers the task's distinct risks, then routes those selected specialists through bounded subagents.
 
@@ -74,11 +74,11 @@ flowchart LR
 | I need to... | Use | Typical output |
 |---|---|---|
 | Fix, implement, refactor, or prepare a PR | `engineering-team` | Lead + implementation + verification experts; Repo Atlas → Component Brief → Contract Graph → Evidence Ledger → Implementation Gate → Verification Report → Final Report |
-| Understand an unfamiliar repository | `engineering-team` routes to `codebase-analysis` | Lead + codebase investigator; component map, call paths, contracts, findings, confidence, unknowns |
-| Investigate a bug without patching yet | `engineering-team` routes to `debugging-forensics` | Lead + debugging/evidence/test panel; hypothesis matrix, supporting/counter evidence, falsifying probes, fix readiness |
-| Analyze logs or noisy failure output | `engineering-team` routes to `log-forensics` | Lead + log forensics lens; timeline, signals, findings, redactions, ruled-out claims, next probes |
-| Investigate latency, throughput, memory, or locking | `engineering-team` routes to `performance-forensics` | Lead + optimization/verification experts; measurement frame, hot-path map, bottleneck hypotheses, probe-first recommendations |
-| Transfer work to another agent or fresh session | `handoff` | Continuation document with decisions, evidence, risks, suggested skills, and next actions |
+| Understand an unfamiliar repository | `engineering-team` read-only codebase route | Lead + codebase investigator; component map, call paths, contracts, findings, confidence, unknowns |
+| Investigate a bug without patching yet | `engineering-team` read-only debugging route | Lead + debugging/evidence/test panel; hypothesis matrix, supporting/counter evidence, falsifying probes, fix readiness |
+| Analyze logs or noisy failure output | `engineering-team` read-only log route | Lead + log forensics lens; timeline, signals, findings, redactions, ruled-out claims, next probes |
+| Investigate latency, throughput, memory, or locking | `engineering-team` read-only performance route | Lead + optimization/verification experts; measurement frame, hot-path map, bottleneck hypotheses, probe-first recommendations |
+| Transfer work to another agent or fresh session | `engineering-team` handoff route | Continuation document with decisions, evidence, risks, suggested skills, and next actions |
 
 The main `engineering-team` skill is the lead engineer. It decides whether the task needs implementation, read-only analysis, or handoff, then assembles the right panel around the risk: codebase investigation, debugging forensics, log forensics, performance, security, architecture, migration, release, verification, evidence skepticism, or advisory review. If an investigation uncovers a likely fix, the agent should hand off an evidence-backed diagnosis and verification strategy before editing unless you explicitly ask it to implement.
 
@@ -131,7 +131,7 @@ Use engineering-team in read-only analysis mode to understand this repository. A
 To transfer work to another agent or session:
 
 ```text
-Use handoff to summarize this task for a fresh agent. Focus the next session on finishing verification and preparing the PR.
+Use engineering-team in handoff mode to summarize this task for a fresh agent. Focus the next session on finishing verification and preparing the PR.
 ```
 
 ## 🧑‍💻 Expert panel routing
@@ -177,7 +177,7 @@ See the worked, runnable example and the talking points:
 | OpenCode | `.opencode/plugins/engineering-team.js` | Supported |
 | GitHub Copilot | `.github/agents/*.md` | Experimental |
 
-All harnesses point at the same canonical skill bundle under `skills/`, with `skills/engineering-team/SKILL.md` as the main router and focused read-only skills beside it. Native agent definitions are generated from one source of truth (`agents-src/*.yaml`) — see `docs/harness-support.md`.
+All harnesses point at the same canonical skill bundle under `skills/`. `skills/engineering-team/SKILL.md` is the only discoverable skill; focused route references inside that bundle provide the read-only and handoff procedures. Native agent definitions are generated from one source of truth (`agents-src/*.yaml`) — see `docs/harness-support.md`.
 
 ## 🗂️ Artifact gallery
 
@@ -192,11 +192,11 @@ EngineeringTeam makes the expert panel produce compact, reviewable artifacts bef
 | Verification Report | Success was checked and residual risk was reported instead of assumed away | [`verification-report.md`](examples/buggy-python-service/expected-artifacts/verification-report.md) |
 | Run Ledger | Risky or handoff-heavy runs have a task-scoped trace of route decisions, evidence, probes, verification, and residual risk | `templates/run-ledger.md` |
 | Memory Candidates | Reusable findings are separated from task-only run details before promotion to repo memory | `templates/memory-candidates.md` |
-| Codebase Analysis Report | Read-only analysis produced scope, component map, call paths, contracts, findings, confidence, and unknowns | `codebase-analysis` skill output |
-| Debugging Hypothesis Matrix | Bug work is ranked by evidence, counter-evidence, falsifying probes, and fix readiness | `debugging-forensics` skill output |
-| Log Forensics Report | Logs become a timeline with signals, findings, redactions, ruled-out claims, and next probes | `log-forensics` skill output |
-| Performance Forensics Report | Performance work starts with a measurement frame, hot-path map, bottleneck hypotheses, and probes | `performance-forensics` skill output |
-| Handoff Document | Another agent or session can continue with decisions, evidence, open questions, risks, suggested skills, and next actions | `handoff` skill output |
+| Codebase Analysis Report | Read-only analysis produced scope, component map, call paths, contracts, findings, confidence, and unknowns | `engineering-team` codebase route output |
+| Debugging Hypothesis Matrix | Bug work is ranked by evidence, counter-evidence, falsifying probes, and fix readiness | `engineering-team` debugging route output |
+| Log Forensics Report | Logs become a timeline with signals, findings, redactions, ruled-out claims, and next probes | `engineering-team` log route output |
+| Performance Forensics Report | Performance work starts with a measurement frame, hot-path map, bottleneck hypotheses, and probes | `engineering-team` performance route output |
+| Handoff Document | Another agent or session can continue with decisions, evidence, open questions, risks, suggested skills, and next actions | `engineering-team` handoff route output |
 | Unknowns-First Route | Ambiguous or risky tasks expose assumptions before intake, then map findings into existing artifacts | `references/unknowns-first/router.md` |
 
 These make the team's reasoning inspectable: a reviewer can see which experts were needed, what they understood about the code path, and why the resulting diff or diagnosis is trustworthy.
@@ -253,7 +253,7 @@ File-copy installs (Codex, GitHub) are idempotent: existing files are skipped un
 
 ## Keeping main context clean
 
-EngineeringTeam uses the main agent as the Lead Engineer. For L2+ work on harnesses with subagent support, selected specialists are delegated to subagents. Specialists receive bounded briefs and return compact context capsules, not transcripts. This keeps the main session focused on expert routing, evidence, decisions, implementation gates, and final handoff.
+EngineeringTeam uses the main agent as the Lead Engineer. For non-trivial L2+ work on harnesses with subagent support, selected specialists are delegated to subagents. A typo/formatting-only L2 edit may remain in the main session but still passes a compact Implementation Gate. Specialists receive bounded briefs and return compact context capsules, not transcripts. This keeps the main session focused on expert routing, evidence, decisions, implementation gates, and final handoff.
 
 ## ✅ Validation
 

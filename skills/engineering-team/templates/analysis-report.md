@@ -6,8 +6,8 @@ findings only. Replaces the Final Report when no code edits are planned.
 Produce it after a lightweight Repo Atlas, then run Context GC.
 
 For descriptive "understand/map how this repo works" requests, use the
-Codebase Analysis Report (`templates/codebase-analysis-report.md`) via the
-`codebase-analysis` skill instead.
+Codebase Analysis Report (`templates/codebase-analysis-report.md`) through
+`references/route-codebase-analysis.md` instead.
 
 House style: keep tables compact and evidence-first. Prefer columns ordered as
 `Item/Claim`, `Evidence`, `Confidence`, `Risk/Impact`, then `Next action`.

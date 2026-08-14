@@ -1,6 +1,6 @@
 interface:
   display_name: "EngineeringTeam"
-  short_description: "Repo-first Codex workflow for safe software engineering changes."
-  default_prompt: "Use engineering-team to map the repo, trace contracts, gather evidence, implement the smallest safe change, and verify it."
+  short_description: "One repo-first workflow for implementation, investigation, and handoff."
+  default_prompt: "Use engineering-team to select the right implementation, investigation, or handoff route; map the relevant contracts, gather evidence, take only the authorized action, and verify or report the result."
 policy:
   allow_implicit_invocation: true

@@ -4,7 +4,7 @@ Use Advisor Consultant as a decision gate, not a default teammate.
 
 ## When to invoke
 
-Invoke before implementation when any of these are true:
+Invoke before consequential implementation or a broad read-only decision when any of these are true:
 
 - autonomy is L4 or L5 and the plan changes behavior across components
 - root cause remains unclear after investigation
@@ -12,6 +12,8 @@ Invoke before implementation when any of these are true:
 - the decision affects security, migration, compatibility, release, production behavior, or rollback
 - completion confidence depends on assumptions rather than direct evidence
 - Evidence Skeptic returns `Blocked`, `No-Go`, or unresolved contradictions
+
+Do not invoke merely to extract or summarize production evidence. In read-only work, use Advisor Consultant only when the report itself recommends a consequential security, migration, release, production, rollback, or architecture decision.
 
 Do not invoke for `low-risk-local` work or routine L2/L3 work where evidence and verification path are clear.
 

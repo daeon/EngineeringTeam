@@ -14,7 +14,7 @@ Codex reads `AGENTS.md` before work. Keep repo-level `AGENTS.md` short and use i
 
 ## Subagents
 
-When Codex exposes subagent tools and the EngineeringTeam skill is active, EngineeringTeam must route through subagents for every L2+ task. The lead stays in the main session, then spawns the selected Codex custom agents from `references/agent-routing.md` using bounded briefs and compact context capsules.
+When Codex exposes subagent tools and the EngineeringTeam skill is active, EngineeringTeam must route through subagents for every non-trivial L2+ task. A typo/formatting-only L2 edit is the sole main-session exception and still requires a compact Implementation Gate. The lead stays in the main session, then spawns the selected Codex custom agents from `references/agent-routing.md` using bounded briefs and compact context capsules.
 
 Fallback is limited to harnesses without subagent support, missing custom-agent definitions, or tool failures that prevent spawning. In fallback, label the simulated specialist roles in the main session and report why spawning was unavailable.
 

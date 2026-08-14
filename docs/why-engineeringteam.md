@@ -72,7 +72,7 @@ EngineeringTeam is useful for:
 EngineeringTeam is not just a prompt pack. It is a packaged engineering-team harness:
 
 - Multi-harness distribution for Claude Code, Codex, Cursor, Gemini CLI, and OpenCode.
-- A lead-engineer workflow that routes specialists by task risk instead of spawning a fixed committee.
+- A main-session Lead workflow that routes specialists by task risk instead of spawning a fixed committee.
 - Shared canonical skill content so behavior stays consistent across tools.
 - Specialist agents in both Markdown and Codex TOML formats.
 - Scripted validation and repo-intelligence helpers.

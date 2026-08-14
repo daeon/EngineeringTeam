@@ -39,11 +39,11 @@ Use this format:
 ## Codex agent TOMLs exist in two generated locations
 
 - Status: current
-- Summary: Each generated Codex TOML is written to `.codex/agents/` (Codex runtime) and `skills/engineering-team/assets/agents/` (bundled in the skill) — 12 agents x 2 = 24 files. The former third "reference mirror" copy (`references/codex-custom-agents/`) was removed.
+- Summary: Each generated Codex TOML is written to `.codex/agents/` (Codex runtime) and `skills/engineering-team/assets/agents/` (bundled in the skill) — 11 specialists x 2 = 22 files. Lead responsibility stays in the main session and has no generated definition.
 - Impact: Bypassing the generator in one location causes silent divergence.
 - Mitigation: Only change via `agents-src/*.yaml` + generator; the `GENERATED` banner and `--check` guard against hand-edits.
 - Evidence/source paths: `scripts/generate-agents.py`, `scripts/validate-codex-package.py`, `.codex/agents/`, `skills/engineering-team/assets/agents/`
-- Last verified: 2026-05-29
+- Last verified: 2026-08-13
 
 ## install.py is file-copy only for Codex and GitHub
 

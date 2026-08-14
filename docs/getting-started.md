@@ -52,7 +52,7 @@ Use engineering-team to review this branch. Focus on bugs, regressions, missing 
 For read-only analysis (no edits):
 
 ```text
-Use engineering-team in read-only analysis mode to understand this repository. Route to codebase-analysis, map the main components and contracts, and return an evidence-backed report without editing files.
+Use engineering-team in read-only analysis mode to understand this repository. Select the codebase route, map the main components and contracts, and return an evidence-backed report without editing files.
 ```
 
 Read-only mode changes the edit posture, not the rigor level. A trivial file explanation can be L0, but broad codebase analysis, debugging forensics, performance analysis, security review, migration review, or release planning should be assigned L2-L5 depth according to complexity and risk.
@@ -60,7 +60,7 @@ Read-only mode changes the edit posture, not the rigor level. A trivial file exp
 To transfer work to another agent or a fresh session:
 
 ```text
-Use handoff to summarize this task for a fresh agent. Focus the next session on finishing verification and preparing the PR.
+Use engineering-team in handoff mode to summarize this task for a fresh agent. Focus the next session on finishing verification and preparing the PR.
 ```
 
 ## Expected First Outputs

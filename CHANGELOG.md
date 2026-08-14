@@ -1,8 +1,26 @@
 # Changelog
 
-## Unreleased
+## 0.2.0 - 2026-08-13
 
-Public-launch polish.
+Single-skill consolidation and public-launch polish.
+
+- Consolidated all user-facing workflows into the single discoverable `engineering-team` skill. Codebase analysis, debugging, log analysis, performance analysis, and handoff now load focused route references inside the bundle.
+- Defined three explicit authority modes: implementation may write only after its gate, read-only analysis never writes, and handoff may create only the requested continuation artifact.
+- Made the main session the sole Lead Engineer and removed the Lead agent source plus generated Claude/Cursor, Codex, Copilot, and bundled definitions. Eleven bounded specialists remain spawnable.
+- Removed the unrelated `skills/d3-viz` gitlink so `skills/` contains exactly one skill bundle.
+- Added package and unit-test guards for one recursive `SKILL.md`, one top-level skill entry, direct route coverage, route authority, and permanent absence of a spawnable Lead.
+
+### Migration from 0.1.x
+
+| Previous invocation | 0.2.0 invocation |
+|---|---|
+| `codebase-analysis` | `engineering-team` in read-only codebase-analysis mode |
+| `debugging-forensics` | `engineering-team` in read-only debugging mode |
+| `log-forensics` | `engineering-team` in read-only log-analysis mode |
+| `performance-forensics` | `engineering-team` in read-only performance mode |
+| `handoff` | `engineering-team` in handoff mode |
+
+Consumers that copied individual satellite skill directories should remove them and install the full `skills/engineering-team/` bundle. The Codex and GitHub file-copy installers remove the obsolete Lead file only when its content exactly matches the known 0.1.x generated file; custom or hand-edited Lead files are preserved for manual review.
 
 - Added optional unknowns-first pre-intake references for ambiguous, risky, unfamiliar, architecture-sensitive, security-sensitive, production-impacting, or assumption-heavy EngineeringTeam work.
 - Documented unknowns-first routing, artifact mapping, and fused workflow examples while keeping `engineering-team` as the primary router.

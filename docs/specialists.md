@@ -10,7 +10,9 @@ Operational routing rules live in [`skills/engineering-team/references/agent-rou
 
 ## Roles
 
-## Lead Engineer
+## Lead Engineer (main session)
+
+The main session owns Lead responsibilities. Lead is not a generated or spawnable specialist; this prevents recursive routing and keeps one decision owner.
 
 Coordinates the work, classifies the task, chooses specialists, resolves contradictions, and produces the final plan.
 

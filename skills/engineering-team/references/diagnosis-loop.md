@@ -10,6 +10,8 @@ If you do not have a feedback loop, you are guessing. Spend disproportionate eff
 
 ## Feedback loop options
 
+In read-only mode, use existing commands/tests or an OS-temporary harness that does not alter the repository or runtime configuration. Any repository test, fixture, instrumentation, or configuration write belongs to Implementation mode after the gate.
+
 Try these in roughly this order:
 
 1. Failing test at the seam that reaches the bug.
@@ -56,9 +58,11 @@ Prefer:
 
 Avoid broad "log everything" instrumentation.
 
-Temporary debug logs must use a unique prefix like `[DEBUG-a4f2]` so cleanup is mechanical.
+When Implementation mode is authorized and gated, temporary debug logs must use a unique prefix like `[DEBUG-a4f2]` so cleanup is mechanical. In read-only mode, propose this instrumentation rather than adding it.
 
 ## Fix and regression
+
+This section applies only after the user authorizes Implementation mode and the Implementation Gate passes. In read-only mode, return the minimized reproduction and proposed regression test without writing them into the repository.
 
 Turn the minimized repro into a regression test before the fix when a correct seam exists.
 
